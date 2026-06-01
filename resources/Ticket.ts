@@ -1,9 +1,8 @@
 // Generated from the LeavePulse contract. Do not edit.
-
-import type { ClientContext } from "../client";
-import { TopicSubscription } from "../runtime/realtime";
 import { Resource } from "../runtime/resource";
+import { TopicSubscription } from "../runtime/realtime";
 import type { components } from "../types";
+import type { ClientContext } from "../client";
 
 type Data = { id: string | number } & Record<string, unknown>;
 
@@ -23,6 +22,13 @@ export class Ticket extends Resource<Data> {
 	/** Whether the current user may reply (RFC §4). */
 	get canReply(): boolean {
 		return this.hasCapability("reply", "ticket.reply");
+	}
+
+	/** ticket.messages.list */
+	async messagesList(): Promise<components["schemas"]["TicketMessageList"]> {
+		return this.ctx.transport.request<
+			components["schemas"]["TicketMessageList"]
+		>({ method: "GET", path: `/v1/community/tickets/${this.id}/messages` });
 	}
 
 	/** ticket.set_status */

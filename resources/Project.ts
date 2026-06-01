@@ -1,9 +1,11 @@
 // Generated from the LeavePulse contract. Do not edit.
-
-import type { ClientContext } from "../client";
-import { TopicSubscription } from "../runtime/realtime";
 import { Resource } from "../runtime/resource";
+import { TopicSubscription } from "../runtime/realtime";
 import type { components } from "../types";
+import type { ClientContext } from "../client";
+import type { Binding } from "./Binding";
+import type { Comment } from "./Comment";
+import type { Form } from "./Form";
 import type { Server } from "./Server";
 
 type Data = components["schemas"]["ProjectDetail"] & {
@@ -79,19 +81,158 @@ export class Project extends Resource<Data> {
 		return this.servers;
 	}
 
+	/** project.comments.list */
+	async commentsList(params?: {
+		page?: number;
+		limit?: number;
+		targetLocale?: string;
+	}): Promise<Comment[]> {
+		const data = await this.ctx.transport.request<unknown>({
+			method: "GET",
+			path: `/v1/community/projects/${this.id}/comments`,
+			query: {
+				page: params?.page,
+				limit: params?.limit,
+				target_locale: params?.targetLocale,
+			},
+		});
+		const items = Array.isArray(data)
+			? data
+			: ((data as { items?: unknown[] }).items ?? []);
+		return this.ctx.hydrateMany("Comment", items) as Comment[];
+	}
+
+	/** project.comments.liked */
+	async commentsLiked(): Promise<components["schemas"]["LikedCommentIds"]> {
+		return this.ctx.transport.request<components["schemas"]["LikedCommentIds"]>(
+			{
+				method: "GET",
+				path: `/v1/community/projects/${this.id}/comments/liked`,
+			},
+		);
+	}
+
+	/** project.comments.mine */
+	async commentsMine(params?: {
+		targetLocale?: string;
+	}): Promise<components["schemas"]["MyComment"]> {
+		return this.ctx.transport.request<components["schemas"]["MyComment"]>({
+			method: "GET",
+			path: `/v1/community/projects/${this.id}/comments/me`,
+			query: { target_locale: params?.targetLocale },
+		});
+	}
+
+	/** project.engagement */
+	async engagement(): Promise<components["schemas"]["ProjectEngagement"]> {
+		return this.ctx.transport.request<
+			components["schemas"]["ProjectEngagement"]
+		>({ method: "GET", path: `/v1/community/projects/${this.id}/engagement` });
+	}
+
+	/** project.engagement.status */
+	async engagementStatus(): Promise<
+		components["schemas"]["ProjectEngagementStatus"]
+	> {
+		return this.ctx.transport.request<
+			components["schemas"]["ProjectEngagementStatus"]
+		>({
+			method: "GET",
+			path: `/v1/community/projects/${this.id}/engagement/status`,
+		});
+	}
+
+	/** project.votes.list */
+	async votesList(params?: {
+		limit?: number;
+	}): Promise<components["schemas"]["RecentVotes"]> {
+		return this.ctx.transport.request<components["schemas"]["RecentVotes"]>({
+			method: "GET",
+			path: `/v1/community/projects/${this.id}/votes`,
+			query: { limit: params?.limit },
+		});
+	}
+
+	/** me.projects.get */
+	async meProjectsGet(): Promise<components["schemas"]["WorkspaceDetail"]> {
+		return this.ctx.transport.request<components["schemas"]["WorkspaceDetail"]>(
+			{ method: "GET", path: `/v1/me/projects/${this.id}` },
+		);
+	}
+
+	/** project.history.list */
+	async historyList(params?: {
+		period?: string;
+	}): Promise<components["schemas"]["HistoryResponse"]> {
+		return this.ctx.transport.request<components["schemas"]["HistoryResponse"]>(
+			{
+				method: "GET",
+				path: `/v1/monitoring/projects/${this.id}/history`,
+				query: { period: params?.period },
+			},
+		);
+	}
+
+	/** project.stats */
+	async stats(params?: {
+		period?: string;
+	}): Promise<components["schemas"]["ProjectStats"]> {
+		return this.ctx.transport.request<components["schemas"]["ProjectStats"]>({
+			method: "GET",
+			path: `/v1/projects/${this.id}/stats`,
+			query: { period: params?.period },
+		});
+	}
+
+	/** project.team_sync.targets */
+	async teamSyncTargets(params?: {
+		roleId?: string;
+	}): Promise<components["schemas"]["DiscordRoleTargets"]> {
+		return this.ctx.transport.request<
+			components["schemas"]["DiscordRoleTargets"]
+		>({
+			method: "GET",
+			path: `/v1/projects/${this.id}/team-sync/discord-targets`,
+			query: { role_id: params?.roleId },
+		});
+	}
+
+	/** project.whitelist.forms */
+	async whitelistForms(): Promise<Form[]> {
+		const data = await this.ctx.transport.request<unknown>({
+			method: "GET",
+			path: `/v1/projects/${this.id}/whitelist/forms`,
+		});
+		const items = Array.isArray(data)
+			? data
+			: ((data as { items?: unknown[] }).items ?? []);
+		return this.ctx.hydrateMany("Form", items) as Form[];
+	}
+
+	/** project.policies */
+	async policies(): Promise<Binding[]> {
+		const data = await this.ctx.transport.request<unknown>({
+			method: "GET",
+			path: `/v1/projects/${this.id}/whitelist/policies`,
+		});
+		const items = Array.isArray(data)
+			? data
+			: ((data as { items?: unknown[] }).items ?? []);
+		return this.ctx.hydrateMany("Binding", items) as Binding[];
+	}
+
 	/** project.comments.create */
 	async commentsCreate(
 		body: components["schemas"]["CommentCreateRequest"],
 		params?: { targetLocale?: string },
-	): Promise<this> {
+	): Promise<Comment> {
 		const data = await this.ctx.transport.request({
 			method: "POST",
 			path: `/v1/community/projects/${this.id}/comments`,
 			body,
 			query: { target_locale: params?.targetLocale },
 		});
-		this.ctx.hydrate("Project", data);
-		return this;
+		return this.ctx.hydrate("Comment", data) as Comment;
 	}
 
 	/** project.heart */
@@ -116,11 +257,12 @@ export class Project extends Resource<Data> {
 
 	/** project.bridge.update */
 	async bridgeUpdate(
+		serverId: string | number,
 		body: components["schemas"]["BridgeSettingsUpdateRequest"],
 	): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "PATCH",
-			path: `/v1/discord/servers/${this.id}/bridge`,
+			path: `/v1/discord/servers/${serverId}/bridge`,
 			body,
 		});
 		this.ctx.hydrate("Project", data);
@@ -129,11 +271,12 @@ export class Project extends Resource<Data> {
 
 	/** project.bridge.import */
 	async bridgeImport(
+		serverId: string | number,
 		body: components["schemas"]["ImportPullRequest"],
 	): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "POST",
-			path: `/v1/discord/servers/${this.id}/import-pull`,
+			path: `/v1/discord/servers/${serverId}/import-pull`,
 			body,
 		});
 		this.ctx.hydrate("Project", data);
@@ -195,21 +338,20 @@ export class Project extends Resource<Data> {
 	/** project.policies.create */
 	async policiesCreate(
 		body: components["schemas"]["WhitelistBindingWriteRequest"],
-	): Promise<this> {
+	): Promise<Binding> {
 		const data = await this.ctx.transport.request({
 			method: "POST",
 			path: `/v1/projects/${this.id}/whitelist/policies`,
 			body,
 		});
-		this.ctx.hydrate("Project", data);
-		return this;
+		return this.ctx.hydrate("Binding", data) as Binding;
 	}
 
 	/** project.policies.delete */
-	async policiesDelete(): Promise<this> {
+	async policiesDelete(policyId: string | number): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "DELETE",
-			path: `/v1/projects/${this.id}/whitelist/policies/${this.data["policy_id"]}`,
+			path: `/v1/projects/${this.id}/whitelist/policies/${policyId}`,
 		});
 		this.ctx.hydrate("Project", data);
 		return this;
@@ -217,22 +359,25 @@ export class Project extends Resource<Data> {
 
 	/** project.policies.update */
 	async policiesUpdate(
+		policyId: string | number,
 		body: components["schemas"]["WhitelistBindingWriteRequest"],
-	): Promise<this> {
+	): Promise<Binding> {
 		const data = await this.ctx.transport.request({
 			method: "PATCH",
-			path: `/v1/projects/${this.id}/whitelist/policies/${this.data["policy_id"]}`,
+			path: `/v1/projects/${this.id}/whitelist/policies/${policyId}`,
 			body,
 		});
-		this.ctx.hydrate("Project", data);
-		return this;
+		return this.ctx.hydrate("Binding", data) as Binding;
 	}
 
 	/** project.policies.test */
-	async policiesTest(params?: { audience?: string }): Promise<this> {
+	async policiesTest(
+		policyId: string | number,
+		params?: { audience?: string },
+	): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "POST",
-			path: `/v1/projects/${this.id}/whitelist/policies/${this.data["policy_id"]}/actions/test-notifications`,
+			path: `/v1/projects/${this.id}/whitelist/policies/${policyId}/actions/test-notifications`,
 			query: { audience: params?.audience },
 		});
 		this.ctx.hydrate("Project", data);

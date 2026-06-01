@@ -1,8 +1,7 @@
 // Generated from the LeavePulse contract. Do not edit.
-
-import type { ClientContext } from "../client";
 import { Resource } from "../runtime/resource";
 import type { components } from "../types";
+import type { ClientContext } from "../client";
 
 type Data = { id: string | number } & Record<string, unknown> & {
 		project_id?: string | number;
@@ -27,20 +26,20 @@ export class Comment extends Resource<Data> {
 	}
 
 	/** comment.delete */
-	async delete(): Promise<this> {
+	async delete(projectId: string): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "DELETE",
-			path: `/v1/community/projects/${this.data["project_id"]}/comments/${this.id}`,
+			path: `/v1/community/projects/${projectId}/comments/${this.id}`,
 		});
 		this.ctx.hydrate("Comment", data);
 		return this;
 	}
 
 	/** comment.like */
-	async like(): Promise<this> {
+	async like(projectId: string): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "POST",
-			path: `/v1/community/projects/${this.data["project_id"]}/comments/${this.id}/like`,
+			path: `/v1/community/projects/${projectId}/comments/${this.id}/like`,
 		});
 		this.ctx.hydrate("Comment", data);
 		return this;
@@ -48,16 +47,16 @@ export class Comment extends Resource<Data> {
 
 	/** comment.reply */
 	async reply(
+		projectId: string,
 		body: components["schemas"]["CommentCreateRequest"],
 		params?: { targetLocale?: string },
-	): Promise<this> {
+	): Promise<Comment> {
 		const data = await this.ctx.transport.request({
 			method: "POST",
-			path: `/v1/community/projects/${this.data["project_id"]}/comments/${this.id}/replies`,
+			path: `/v1/community/projects/${projectId}/comments/${this.id}/replies`,
 			body,
 			query: { target_locale: params?.targetLocale },
 		});
-		this.ctx.hydrate("Comment", data);
-		return this;
+		return this.ctx.hydrate("Comment", data) as Comment;
 	}
 }

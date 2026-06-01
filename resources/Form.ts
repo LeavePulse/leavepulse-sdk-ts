@@ -1,8 +1,7 @@
 // Generated from the LeavePulse contract. Do not edit.
-
-import type { ClientContext } from "../client";
 import { Resource } from "../runtime/resource";
 import type { components } from "../types";
+import type { ClientContext } from "../client";
 
 type Data = components["schemas"]["WhitelistFormDetail"];
 

@@ -1,9 +1,10 @@
 // Generated from the LeavePulse contract. Do not edit.
-
-import type { ClientContext } from "../client";
-import { TopicSubscription } from "../runtime/realtime";
 import { Resource } from "../runtime/resource";
+import { TopicSubscription } from "../runtime/realtime";
 import type { components } from "../types";
+import type { ClientContext } from "../client";
+import type { Application } from "./Application";
+import type { Ticket } from "./Ticket";
 
 type Data = components["schemas"]["ServerDetail"] & {
 	job_id?: string | number;
@@ -139,6 +140,300 @@ export class Server extends Resource<Data> {
 	/** Whether the current user may import (RFC §4). */
 	get canImport(): boolean {
 		return this.hasCapability("import", "server.import");
+	}
+
+	/** server.tickets.list */
+	async ticketsList(params?: {
+		page?: number;
+		limit?: number;
+		status?: string;
+	}): Promise<Ticket[]> {
+		const data = await this.ctx.transport.request<unknown>({
+			method: "GET",
+			path: `/v1/community/tickets/server/${this.id}`,
+			query: {
+				page: params?.page,
+				limit: params?.limit,
+				status: params?.status,
+			},
+		});
+		const items = Array.isArray(data)
+			? data
+			: ((data as { items?: unknown[] }).items ?? []);
+		return this.ctx.hydrateMany("Ticket", items) as Ticket[];
+	}
+
+	/** server.player_stats */
+	async playerStats(params?: {
+		userId?: string;
+		minecraftUuid?: string;
+		minecraftNick?: string;
+		namedServerId?: number;
+	}): Promise<components["schemas"]["PlayerStats"]> {
+		return this.ctx.transport.request<components["schemas"]["PlayerStats"]>({
+			method: "GET",
+			path: `/v1/monitoring/servers/${this.id}/player-stats`,
+			query: {
+				user_id: params?.userId,
+				minecraft_uuid: params?.minecraftUuid,
+				minecraft_nick: params?.minecraftNick,
+				named_server_id: params?.namedServerId,
+			},
+		});
+	}
+
+	/** server.bot */
+	async bot(): Promise<components["schemas"]["ServerBot"]> {
+		return this.ctx.transport.request<components["schemas"]["ServerBot"]>({
+			method: "GET",
+			path: `/v1/servers/${this.id}/bot`,
+		});
+	}
+
+	/** server.events.list */
+	async eventsList(params?: {
+		period?: string;
+		limit?: number;
+		page?: number;
+		eventTypes?: string;
+		player?: string;
+	}): Promise<components["schemas"]["ServerEvents"]> {
+		return this.ctx.transport.request<components["schemas"]["ServerEvents"]>({
+			method: "GET",
+			path: `/v1/servers/${this.id}/events`,
+			query: {
+				period: params?.period,
+				limit: params?.limit,
+				page: params?.page,
+				event_types: params?.eventTypes,
+				player: params?.player,
+			},
+		});
+	}
+
+	/** server.history.list */
+	async historyList(params?: {
+		period?: string;
+	}): Promise<components["schemas"]["HistoryResponse"]> {
+		return this.ctx.transport.request<components["schemas"]["HistoryResponse"]>(
+			{
+				method: "GET",
+				path: `/v1/servers/${this.id}/history`,
+				query: { period: params?.period },
+			},
+		);
+	}
+
+	/** server.icons.list */
+	async iconsList(): Promise<components["schemas"]["IconHistory"]> {
+		return this.ctx.transport.request<components["schemas"]["IconHistory"]>({
+			method: "GET",
+			path: `/v1/servers/${this.id}/icons/history`,
+		});
+	}
+
+	/** server.voting */
+	async voting(): Promise<components["schemas"]["VotingLinks"]> {
+		return this.ctx.transport.request<components["schemas"]["VotingLinks"]>({
+			method: "GET",
+			path: `/v1/servers/${this.id}/integrations/voting`,
+		});
+	}
+
+	/** server.launch_manifest */
+	async launchManifest(): Promise<
+		components["schemas"]["ServerLaunchManifest"]
+	> {
+		return this.ctx.transport.request<
+			components["schemas"]["ServerLaunchManifest"]
+		>({ method: "GET", path: `/v1/servers/${this.id}/launch-manifest` });
+	}
+
+	/** server.live */
+	async live(): Promise<components["schemas"]["LiveStatus"]> {
+		return this.ctx.transport.request<components["schemas"]["LiveStatus"]>({
+			method: "GET",
+			path: `/v1/servers/${this.id}/live`,
+		});
+	}
+
+	/** server.maintenance */
+	async maintenance(): Promise<components["schemas"]["ServerMaintenance"]> {
+		return this.ctx.transport.request<
+			components["schemas"]["ServerMaintenance"]
+		>({ method: "GET", path: `/v1/servers/${this.id}/maintenance` });
+	}
+
+	/** server.ownership */
+	async ownership(): Promise<components["schemas"]["ServerOwnership"]> {
+		return this.ctx.transport.request<components["schemas"]["ServerOwnership"]>(
+			{ method: "GET", path: `/v1/servers/${this.id}/ownership` },
+		);
+	}
+
+	/** server.root */
+	async root(): Promise<components["schemas"]["ServerRoot"]> {
+		return this.ctx.transport.request<components["schemas"]["ServerRoot"]>({
+			method: "GET",
+			path: `/v1/servers/${this.id}/root`,
+		});
+	}
+
+	/** server.discord */
+	async discord(): Promise<components["schemas"]["DiscordLink"]> {
+		return this.ctx.transport.request<components["schemas"]["DiscordLink"]>({
+			method: "GET",
+			path: `/v1/servers/${this.id}/social/discord`,
+		});
+	}
+
+	/** server.social */
+	async social(): Promise<components["schemas"]["SocialLinks"]> {
+		return this.ctx.transport.request<components["schemas"]["SocialLinks"]>({
+			method: "GET",
+			path: `/v1/servers/${this.id}/social/links`,
+		});
+	}
+
+	/** server.stats */
+	async stats(params?: {
+		period?: string;
+	}): Promise<components["schemas"]["ServerStats"]> {
+		return this.ctx.transport.request<components["schemas"]["ServerStats"]>({
+			method: "GET",
+			path: `/v1/servers/${this.id}/stats`,
+			query: { period: params?.period },
+		});
+	}
+
+	/** server.subservers.list */
+	async subserversList(): Promise<components["schemas"]["ServerSubservers"]> {
+		return this.ctx.transport.request<
+			components["schemas"]["ServerSubservers"]
+		>({ method: "GET", path: `/v1/servers/${this.id}/subservers` });
+	}
+
+	/** server.team */
+	async team(): Promise<components["schemas"]["ServerTeamPublic"]> {
+		return this.ctx.transport.request<
+			components["schemas"]["ServerTeamPublic"]
+		>({ method: "GET", path: `/v1/servers/${this.id}/team` });
+	}
+
+	/** server.team_sync.targets */
+	async teamSyncTargets(params?: {
+		roleId?: string;
+	}): Promise<components["schemas"]["MinecraftGroupTargets"]> {
+		return this.ctx.transport.request<
+			components["schemas"]["MinecraftGroupTargets"]
+		>({
+			method: "GET",
+			path: `/v1/servers/${this.id}/team-sync/minecraft-targets`,
+			query: { role_id: params?.roleId },
+		});
+	}
+
+	/** server.team.manage */
+	async teamManage(): Promise<components["schemas"]["ServerTeamManage"]> {
+		return this.ctx.transport.request<
+			components["schemas"]["ServerTeamManage"]
+		>({ method: "GET", path: `/v1/servers/${this.id}/team/manage` });
+	}
+
+	/** server.telemetry */
+	async telemetry(params?: {
+		period?: string;
+		source?: string;
+	}): Promise<components["schemas"]["ServerTelemetry"]> {
+		return this.ctx.transport.request<components["schemas"]["ServerTelemetry"]>(
+			{
+				method: "GET",
+				path: `/v1/servers/${this.id}/telemetry`,
+				query: { period: params?.period, source: params?.source },
+			},
+		);
+	}
+
+	/** server.translations.list */
+	async translationsList(): Promise<
+		components["schemas"]["ServerTranslations"]
+	> {
+		return this.ctx.transport.request<
+			components["schemas"]["ServerTranslations"]
+		>({ method: "GET", path: `/v1/servers/${this.id}/translations` });
+	}
+
+	/** server.whitelist.applications */
+	async whitelistApplications(params?: {
+		status?: string;
+		page?: number;
+		perPage?: number;
+	}): Promise<Application[]> {
+		const data = await this.ctx.transport.request<unknown>({
+			method: "GET",
+			path: `/v1/servers/${this.id}/whitelist/applications`,
+			query: {
+				status: params?.status,
+				page: params?.page,
+				per_page: params?.perPage,
+			},
+		});
+		const items = Array.isArray(data)
+			? data
+			: ((data as { items?: unknown[] }).items ?? []);
+		return this.ctx.hydrateMany("Application", items) as Application[];
+	}
+
+	/** server.whitelist */
+	async whitelist(): Promise<components["schemas"]["WhitelistConfig"]> {
+		return this.ctx.transport.request<components["schemas"]["WhitelistConfig"]>(
+			{ method: "GET", path: `/v1/servers/${this.id}/whitelist/config` },
+		);
+	}
+
+	/** server.whitelist.direct */
+	async whitelistDirect(params?: {
+		page?: number;
+		perPage?: number;
+	}): Promise<components["schemas"]["WhitelistDirectEntryPage"]> {
+		return this.ctx.transport.request<
+			components["schemas"]["WhitelistDirectEntryPage"]
+		>({
+			method: "GET",
+			path: `/v1/servers/${this.id}/whitelist/direct`,
+			query: { page: params?.page, per_page: params?.perPage },
+		});
+	}
+
+	/** server.whitelist.imports */
+	async whitelistImports(params?: {
+		status?: string;
+		page?: number;
+		perPage?: number;
+	}): Promise<components["schemas"]["WhitelistImportJobPage"]> {
+		return this.ctx.transport.request<
+			components["schemas"]["WhitelistImportJobPage"]
+		>({
+			method: "GET",
+			path: `/v1/servers/${this.id}/whitelist/imports`,
+			query: {
+				status: params?.status,
+				page: params?.page,
+				per_page: params?.perPage,
+			},
+		});
+	}
+
+	/** server.whitelist.import */
+	async whitelistImport(
+		jobId: string | number,
+	): Promise<components["schemas"]["WhitelistImportJob"]> {
+		return this.ctx.transport.request<
+			components["schemas"]["WhitelistImportJob"]
+		>({
+			method: "GET",
+			path: `/v1/servers/${this.id}/whitelist/imports/${jobId}`,
+		});
 	}
 
 	/** server.change_address */
@@ -494,10 +789,10 @@ export class Server extends Resource<Data> {
 	}
 
 	/** server.members.delete */
-	async membersDelete(): Promise<this> {
+	async membersDelete(memberId: string | number): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "DELETE",
-			path: `/v1/servers/${this.id}/team/members/${this.data["member_id"]}`,
+			path: `/v1/servers/${this.id}/team/members/${memberId}`,
 		});
 		this.ctx.hydrate("Server", data);
 		return this;
@@ -505,11 +800,12 @@ export class Server extends Resource<Data> {
 
 	/** server.members.update */
 	async membersUpdate(
+		memberId: string | number,
 		body: components["schemas"]["TeamMemberUpdateRequest"],
 	): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "PATCH",
-			path: `/v1/servers/${this.id}/team/members/${this.data["member_id"]}`,
+			path: `/v1/servers/${this.id}/team/members/${memberId}`,
 			body,
 		});
 		this.ctx.hydrate("Server", data);
@@ -530,10 +826,10 @@ export class Server extends Resource<Data> {
 	}
 
 	/** server.roles.delete */
-	async rolesDelete(): Promise<this> {
+	async rolesDelete(roleId: string | number): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "DELETE",
-			path: `/v1/servers/${this.id}/team/roles/${this.data["role_id"]}`,
+			path: `/v1/servers/${this.id}/team/roles/${roleId}`,
 		});
 		this.ctx.hydrate("Server", data);
 		return this;
@@ -541,11 +837,12 @@ export class Server extends Resource<Data> {
 
 	/** server.roles.update */
 	async rolesUpdate(
+		roleId: string | number,
 		body: components["schemas"]["TeamRoleUpdateRequest"],
 	): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "PATCH",
-			path: `/v1/servers/${this.id}/team/roles/${this.data["role_id"]}`,
+			path: `/v1/servers/${this.id}/team/roles/${roleId}`,
 			body,
 		});
 		this.ctx.hydrate("Server", data);
@@ -553,10 +850,10 @@ export class Server extends Resource<Data> {
 	}
 
 	/** server.translations.delete */
-	async translationsDelete(): Promise<this> {
+	async translationsDelete(field: string, locale: string): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "DELETE",
-			path: `/v1/servers/${this.id}/translations/${this.data["field"]}/${this.data["locale"]}`,
+			path: `/v1/servers/${this.id}/translations/${field}/${locale}`,
 		});
 		this.ctx.hydrate("Server", data);
 		return this;
@@ -564,11 +861,13 @@ export class Server extends Resource<Data> {
 
 	/** server.translations.set */
 	async translationsSet(
+		field: string,
+		locale: string,
 		body: components["schemas"]["ServerTranslationUpsertRequest"],
 	): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "PATCH",
-			path: `/v1/servers/${this.id}/translations/${this.data["field"]}/${this.data["locale"]}`,
+			path: `/v1/servers/${this.id}/translations/${field}/${locale}`,
 			body,
 		});
 		this.ctx.hydrate("Server", data);
@@ -589,10 +888,10 @@ export class Server extends Resource<Data> {
 	}
 
 	/** server.whitelist.remove_direct */
-	async whitelistRemoveDirect(): Promise<this> {
+	async whitelistRemoveDirect(entryId: string | number): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "DELETE",
-			path: `/v1/servers/${this.id}/whitelist/direct/${this.data["entry_id"]}`,
+			path: `/v1/servers/${this.id}/whitelist/direct/${entryId}`,
 		});
 		this.ctx.hydrate("Server", data);
 		return this;

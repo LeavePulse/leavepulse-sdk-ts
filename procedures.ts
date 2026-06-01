@@ -1,7 +1,7 @@
 // Generated from the LeavePulse contract. Do not edit.
-
-import type { components as authComponents } from "./auth-types";
 import type { ClientContext } from "./client";
+import type { components } from "./types";
+import type { components as authComponents } from "./auth-types";
 import type { Binding } from "./resources/Binding";
 import type { Build } from "./resources/Build";
 import type { Form } from "./resources/Form";
@@ -11,7 +11,6 @@ import type { Server } from "./resources/Server";
 import type { Subscription } from "./resources/Subscription";
 import type { Ticket } from "./resources/Ticket";
 import type { User } from "./resources/User";
-import type { components } from "./types";
 
 /** admin.discovery procedures. */
 export class AdminDiscoveryNs {
@@ -659,8 +658,11 @@ export class BillingOrdersNs {
 			method: "GET",
 			path: `/v1/billing/orders`,
 			query: { page: params?.page, limit: params?.limit },
-		})) as { items?: unknown[] };
-		return this.ctx.hydrateMany("Order", data.items ?? []) as Order[];
+		})) as unknown;
+		const items = Array.isArray(data)
+			? data
+			: ((data as { items?: unknown[] }).items ?? []);
+		return this.ctx.hydrateMany("Order", items) as Order[];
 	}
 }
 
@@ -673,8 +675,11 @@ export class BillingProductsNs {
 		const data = (await this.ctx.transport.request({
 			method: "GET",
 			path: `/v1/billing/products`,
-		})) as { items?: unknown[] };
-		return this.ctx.hydrateMany("Product", data.items ?? []) as Product[];
+		})) as unknown;
+		const items = Array.isArray(data)
+			? data
+			: ((data as { items?: unknown[] }).items ?? []);
+		return this.ctx.hydrateMany("Product", items) as Product[];
 	}
 }
 
@@ -691,11 +696,11 @@ export class BillingSubscriptionsNs {
 			method: "GET",
 			path: `/v1/billing/subscriptions`,
 			query: { page: params?.page, limit: params?.limit },
-		})) as { items?: unknown[] };
-		return this.ctx.hydrateMany(
-			"Subscription",
-			data.items ?? [],
-		) as Subscription[];
+		})) as unknown;
+		const items = Array.isArray(data)
+			? data
+			: ((data as { items?: unknown[] }).items ?? []);
+		return this.ctx.hydrateMany("Subscription", items) as Subscription[];
 	}
 }
 
@@ -729,25 +734,25 @@ export class BuildsNs {
 	/** builds.create */
 	async create(
 		body: components["schemas"]["BuildCreateRequest"],
-	): Promise<Build[]> {
-		const data = (await this.ctx.transport.request({
+	): Promise<Build> {
+		const data = await this.ctx.transport.request({
 			method: "POST",
 			path: `/v1/builds`,
 			body,
-		})) as { items?: unknown[] };
-		return this.ctx.hydrateMany("Build", data.items ?? []) as Build[];
+		});
+		return this.ctx.hydrate("Build", data) as Build;
 	}
 
 	/** builds.import */
 	async import(
 		body: components["schemas"]["ImportSharedBuildRequest"],
-	): Promise<Build[]> {
-		const data = (await this.ctx.transport.request({
+	): Promise<Build> {
+		const data = await this.ctx.transport.request({
 			method: "POST",
 			path: `/v1/builds/import`,
 			body,
-		})) as { items?: unknown[] };
-		return this.ctx.hydrateMany("Build", data.items ?? []) as Build[];
+		});
+		return this.ctx.hydrate("Build", data) as Build;
 	}
 
 	/** builds.shared_with_me */
@@ -755,8 +760,11 @@ export class BuildsNs {
 		const data = (await this.ctx.transport.request({
 			method: "GET",
 			path: `/v1/builds/shared-with-me`,
-		})) as { items?: unknown[] };
-		return this.ctx.hydrateMany("Build", data.items ?? []) as Build[];
+		})) as unknown;
+		const items = Array.isArray(data)
+			? data
+			: ((data as { items?: unknown[] }).items ?? []);
+		return this.ctx.hydrateMany("Build", items) as Build[];
 	}
 }
 
@@ -868,6 +876,100 @@ export class ProjectsNs {
 			},
 		});
 	}
+
+	/** projects.bridge */
+	async bridge(
+		serverId: string | number,
+	): Promise<components["schemas"]["BridgeSettings"]> {
+		return this.ctx.transport.request<components["schemas"]["BridgeSettings"]>({
+			method: "GET",
+			path: `/v1/discord/servers/${serverId}/bridge`,
+		});
+	}
+
+	/** projects.bridge_roles */
+	async bridgeRoles(
+		serverId: string | number,
+	): Promise<components["schemas"]["RoleCatalog"]> {
+		return this.ctx.transport.request<components["schemas"]["RoleCatalog"]>({
+			method: "GET",
+			path: `/v1/discord/servers/${serverId}/roles-catalog`,
+		});
+	}
+
+	/** projects.projects_list */
+	async projectsList(params?: {
+		page?: number;
+		perPage?: number;
+	}): Promise<components["schemas"]["WorkspaceListResponse"]> {
+		return this.ctx.transport.request<
+			components["schemas"]["WorkspaceListResponse"]
+		>({
+			method: "GET",
+			path: `/v1/me/projects`,
+			query: { page: params?.page, per_page: params?.perPage },
+		});
+	}
+
+	/** projects.projects_resolve */
+	async projectsResolve(
+		projectRef: string,
+	): Promise<components["schemas"]["WorkspaceResolveResponse"]> {
+		return this.ctx.transport.request<
+			components["schemas"]["WorkspaceResolveResponse"]
+		>({ method: "GET", path: `/v1/me/projects/resolve/${projectRef}` });
+	}
+
+	/** projects.list */
+	async list(params?: {
+		q?: string;
+		edition?: string;
+		access?: string;
+		features?: string;
+		region?: string;
+		hosting?: string;
+		verified?: string;
+		page?: number;
+		perPage?: number;
+		sort?: string;
+	}): Promise<components["schemas"]["ProjectListResponse"]> {
+		return this.ctx.transport.request<
+			components["schemas"]["ProjectListResponse"]
+		>({
+			method: "GET",
+			path: `/v1/projects`,
+			query: {
+				q: params?.q,
+				edition: params?.edition,
+				access: params?.access,
+				features: params?.features,
+				region: params?.region,
+				hosting: params?.hosting,
+				verified: params?.verified,
+				page: params?.page,
+				per_page: params?.perPage,
+				sort: params?.sort,
+			},
+		});
+	}
+
+	/** projects.create */
+	async create(
+		body: components["schemas"]["ProjectCreateRequest"],
+	): Promise<components["schemas"]["ProjectCreateResponse"]> {
+		return this.ctx.transport.request<
+			components["schemas"]["ProjectCreateResponse"]
+		>({ method: "POST", path: `/v1/projects`, body });
+	}
+
+	/** projects.resolve */
+	async resolve(
+		projectRef: string,
+	): Promise<components["schemas"]["ProjectResolveResponse"]> {
+		return this.ctx.transport.request<
+			components["schemas"]["ProjectResolveResponse"]
+		>({ method: "GET", path: `/v1/projects/resolve/${projectRef}` });
+	}
 }
 
 /** rbac.* procedures. */
@@ -889,12 +991,12 @@ export class ServersNs {
 	constructor(private readonly ctx: ClientContext) {}
 
 	/** servers.resolve */
-	async resolve(serverRef: string): Promise<Server[]> {
-		const data = (await this.ctx.transport.request({
+	async resolve(serverRef: string): Promise<Server> {
+		const data = await this.ctx.transport.request({
 			method: "GET",
 			path: `/v1/servers/resolve/${serverRef}`,
-		})) as { items?: unknown[] };
-		return this.ctx.hydrateMany("Server", data.items ?? []) as Server[];
+		});
+		return this.ctx.hydrate("Server", data) as Server;
 	}
 }
 
@@ -944,13 +1046,13 @@ export class TicketsNs {
 	/** tickets.create */
 	async create(
 		body: components["schemas"]["TicketCreateRequest"],
-	): Promise<Ticket[]> {
-		const data = (await this.ctx.transport.request({
+	): Promise<Ticket> {
+		const data = await this.ctx.transport.request({
 			method: "POST",
 			path: `/v1/community/tickets`,
 			body,
-		})) as { items?: unknown[] };
-		return this.ctx.hydrateMany("Ticket", data.items ?? []) as Ticket[];
+		});
+		return this.ctx.hydrate("Ticket", data) as Ticket;
 	}
 
 	/** tickets.mine */
@@ -959,8 +1061,11 @@ export class TicketsNs {
 			method: "GET",
 			path: `/v1/community/tickets/my`,
 			query: { page: params?.page, limit: params?.limit },
-		})) as { items?: unknown[] };
-		return this.ctx.hydrateMany("Ticket", data.items ?? []) as Ticket[];
+		})) as unknown;
+		const items = Array.isArray(data)
+			? data
+			: ((data as { items?: unknown[] }).items ?? []);
+		return this.ctx.hydrateMany("Ticket", items) as Ticket[];
 	}
 }
 
@@ -976,7 +1081,7 @@ export class UpdatesNs {
 	}): Promise<components["schemas"]["UpdateManifest"]> {
 		return this.ctx.transport.request<components["schemas"]["UpdateManifest"]>({
 			method: "GET",
-			path: `/updates/v1/launcher/manifest`,
+			path: `/v1/launcher/updates/manifest`,
 			query: {
 				channel: params?.channel,
 				platform: params?.platform,
@@ -993,7 +1098,7 @@ export class UpdatesNs {
 	): Promise<components["schemas"]["UpdateManifest"]> {
 		return this.ctx.transport.request<components["schemas"]["UpdateManifest"]>({
 			method: "PUT",
-			path: `/updates/v1/launcher/manifests/${channel}/${platform}`,
+			path: `/v1/launcher/updates/manifests/${channel}/${platform}`,
 			body,
 		});
 	}
@@ -1005,7 +1110,7 @@ export class UpdatesNs {
 	): Promise<components["schemas"]["DeleteAck"]> {
 		return this.ctx.transport.request<components["schemas"]["DeleteAck"]>({
 			method: "POST",
-			path: `/updates/v1/launcher/manifests/${channel}/${platform}/delete`,
+			path: `/v1/launcher/updates/manifests/${channel}/${platform}/delete`,
 		});
 	}
 
@@ -1014,7 +1119,7 @@ export class UpdatesNs {
 		body: components["schemas"]["UpdateReportInput"],
 	): Promise<components["schemas"]["UpdateReportAck"]> {
 		return this.ctx.transport.request<components["schemas"]["UpdateReportAck"]>(
-			{ method: "POST", path: `/updates/v1/launcher/report`, body },
+			{ method: "POST", path: `/v1/launcher/updates/report`, body },
 		);
 	}
 }
@@ -1031,8 +1136,11 @@ export class UsersNs {
 			method: "POST",
 			path: `/v1/users/public-profiles`,
 			body,
-		})) as { items?: unknown[] };
-		return this.ctx.hydrateMany("User", data.items ?? []) as User[];
+		})) as unknown;
+		const items = Array.isArray(data)
+			? data
+			: ((data as { items?: unknown[] }).items ?? []);
+		return this.ctx.hydrateMany("User", items) as User[];
 	}
 
 	/** users.search */
@@ -1041,8 +1149,35 @@ export class UsersNs {
 			method: "GET",
 			path: `/v1/users/search`,
 			query: { q: params?.q, limit: params?.limit },
-		})) as { items?: unknown[] };
-		return this.ctx.hydrateMany("User", data.items ?? []) as User[];
+		})) as unknown;
+		const items = Array.isArray(data)
+			? data
+			: ((data as { items?: unknown[] }).items ?? []);
+		return this.ctx.hydrateMany("User", items) as User[];
+	}
+
+	/** users.engagement */
+	async engagement(
+		userId: string,
+	): Promise<components["schemas"]["UserEngagement"]> {
+		return this.ctx.transport.request<components["schemas"]["UserEngagement"]>({
+			method: "GET",
+			path: `/v1/community/users/${userId}/engagement`,
+		});
+	}
+
+	/** users.activity_list */
+	async activityList(
+		userId: string,
+		params?: { limit?: number },
+	): Promise<components["schemas"]["UserRecentActivity"]> {
+		return this.ctx.transport.request<
+			components["schemas"]["UserRecentActivity"]
+		>({
+			method: "GET",
+			path: `/v1/community/users/${userId}/recent-activity`,
+			query: { limit: params?.limit },
+		});
 	}
 }
 
@@ -1112,13 +1247,13 @@ export class WhitelistBindingsNs {
 	/** whitelist.bindings.create */
 	async create(
 		body: components["schemas"]["WhitelistBindingWriteRequest"],
-	): Promise<Binding[]> {
-		const data = (await this.ctx.transport.request({
+	): Promise<Binding> {
+		const data = await this.ctx.transport.request({
 			method: "POST",
 			path: `/v1/whitelist/bindings`,
 			body,
-		})) as { items?: unknown[] };
-		return this.ctx.hydrateMany("Binding", data.items ?? []) as Binding[];
+		});
+		return this.ctx.hydrate("Binding", data) as Binding;
 	}
 }
 
@@ -1142,20 +1277,23 @@ export class WhitelistFormsNs {
 				page: params?.page,
 				per_page: params?.perPage,
 			},
-		})) as { items?: unknown[] };
-		return this.ctx.hydrateMany("Form", data.items ?? []) as Form[];
+		})) as unknown;
+		const items = Array.isArray(data)
+			? data
+			: ((data as { items?: unknown[] }).items ?? []);
+		return this.ctx.hydrateMany("Form", items) as Form[];
 	}
 
 	/** whitelist.forms.create */
 	async create(
 		body: components["schemas"]["WhitelistFormCreateRequest"],
-	): Promise<Form[]> {
-		const data = (await this.ctx.transport.request({
+	): Promise<Form> {
+		const data = await this.ctx.transport.request({
 			method: "POST",
 			path: `/v1/whitelist/forms`,
 			body,
-		})) as { items?: unknown[] };
-		return this.ctx.hydrateMany("Form", data.items ?? []) as Form[];
+		});
+		return this.ctx.hydrate("Form", data) as Form;
 	}
 }
 

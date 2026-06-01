@@ -1,8 +1,7 @@
 // Generated from the LeavePulse contract. Do not edit.
-
-import type { ClientContext } from "../client";
 import { Resource } from "../runtime/resource";
 import type { components } from "../types";
+import type { ClientContext } from "../client";
 
 type Data = { id: string | number } & Record<string, unknown> & {
 		binding_id?: string | number;
@@ -31,11 +30,25 @@ export class Binding extends Resource<Data> {
 		return this.hasCapability("test", "binding.test");
 	}
 
+	/** binding.entries.list */
+	async entriesList(
+		bindingId: string | number,
+		params?: { page?: number; perPage?: number },
+	): Promise<components["schemas"]["WhitelistDirectEntryPage"]> {
+		return this.ctx.transport.request<
+			components["schemas"]["WhitelistDirectEntryPage"]
+		>({
+			method: "GET",
+			path: `/v1/whitelist/bindings/${bindingId}/direct/entries`,
+			query: { page: params?.page, per_page: params?.perPage },
+		});
+	}
+
 	/** binding.delete */
-	async delete(): Promise<this> {
+	async delete(bindingId: string | number): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "DELETE",
-			path: `/v1/whitelist/bindings/${this.id}`,
+			path: `/v1/whitelist/bindings/${bindingId}`,
 		});
 		this.ctx.hydrate("Binding", data);
 		return this;
@@ -43,11 +56,12 @@ export class Binding extends Resource<Data> {
 
 	/** binding.update */
 	async update(
+		bindingId: string | number,
 		body: components["schemas"]["WhitelistBindingWriteRequest"],
 	): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "PATCH",
-			path: `/v1/whitelist/bindings/${this.id}`,
+			path: `/v1/whitelist/bindings/${bindingId}`,
 			body,
 		});
 		this.ctx.hydrate("Binding", data);
@@ -55,10 +69,13 @@ export class Binding extends Resource<Data> {
 	}
 
 	/** binding.test */
-	async test(params?: { audience?: string }): Promise<this> {
+	async test(
+		bindingId: string | number,
+		params?: { audience?: string },
+	): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "POST",
-			path: `/v1/whitelist/bindings/${this.id}/actions/test-notifications`,
+			path: `/v1/whitelist/bindings/${bindingId}/actions/test-notifications`,
 			query: { audience: params?.audience },
 		});
 		this.ctx.hydrate("Binding", data);
@@ -67,11 +84,12 @@ export class Binding extends Resource<Data> {
 
 	/** binding.entries.add */
 	async entriesAdd(
+		bindingId: string | number,
 		body: components["schemas"]["WhitelistDirectAddRequest"],
 	): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "POST",
-			path: `/v1/whitelist/bindings/${this.id}/direct/entries`,
+			path: `/v1/whitelist/bindings/${bindingId}/direct/entries`,
 			body,
 		});
 		this.ctx.hydrate("Binding", data);
@@ -79,10 +97,10 @@ export class Binding extends Resource<Data> {
 	}
 
 	/** binding.entries.remove */
-	async entriesRemove(): Promise<this> {
+	async entriesRemove(bindingId: string | number): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "DELETE",
-			path: `/v1/whitelist/bindings/${this.data["binding_id"]}/direct/entries/${this.id}`,
+			path: `/v1/whitelist/bindings/${bindingId}/direct/entries/${this.id}`,
 		});
 		this.ctx.hydrate("Binding", data);
 		return this;

@@ -1,8 +1,7 @@
 // Generated from the LeavePulse contract. Do not edit.
-
-import type { ClientContext } from "../client";
 import { Resource } from "../runtime/resource";
 import type { components } from "../types";
+import type { ClientContext } from "../client";
 
 type Data = { id: string | number } & Record<string, unknown> & {
 		server_id?: string | number;
@@ -43,11 +42,12 @@ export class Application extends Resource<Data> {
 
 	/** server.whitelist.apply */
 	async whitelistApply(
+		serverId: string | number,
 		body: components["schemas"]["WhitelistApplyRequest"],
 	): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "POST",
-			path: `/v1/servers/${this.id}/whitelist/applications`,
+			path: `/v1/servers/${serverId}/whitelist/applications`,
 			body,
 		});
 		this.ctx.hydrate("Application", data);
@@ -56,11 +56,12 @@ export class Application extends Resource<Data> {
 
 	/** application.set_status */
 	async setStatus(
+		serverId: string | number,
 		body: components["schemas"]["WhitelistStatusRequest"],
 	): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "PATCH",
-			path: `/v1/servers/${this.data["server_id"]}/whitelist/applications/${this.id}`,
+			path: `/v1/servers/${serverId}/whitelist/applications/${this.id}`,
 			body,
 		});
 		this.ctx.hydrate("Application", data);
@@ -69,11 +70,12 @@ export class Application extends Resource<Data> {
 
 	/** application.approve */
 	async approve(
+		serverId: string | number,
 		body: components["schemas"]["WhitelistDecisionRequest"],
 	): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "POST",
-			path: `/v1/servers/${this.data["server_id"]}/whitelist/applications/${this.id}/approve`,
+			path: `/v1/servers/${serverId}/whitelist/applications/${this.id}/approve`,
 			body,
 		});
 		this.ctx.hydrate("Application", data);
@@ -82,11 +84,12 @@ export class Application extends Resource<Data> {
 
 	/** application.deny */
 	async deny(
+		serverId: string | number,
 		body: components["schemas"]["WhitelistDecisionRequest"],
 	): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "POST",
-			path: `/v1/servers/${this.data["server_id"]}/whitelist/applications/${this.id}/deny`,
+			path: `/v1/servers/${serverId}/whitelist/applications/${this.id}/deny`,
 			body,
 		});
 		this.ctx.hydrate("Application", data);
@@ -95,11 +98,12 @@ export class Application extends Resource<Data> {
 
 	/** application.resubmit */
 	async resubmit(
+		serverId: string | number,
 		body: components["schemas"]["WhitelistApplyRequest"],
 	): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "PATCH",
-			path: `/v1/servers/${this.data["server_id"]}/whitelist/applications/${this.id}/resubmit`,
+			path: `/v1/servers/${serverId}/whitelist/applications/${this.id}/resubmit`,
 			body,
 		});
 		this.ctx.hydrate("Application", data);

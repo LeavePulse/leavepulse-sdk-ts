@@ -1,8 +1,7 @@
 // Generated from the LeavePulse contract. Do not edit.
-
-import type { ClientContext } from "../client";
 import { Resource } from "../runtime/resource";
 import type { components } from "../types";
+import type { ClientContext } from "../client";
 
 type Data = components["schemas"]["Build"] & { user_id?: string | number };
 
@@ -67,6 +66,23 @@ export class Build extends Resource<Data> {
 		return this.hasCapability("share", "build.share");
 	}
 
+	/** build.collaborators.list */
+	async collaboratorsList(): Promise<
+		components["schemas"]["CollaboratorList"]
+	> {
+		return this.ctx.transport.request<
+			components["schemas"]["CollaboratorList"]
+		>({ method: "GET", path: `/v1/builds/${this.id}/collaborators` });
+	}
+
+	/** build.config.url */
+	async configUrl(): Promise<components["schemas"]["ConfigBlobRef"]> {
+		return this.ctx.transport.request<components["schemas"]["ConfigBlobRef"]>({
+			method: "GET",
+			path: `/v1/builds/${this.id}/config`,
+		});
+	}
+
 	/** build.delete */
 	async delete(): Promise<this> {
 		const data = await this.ctx.transport.request({
@@ -104,10 +120,10 @@ export class Build extends Resource<Data> {
 	}
 
 	/** build.collaborators.remove */
-	async collaboratorsRemove(): Promise<this> {
+	async collaboratorsRemove(userId: string): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "DELETE",
-			path: `/v1/builds/${this.id}/collaborators/${this.data["user_id"]}`,
+			path: `/v1/builds/${this.id}/collaborators/${userId}`,
 		});
 		this.ctx.hydrate("Build", data);
 		return this;

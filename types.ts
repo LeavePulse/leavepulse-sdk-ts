@@ -21,83 +21,6 @@ export interface paths {
 		patch?: never;
 		trace?: never;
 	};
-	"/updates/v1/launcher/manifest": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		/**
-		 * Resolve the latest launcher update manifest
-		 * @description Return the signed manifest for the given channel and platform, honoring rollout rules. 404 when no manifest matches.
-		 */
-		get: operations["updates.manifest"];
-		put?: never;
-		post?: never;
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/updates/v1/launcher/manifests/{channel}/{platform}": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get?: never;
-		/**
-		 * Upsert a launcher update manifest (admin)
-		 * @description Publish or replace the manifest for a channel/platform. Guarded by the X-Update-Admin-Token header; the service signs the manifest.
-		 */
-		put: operations["updates.manifest_upsert"];
-		post?: never;
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/updates/v1/launcher/manifests/{channel}/{platform}/delete": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get?: never;
-		put?: never;
-		/** Delete a launcher update manifest (admin) */
-		post: operations["updates.manifest_delete"];
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/updates/v1/launcher/report": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get?: never;
-		put?: never;
-		/**
-		 * Ingest a launcher update lifecycle report
-		 * @description Record a check/download/apply event for rollout telemetry.
-		 */
-		post: operations["updates.report"];
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
 	"/v1": {
 		parameters: {
 			query?: never;
@@ -1555,6 +1478,83 @@ export interface paths {
 		get: operations["project.bridge.roles"];
 		put?: never;
 		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	"/v1/launcher/updates/manifest": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		/**
+		 * Resolve the latest launcher update manifest
+		 * @description Return the signed manifest for the given channel and platform, honoring rollout rules. 404 when no manifest matches.
+		 */
+		get: operations["updates.manifest"];
+		put?: never;
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	"/v1/launcher/updates/manifests/{channel}/{platform}": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		/**
+		 * Upsert a launcher update manifest (admin)
+		 * @description Publish or replace the manifest for a channel/platform. Guarded by the X-Update-Admin-Token header; the service signs the manifest.
+		 */
+		put: operations["updates.manifest_upsert"];
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	"/v1/launcher/updates/manifests/{channel}/{platform}/delete": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
+		/** Delete a launcher update manifest (admin) */
+		post: operations["updates.manifest_delete"];
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	"/v1/launcher/updates/report": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
+		/**
+		 * Ingest a launcher update lifecycle report
+		 * @description Record a check/download/apply event for rollout telemetry.
+		 */
+		post: operations["updates.report"];
 		delete?: never;
 		options?: never;
 		head?: never;
@@ -7282,176 +7282,6 @@ export interface operations {
 			};
 		};
 	};
-	"updates.manifest": {
-		parameters: {
-			query?: {
-				channel?: string;
-				platform?: string;
-				server_id?: number | null;
-			};
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody?: never;
-		responses: {
-			/** @description Request fulfilled, document follows */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["UpdateManifest"];
-				};
-			};
-			/** @description Bad request syntax or unsupported method */
-			400: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": {
-						detail: string;
-						extra?:
-							| null
-							| {
-									[key: string]: unknown;
-							  }
-							| unknown[];
-						status_code: number;
-					};
-				};
-			};
-		};
-	};
-	"updates.manifest_upsert": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path: {
-				channel: string;
-				platform: string;
-			};
-			cookie?: never;
-		};
-		requestBody: {
-			content: {
-				"application/json": components["schemas"]["UpdateManifestUpsert"];
-			};
-		};
-		responses: {
-			/** @description Request fulfilled, document follows */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["UpdateManifest"];
-				};
-			};
-			/** @description Bad request syntax or unsupported method */
-			400: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": {
-						detail: string;
-						extra?:
-							| null
-							| {
-									[key: string]: unknown;
-							  }
-							| unknown[];
-						status_code: number;
-					};
-				};
-			};
-		};
-	};
-	"updates.manifest_delete": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path: {
-				channel: string;
-				platform: string;
-			};
-			cookie?: never;
-		};
-		requestBody?: never;
-		responses: {
-			/** @description Document created, URL follows */
-			201: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["DeleteAck"];
-				};
-			};
-			/** @description Bad request syntax or unsupported method */
-			400: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": {
-						detail: string;
-						extra?:
-							| null
-							| {
-									[key: string]: unknown;
-							  }
-							| unknown[];
-						status_code: number;
-					};
-				};
-			};
-		};
-	};
-	"updates.report": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody: {
-			content: {
-				"application/json": components["schemas"]["UpdateReportInput"];
-			};
-		};
-		responses: {
-			/** @description Document created, URL follows */
-			201: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["UpdateReportAck"];
-				};
-			};
-			/** @description Bad request syntax or unsupported method */
-			400: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": {
-						detail: string;
-						extra?:
-							| null
-							| {
-									[key: string]: unknown;
-							  }
-							| unknown[];
-						status_code: number;
-					};
-				};
-			};
-		};
-	};
 	V1Root: {
 		parameters: {
 			query?: never;
@@ -11183,6 +11013,176 @@ export interface operations {
 				};
 				content: {
 					"application/json": components["schemas"]["RoleCatalog"];
+				};
+			};
+			/** @description Bad request syntax or unsupported method */
+			400: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": {
+						detail: string;
+						extra?:
+							| null
+							| {
+									[key: string]: unknown;
+							  }
+							| unknown[];
+						status_code: number;
+					};
+				};
+			};
+		};
+	};
+	"updates.manifest": {
+		parameters: {
+			query?: {
+				channel?: string;
+				platform?: string;
+				server_id?: number | null;
+			};
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description Request fulfilled, document follows */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["UpdateManifest"];
+				};
+			};
+			/** @description Bad request syntax or unsupported method */
+			400: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": {
+						detail: string;
+						extra?:
+							| null
+							| {
+									[key: string]: unknown;
+							  }
+							| unknown[];
+						status_code: number;
+					};
+				};
+			};
+		};
+	};
+	"updates.manifest_upsert": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path: {
+				channel: string;
+				platform: string;
+			};
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				"application/json": components["schemas"]["UpdateManifestUpsert"];
+			};
+		};
+		responses: {
+			/** @description Request fulfilled, document follows */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["UpdateManifest"];
+				};
+			};
+			/** @description Bad request syntax or unsupported method */
+			400: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": {
+						detail: string;
+						extra?:
+							| null
+							| {
+									[key: string]: unknown;
+							  }
+							| unknown[];
+						status_code: number;
+					};
+				};
+			};
+		};
+	};
+	"updates.manifest_delete": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path: {
+				channel: string;
+				platform: string;
+			};
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description Document created, URL follows */
+			201: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["DeleteAck"];
+				};
+			};
+			/** @description Bad request syntax or unsupported method */
+			400: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": {
+						detail: string;
+						extra?:
+							| null
+							| {
+									[key: string]: unknown;
+							  }
+							| unknown[];
+						status_code: number;
+					};
+				};
+			};
+		};
+	};
+	"updates.report": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				"application/json": components["schemas"]["UpdateReportInput"];
+			};
+		};
+		responses: {
+			/** @description Document created, URL follows */
+			201: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["UpdateReportAck"];
 				};
 			};
 			/** @description Bad request syntax or unsupported method */
