@@ -1,7 +1,6 @@
 // Generated from the LeavePulse contract. Do not edit.
 import type { ClientContext } from "./client";
-import type { components } from "./types";
-import type { components as authComponents } from "./auth-types";
+import type * as models from "./models";
 import type { Binding } from "./resources/Binding";
 import type { Build } from "./resources/Build";
 import type { Form } from "./resources/Form";
@@ -52,7 +51,7 @@ export class AdminDiscoveryNs {
 	/** admin.discovery.edit */
 	async edit(
 		candidateId: string | number,
-		body: components["schemas"]["DiscoveryCandidateEditRequest"],
+		body: models.DiscoveryCandidateEditRequest,
 	): Promise<unknown> {
 		return this.ctx.transport.request<unknown>({
 			method: "PATCH",
@@ -125,10 +124,8 @@ export class AdminOverridesNs {
 	async list(
 		serverId: string | number,
 		params?: { start?: string; end?: string },
-	): Promise<components["schemas"]["StatusOverrideItem"]> {
-		return this.ctx.transport.request<
-			components["schemas"]["StatusOverrideItem"]
-		>({
+	): Promise<models.StatusOverrideItem> {
+		return this.ctx.transport.request<models.StatusOverrideItem>({
 			method: "GET",
 			path: `/v1/admin/servers/${serverId}/status-overrides`,
 			query: { start: params?.start, end: params?.end },
@@ -138,11 +135,9 @@ export class AdminOverridesNs {
 	/** admin.overrides.create */
 	async create(
 		serverId: string | number,
-		body: components["schemas"]["CreateStatusOverrideRequest"],
-	): Promise<components["schemas"]["StatusOverrideItem"]> {
-		return this.ctx.transport.request<
-			components["schemas"]["StatusOverrideItem"]
-		>({
+		body: models.CreateStatusOverrideRequest,
+	): Promise<models.StatusOverrideItem> {
+		return this.ctx.transport.request<models.StatusOverrideItem>({
 			method: "POST",
 			path: `/v1/admin/servers/${serverId}/status-overrides`,
 			body,
@@ -153,10 +148,8 @@ export class AdminOverridesNs {
 	async delete(
 		serverId: string | number,
 		overrideId: string,
-	): Promise<components["schemas"]["DeleteStatusOverrideResponse"]> {
-		return this.ctx.transport.request<
-			components["schemas"]["DeleteStatusOverrideResponse"]
-		>({
+	): Promise<models.DeleteStatusOverrideResponse> {
+		return this.ctx.transport.request<models.DeleteStatusOverrideResponse>({
 			method: "DELETE",
 			path: `/v1/admin/servers/${serverId}/status-overrides/${overrideId}`,
 		});
@@ -172,10 +165,8 @@ export class AdminPlayersNs {
 		q?: string;
 		page?: number;
 		perPage?: number;
-	}): Promise<components["schemas"]["PlayerSearchPage"]> {
-		return this.ctx.transport.request<
-			components["schemas"]["PlayerSearchPage"]
-		>({
+	}): Promise<models.PlayerSearchPage> {
+		return this.ctx.transport.request<models.PlayerSearchPage>({
 			method: "GET",
 			path: `/v1/admin/players`,
 			query: { q: params?.q, page: params?.page, per_page: params?.perPage },
@@ -192,10 +183,8 @@ export class AdminProjectsNs {
 		q?: string;
 		page?: number;
 		perPage?: number;
-	}): Promise<components["schemas"]["AdminProjectListResponse"]> {
-		return this.ctx.transport.request<
-			components["schemas"]["AdminProjectListResponse"]
-		>({
+	}): Promise<models.AdminProjectListResponse> {
+		return this.ctx.transport.request<models.AdminProjectListResponse>({
 			method: "GET",
 			path: `/v1/admin/projects`,
 			query: { q: params?.q, page: params?.page, per_page: params?.perPage },
@@ -205,18 +194,19 @@ export class AdminProjectsNs {
 	/** admin.projects.delete */
 	async delete(
 		projectId: string | number,
-	): Promise<components["schemas"]["AdminProjectDeleteResponse"]> {
-		return this.ctx.transport.request<
-			components["schemas"]["AdminProjectDeleteResponse"]
-		>({ method: "DELETE", path: `/v1/admin/projects/${projectId}` });
+	): Promise<models.AdminProjectDeleteResponse> {
+		return this.ctx.transport.request<models.AdminProjectDeleteResponse>({
+			method: "DELETE",
+			path: `/v1/admin/projects/${projectId}`,
+		});
 	}
 
 	/** admin.projects.change_slug */
 	async changeSlug(
 		projectId: string | number,
-		body: components["schemas"]["AdminChangeProjectSlugRequest"],
-	): Promise<components["schemas"]["AdminProject"]> {
-		return this.ctx.transport.request<components["schemas"]["AdminProject"]>({
+		body: models.AdminChangeProjectSlugRequest,
+	): Promise<models.AdminProject> {
+		return this.ctx.transport.request<models.AdminProject>({
 			method: "POST",
 			path: `/v1/admin/projects/${projectId}/actions/change-slug`,
 			body,
@@ -226,9 +216,9 @@ export class AdminProjectsNs {
 	/** admin.projects.rename */
 	async rename(
 		projectId: string | number,
-		body: components["schemas"]["AdminRenameProjectRequest"],
-	): Promise<components["schemas"]["AdminProject"]> {
-		return this.ctx.transport.request<components["schemas"]["AdminProject"]>({
+		body: models.AdminRenameProjectRequest,
+	): Promise<models.AdminProject> {
+		return this.ctx.transport.request<models.AdminProject>({
 			method: "POST",
 			path: `/v1/admin/projects/${projectId}/actions/rename`,
 			body,
@@ -238,9 +228,9 @@ export class AdminProjectsNs {
 	/** admin.projects.set_online_strategy */
 	async setOnlineStrategy(
 		projectId: string | number,
-		body: components["schemas"]["AdminSetProjectOnlineStrategyRequest"],
-	): Promise<components["schemas"]["AdminProject"]> {
-		return this.ctx.transport.request<components["schemas"]["AdminProject"]>({
+		body: models.AdminSetProjectOnlineStrategyRequest,
+	): Promise<models.AdminProject> {
+		return this.ctx.transport.request<models.AdminProject>({
 			method: "POST",
 			path: `/v1/admin/projects/${projectId}/actions/set-online-strategy`,
 			body,
@@ -250,9 +240,9 @@ export class AdminProjectsNs {
 	/** admin.projects.set_rollout_mode */
 	async setRolloutMode(
 		projectId: string | number,
-		body: components["schemas"]["AdminSetProjectRolloutModeRequest"],
-	): Promise<components["schemas"]["AdminProject"]> {
-		return this.ctx.transport.request<components["schemas"]["AdminProject"]>({
+		body: models.AdminSetProjectRolloutModeRequest,
+	): Promise<models.AdminProject> {
+		return this.ctx.transport.request<models.AdminProject>({
 			method: "POST",
 			path: `/v1/admin/projects/${projectId}/actions/set-rollout-mode`,
 			body,
@@ -262,9 +252,9 @@ export class AdminProjectsNs {
 	/** admin.projects.transfer_ownership */
 	async transferOwnership(
 		projectId: string | number,
-		body: components["schemas"]["AdminTransferOwnershipRequest"],
-	): Promise<components["schemas"]["AdminProject"]> {
-		return this.ctx.transport.request<components["schemas"]["AdminProject"]>({
+		body: models.AdminTransferOwnershipRequest,
+	): Promise<models.AdminProject> {
+		return this.ctx.transport.request<models.AdminProject>({
 			method: "POST",
 			path: `/v1/admin/projects/${projectId}/actions/transfer-ownership`,
 			body,
@@ -277,17 +267,16 @@ export class AdminRolesNs {
 	constructor(private readonly ctx: ClientContext) {}
 
 	/** admin.roles.list */
-	async list(): Promise<components["schemas"]["AdminRoleListResponse"]> {
-		return this.ctx.transport.request<
-			components["schemas"]["AdminRoleListResponse"]
-		>({ method: "GET", path: `/v1/admin/roles` });
+	async list(): Promise<models.AdminRoleListResponse> {
+		return this.ctx.transport.request<models.AdminRoleListResponse>({
+			method: "GET",
+			path: `/v1/admin/roles`,
+		});
 	}
 
 	/** admin.roles.create */
-	async create(
-		body: components["schemas"]["AdminRoleRequest"],
-	): Promise<components["schemas"]["AdminRole"]> {
-		return this.ctx.transport.request<components["schemas"]["AdminRole"]>({
+	async create(body: models.AdminRoleRequest): Promise<models.AdminRole> {
+		return this.ctx.transport.request<models.AdminRole>({
 			method: "POST",
 			path: `/v1/admin/roles`,
 			body,
@@ -297,18 +286,19 @@ export class AdminRolesNs {
 	/** admin.roles.delete */
 	async delete(
 		roleId: string | number,
-	): Promise<components["schemas"]["AdminRoleDeleteResponse"]> {
-		return this.ctx.transport.request<
-			components["schemas"]["AdminRoleDeleteResponse"]
-		>({ method: "DELETE", path: `/v1/admin/roles/${roleId}` });
+	): Promise<models.AdminRoleDeleteResponse> {
+		return this.ctx.transport.request<models.AdminRoleDeleteResponse>({
+			method: "DELETE",
+			path: `/v1/admin/roles/${roleId}`,
+		});
 	}
 
 	/** admin.roles.update */
 	async update(
 		roleId: string | number,
-		body: components["schemas"]["AdminRoleRequest"],
-	): Promise<components["schemas"]["AdminRole"]> {
-		return this.ctx.transport.request<components["schemas"]["AdminRole"]>({
+		body: models.AdminRoleRequest,
+	): Promise<models.AdminRole> {
+		return this.ctx.transport.request<models.AdminRole>({
 			method: "PATCH",
 			path: `/v1/admin/roles/${roleId}`,
 			body,
@@ -325,10 +315,8 @@ export class AdminServersNs {
 		page?: number;
 		perPage?: number;
 		q?: string;
-	}): Promise<components["schemas"]["AdminServerListResponse"]> {
-		return this.ctx.transport.request<
-			components["schemas"]["AdminServerListResponse"]
-		>({
+	}): Promise<models.AdminServerListResponse> {
+		return this.ctx.transport.request<models.AdminServerListResponse>({
 			method: "GET",
 			path: `/v1/admin/servers`,
 			query: { page: params?.page, per_page: params?.perPage, q: params?.q },
@@ -337,37 +325,41 @@ export class AdminServersNs {
 
 	/** admin.servers.create */
 	async create(
-		body: components["schemas"]["AdminForceCreateRequest"],
-	): Promise<components["schemas"]["AdminServerSummary"]> {
-		return this.ctx.transport.request<
-			components["schemas"]["AdminServerSummary"]
-		>({ method: "POST", path: `/v1/admin/servers`, body });
+		body: models.AdminForceCreateRequest,
+	): Promise<models.AdminServerSummary> {
+		return this.ctx.transport.request<models.AdminServerSummary>({
+			method: "POST",
+			path: `/v1/admin/servers`,
+			body,
+		});
 	}
 
 	/** admin.servers.stats */
-	async stats(): Promise<components["schemas"]["GlobalServerStats"]> {
-		return this.ctx.transport.request<
-			components["schemas"]["GlobalServerStats"]
-		>({ method: "GET", path: `/v1/admin/servers/stats` });
+	async stats(): Promise<models.GlobalServerStats> {
+		return this.ctx.transport.request<models.GlobalServerStats>({
+			method: "GET",
+			path: `/v1/admin/servers/stats`,
+		});
 	}
 
 	/** admin.servers.delete */
-	async delete(
-		serverId: string | number,
-	): Promise<components["schemas"]["AdminDeleteResponse"]> {
-		return this.ctx.transport.request<
-			components["schemas"]["AdminDeleteResponse"]
-		>({ method: "DELETE", path: `/v1/admin/servers/${serverId}` });
+	async delete(serverId: string | number): Promise<models.AdminDeleteResponse> {
+		return this.ctx.transport.request<models.AdminDeleteResponse>({
+			method: "DELETE",
+			path: `/v1/admin/servers/${serverId}`,
+		});
 	}
 
 	/** admin.servers.update */
 	async update(
 		serverId: string | number,
-		body: components["schemas"]["AdminServerUpdateRequest"],
-	): Promise<components["schemas"]["AdminServerSummary"]> {
-		return this.ctx.transport.request<
-			components["schemas"]["AdminServerSummary"]
-		>({ method: "PATCH", path: `/v1/admin/servers/${serverId}`, body });
+		body: models.AdminServerUpdateRequest,
+	): Promise<models.AdminServerSummary> {
+		return this.ctx.transport.request<models.AdminServerSummary>({
+			method: "PATCH",
+			path: `/v1/admin/servers/${serverId}`,
+			body,
+		});
 	}
 }
 
@@ -378,10 +370,8 @@ export class AdminSessionsNs {
 	/** admin.sessions.revoke */
 	async revoke(
 		sessionId: string | number,
-	): Promise<components["schemas"]["SessionRevokeResult"]> {
-		return this.ctx.transport.request<
-			components["schemas"]["SessionRevokeResult"]
-		>({
+	): Promise<models.SessionRevokeResult> {
+		return this.ctx.transport.request<models.SessionRevokeResult>({
 			method: "POST",
 			path: `/v1/admin/sessions/${sessionId}/actions/revoke`,
 		});
@@ -393,10 +383,11 @@ export class AdminSystemNs {
 	constructor(private readonly ctx: ClientContext) {}
 
 	/** admin.system.health */
-	async health(): Promise<components["schemas"]["ServicesHealthResponse"]> {
-		return this.ctx.transport.request<
-			components["schemas"]["ServicesHealthResponse"]
-		>({ method: "GET", path: `/v1/admin/system/services-health` });
+	async health(): Promise<models.ServicesHealthResponse> {
+		return this.ctx.transport.request<models.ServicesHealthResponse>({
+			method: "GET",
+			path: `/v1/admin/system/services-health`,
+		});
 	}
 }
 
@@ -409,10 +400,8 @@ export class AdminUsersNs {
 		page?: number;
 		perPage?: number;
 		q?: string;
-	}): Promise<components["schemas"]["AdminUserListResponse"]> {
-		return this.ctx.transport.request<
-			components["schemas"]["AdminUserListResponse"]
-		>({
+	}): Promise<models.AdminUserListResponse> {
+		return this.ctx.transport.request<models.AdminUserListResponse>({
 			method: "GET",
 			path: `/v1/admin/users`,
 			query: { page: params?.page, per_page: params?.perPage, q: params?.q },
@@ -420,22 +409,19 @@ export class AdminUsersNs {
 	}
 
 	/** admin.users.by_minecraft */
-	async byMinecraft(
-		uuid: string,
-	): Promise<components["schemas"]["AdminUserDetail"]> {
-		return this.ctx.transport.request<components["schemas"]["AdminUserDetail"]>(
-			{ method: "GET", path: `/v1/admin/users/by-minecraft-uuid/${uuid}` },
-		);
+	async byMinecraft(uuid: string): Promise<models.AdminUserDetail> {
+		return this.ctx.transport.request<models.AdminUserDetail>({
+			method: "GET",
+			path: `/v1/admin/users/by-minecraft-uuid/${uuid}`,
+		});
 	}
 
 	/** admin.users.search */
 	async search(params?: {
 		q?: string;
 		limit?: number;
-	}): Promise<components["schemas"]["AdminUserListResponse"]> {
-		return this.ctx.transport.request<
-			components["schemas"]["AdminUserListResponse"]
-		>({
+	}): Promise<models.AdminUserListResponse> {
+		return this.ctx.transport.request<models.AdminUserListResponse>({
 			method: "GET",
 			path: `/v1/admin/users/search`,
 			query: { q: params?.q, limit: params?.limit },
@@ -443,51 +429,51 @@ export class AdminUsersNs {
 	}
 
 	/** admin.users.get */
-	async get(
-		userId: string | number,
-	): Promise<components["schemas"]["AdminUserDetail"]> {
-		return this.ctx.transport.request<components["schemas"]["AdminUserDetail"]>(
-			{ method: "GET", path: `/v1/admin/users/${userId}` },
-		);
+	async get(userId: string | number): Promise<models.AdminUserDetail> {
+		return this.ctx.transport.request<models.AdminUserDetail>({
+			method: "GET",
+			path: `/v1/admin/users/${userId}`,
+		});
 	}
 
 	/** admin.users.update */
 	async update(
 		userId: string | number,
-		body: components["schemas"]["AdminUserUpdateRequest"],
-	): Promise<components["schemas"]["AdminUserDetail"]> {
-		return this.ctx.transport.request<components["schemas"]["AdminUserDetail"]>(
-			{ method: "PATCH", path: `/v1/admin/users/${userId}`, body },
-		);
+		body: models.AdminUserUpdateRequest,
+	): Promise<models.AdminUserDetail> {
+		return this.ctx.transport.request<models.AdminUserDetail>({
+			method: "PATCH",
+			path: `/v1/admin/users/${userId}`,
+			body,
+		});
 	}
 
 	/** admin.users.set_discord */
 	async setDiscord(
 		userId: string | number,
-		body: components["schemas"]["AdminUserDiscordUpdateRequest"],
-	): Promise<components["schemas"]["AdminUserDetail"]> {
-		return this.ctx.transport.request<components["schemas"]["AdminUserDetail"]>(
-			{ method: "PATCH", path: `/v1/admin/users/${userId}/discord`, body },
-		);
+		body: models.AdminUserDiscordUpdateRequest,
+	): Promise<models.AdminUserDetail> {
+		return this.ctx.transport.request<models.AdminUserDetail>({
+			method: "PATCH",
+			path: `/v1/admin/users/${userId}/discord`,
+			body,
+		});
 	}
 
 	/** admin.users.roles */
-	async roles(
-		userId: string | number,
-	): Promise<components["schemas"]["UserRolesResponse"]> {
-		return this.ctx.transport.request<
-			components["schemas"]["UserRolesResponse"]
-		>({ method: "GET", path: `/v1/admin/users/${userId}/roles` });
+	async roles(userId: string | number): Promise<models.UserRolesResponse> {
+		return this.ctx.transport.request<models.UserRolesResponse>({
+			method: "GET",
+			path: `/v1/admin/users/${userId}/roles`,
+		});
 	}
 
 	/** admin.users.remove_role */
 	async removeRole(
 		userId: string | number,
 		roleSlug: string,
-	): Promise<components["schemas"]["UserRolesResponse"]> {
-		return this.ctx.transport.request<
-			components["schemas"]["UserRolesResponse"]
-		>({
+	): Promise<models.UserRolesResponse> {
+		return this.ctx.transport.request<models.UserRolesResponse>({
 			method: "DELETE",
 			path: `/v1/admin/users/${userId}/roles/${roleSlug}`,
 		});
@@ -497,17 +483,16 @@ export class AdminUsersNs {
 	async assignRole(
 		userId: string | number,
 		roleSlug: string,
-	): Promise<components["schemas"]["UserRolesResponse"]> {
-		return this.ctx.transport.request<
-			components["schemas"]["UserRolesResponse"]
-		>({ method: "POST", path: `/v1/admin/users/${userId}/roles/${roleSlug}` });
+	): Promise<models.UserRolesResponse> {
+		return this.ctx.transport.request<models.UserRolesResponse>({
+			method: "POST",
+			path: `/v1/admin/users/${userId}/roles/${roleSlug}`,
+		});
 	}
 
 	/** admin.users.sessions */
-	async sessions(
-		userId: string | number,
-	): Promise<components["schemas"]["SessionList"]> {
-		return this.ctx.transport.request<components["schemas"]["SessionList"]>({
+	async sessions(userId: string | number): Promise<models.SessionList> {
+		return this.ctx.transport.request<models.SessionList>({
 			method: "GET",
 			path: `/v1/admin/users/${userId}/sessions`,
 		});
@@ -544,29 +529,35 @@ export class AuthDeviceNs {
 
 	/** auth.device.approve */
 	async approve(
-		body: components["schemas"]["DeviceApproveRequest"],
-	): Promise<components["schemas"]["DeviceApproveResult"]> {
-		return this.ctx.transport.request<
-			components["schemas"]["DeviceApproveResult"]
-		>({ method: "POST", path: `/v1/auth/device/approve`, body });
+		body: models.DeviceApproveRequest,
+	): Promise<models.DeviceApproveResult> {
+		return this.ctx.transport.request<models.DeviceApproveResult>({
+			method: "POST",
+			path: `/v1/auth/device/approve`,
+			body,
+		});
 	}
 
 	/** auth.device.start */
 	async start(
-		body: components["schemas"]["DeviceStartRequest"],
-	): Promise<components["schemas"]["DeviceStartResult"]> {
-		return this.ctx.transport.request<
-			components["schemas"]["DeviceStartResult"]
-		>({ method: "POST", path: `/v1/auth/device/start`, body });
+		body: models.DeviceStartRequest,
+	): Promise<models.DeviceStartResult> {
+		return this.ctx.transport.request<models.DeviceStartResult>({
+			method: "POST",
+			path: `/v1/auth/device/start`,
+			body,
+		});
 	}
 
 	/** auth.device.token */
 	async token(
-		body: components["schemas"]["DeviceTokenRequest"],
-	): Promise<components["schemas"]["DeviceTokenResult"]> {
-		return this.ctx.transport.request<
-			components["schemas"]["DeviceTokenResult"]
-		>({ method: "POST", path: `/v1/auth/device/token`, body });
+		body: models.DeviceTokenRequest,
+	): Promise<models.DeviceTokenResult> {
+		return this.ctx.transport.request<models.DeviceTokenResult>({
+			method: "POST",
+			path: `/v1/auth/device/token`,
+			body,
+		});
 	}
 }
 
@@ -577,7 +568,7 @@ export class AuthOauthNs {
 	/** auth.oauth.callback */
 	async callback(
 		provider: string,
-		body: authComponents["schemas"]["OAuthCallbackRequest"],
+		body: models.OAuthCallbackRequest,
 	): Promise<unknown> {
 		return this.ctx.transport.request<unknown>({
 			method: "POST",
@@ -588,12 +579,8 @@ export class AuthOauthNs {
 	}
 
 	/** auth.oauth.start */
-	async start(
-		provider: string,
-	): Promise<authComponents["schemas"]["OAuthStartResponse"]> {
-		return this.ctx.transport.request<
-			authComponents["schemas"]["OAuthStartResponse"]
-		>({
+	async start(provider: string): Promise<models.OAuthStartResponse> {
+		return this.ctx.transport.request<models.OAuthStartResponse>({
 			method: "GET",
 			path: `/auth/oauth/${provider}/start`,
 			channel: "auth",
@@ -611,35 +598,39 @@ export class AuthNs {
 	}
 
 	/** auth.login */
-	async login(
-		body: authComponents["schemas"]["UserLogin"],
-	): Promise<authComponents["schemas"]["LoginResponse"]> {
-		return this.ctx.transport.request<
-			authComponents["schemas"]["LoginResponse"]
-		>({ method: "POST", path: `/auth/login`, body, channel: "auth" });
+	async login(body: models.UserLogin): Promise<models.LoginResponse> {
+		return this.ctx.transport.request<models.LoginResponse>({
+			method: "POST",
+			path: `/auth/login`,
+			body,
+			channel: "auth",
+		});
 	}
 
 	/** auth.logout */
-	async logout(): Promise<authComponents["schemas"]["LogoutResponse"]> {
-		return this.ctx.transport.request<
-			authComponents["schemas"]["LogoutResponse"]
-		>({ method: "POST", path: `/auth/logout`, channel: "auth" });
+	async logout(): Promise<models.LogoutResponse> {
+		return this.ctx.transport.request<models.LogoutResponse>({
+			method: "POST",
+			path: `/auth/logout`,
+			channel: "auth",
+		});
 	}
 
 	/** auth.refresh */
 	async refresh(
-		body: authComponents["schemas"]["RefreshTokenRequest"],
-	): Promise<authComponents["schemas"]["LoginResponse"]> {
-		return this.ctx.transport.request<
-			authComponents["schemas"]["LoginResponse"]
-		>({ method: "POST", path: `/auth/refresh`, body, channel: "auth" });
+		body: models.RefreshTokenRequest,
+	): Promise<models.LoginResponse> {
+		return this.ctx.transport.request<models.LoginResponse>({
+			method: "POST",
+			path: `/auth/refresh`,
+			body,
+			channel: "auth",
+		});
 	}
 
 	/** auth.register */
-	async register(
-		body: authComponents["schemas"]["UserRegister"],
-	): Promise<authComponents["schemas"]["UserPublic"]> {
-		return this.ctx.transport.request<authComponents["schemas"]["UserPublic"]>({
+	async register(body: models.UserRegister): Promise<models.UserPublic> {
+		return this.ctx.transport.request<models.UserPublic>({
 			method: "POST",
 			path: `/auth/register`,
 			body,
@@ -716,10 +707,8 @@ export class BillingNs {
 	}
 
 	/** billing.checkout */
-	async checkout(
-		body: components["schemas"]["CheckoutRequest"],
-	): Promise<components["schemas"]["CheckoutResult"]> {
-		return this.ctx.transport.request<components["schemas"]["CheckoutResult"]>({
+	async checkout(body: models.CheckoutRequest): Promise<models.CheckoutResult> {
+		return this.ctx.transport.request<models.CheckoutResult>({
 			method: "POST",
 			path: `/v1/billing/checkout`,
 			body,
@@ -732,9 +721,7 @@ export class BuildsNs {
 	constructor(private readonly ctx: ClientContext) {}
 
 	/** builds.create */
-	async create(
-		body: components["schemas"]["BuildCreateRequest"],
-	): Promise<Build> {
+	async create(body: models.BuildCreateRequest): Promise<Build> {
 		const data = await this.ctx.transport.request({
 			method: "POST",
 			path: `/v1/builds`,
@@ -744,9 +731,7 @@ export class BuildsNs {
 	}
 
 	/** builds.import */
-	async import(
-		body: components["schemas"]["ImportSharedBuildRequest"],
-	): Promise<Build> {
+	async import(body: models.ImportSharedBuildRequest): Promise<Build> {
 		const data = await this.ctx.transport.request({
 			method: "POST",
 			path: `/v1/builds/import`,
@@ -774,18 +759,18 @@ export class DiscordLinkNs {
 
 	/** discord.link.complete */
 	async complete(
-		body: components["schemas"]["CompleteLinkRequest"],
-	): Promise<components["schemas"]["CompleteLinkResult"]> {
-		return this.ctx.transport.request<
-			components["schemas"]["CompleteLinkResult"]
-		>({ method: "POST", path: `/v1/discord/link/complete`, body });
+		body: models.CompleteLinkRequest,
+	): Promise<models.CompleteLinkResult> {
+		return this.ctx.transport.request<models.CompleteLinkResult>({
+			method: "POST",
+			path: `/v1/discord/link/complete`,
+			body,
+		});
 	}
 
 	/** discord.link.session */
-	async session(params?: {
-		state?: string;
-	}): Promise<components["schemas"]["LinkSession"]> {
-		return this.ctx.transport.request<components["schemas"]["LinkSession"]>({
+	async session(params?: { state?: string }): Promise<models.LinkSession> {
+		return this.ctx.transport.request<models.LinkSession>({
 			method: "GET",
 			path: `/v1/discord/link/session`,
 			query: { state: params?.state },
@@ -794,11 +779,13 @@ export class DiscordLinkNs {
 
 	/** discord.link.token */
 	async token(
-		body: components["schemas"]["CreateLinkTokenRequest"],
-	): Promise<components["schemas"]["LinkTokenResult"]> {
-		return this.ctx.transport.request<components["schemas"]["LinkTokenResult"]>(
-			{ method: "POST", path: `/v1/discord/link/token`, body },
-		);
+		body: models.CreateLinkTokenRequest,
+	): Promise<models.LinkTokenResult> {
+		return this.ctx.transport.request<models.LinkTokenResult>({
+			method: "POST",
+			path: `/v1/discord/link/token`,
+			body,
+		});
 	}
 }
 
@@ -815,8 +802,8 @@ export class MonitoringNs {
 	constructor(private readonly ctx: ClientContext) {}
 
 	/** monitoring.landing */
-	async landing(): Promise<components["schemas"]["LandingStats"]> {
-		return this.ctx.transport.request<components["schemas"]["LandingStats"]>({
+	async landing(): Promise<models.LandingStats> {
+		return this.ctx.transport.request<models.LandingStats>({
 			method: "GET",
 			path: `/v1/monitoring/landing`,
 		});
@@ -829,20 +816,24 @@ export class PasswordNs {
 
 	/** password.reset_confirm */
 	async resetConfirm(
-		body: components["schemas"]["PasswordResetConfirmRequest"],
-	): Promise<components["schemas"]["PasswordResetResult"]> {
-		return this.ctx.transport.request<
-			components["schemas"]["PasswordResetResult"]
-		>({ method: "POST", path: `/v1/password/reset/confirm`, body });
+		body: models.PasswordResetConfirmRequest,
+	): Promise<models.PasswordResetResult> {
+		return this.ctx.transport.request<models.PasswordResetResult>({
+			method: "POST",
+			path: `/v1/password/reset/confirm`,
+			body,
+		});
 	}
 
 	/** password.reset_request */
 	async resetRequest(
-		body: components["schemas"]["PasswordResetRequest"],
-	): Promise<components["schemas"]["PasswordResetResult"]> {
-		return this.ctx.transport.request<
-			components["schemas"]["PasswordResetResult"]
-		>({ method: "POST", path: `/v1/password/reset/request`, body });
+		body: models.PasswordResetRequest,
+	): Promise<models.PasswordResetResult> {
+		return this.ctx.transport.request<models.PasswordResetResult>({
+			method: "POST",
+			path: `/v1/password/reset/request`,
+			body,
+		});
 	}
 }
 
@@ -859,10 +850,8 @@ export class ProjectsNs {
 		region?: string;
 		hosting?: string;
 		verified?: string;
-	}): Promise<components["schemas"]["ProjectFilterStats"]> {
-		return this.ctx.transport.request<
-			components["schemas"]["ProjectFilterStats"]
-		>({
+	}): Promise<models.ProjectFilterStats> {
+		return this.ctx.transport.request<models.ProjectFilterStats>({
 			method: "GET",
 			path: `/v1/projects/stats`,
 			query: {
@@ -878,20 +867,16 @@ export class ProjectsNs {
 	}
 
 	/** projects.bridge */
-	async bridge(
-		serverId: string | number,
-	): Promise<components["schemas"]["BridgeSettings"]> {
-		return this.ctx.transport.request<components["schemas"]["BridgeSettings"]>({
+	async bridge(serverId: string | number): Promise<models.BridgeSettings> {
+		return this.ctx.transport.request<models.BridgeSettings>({
 			method: "GET",
 			path: `/v1/discord/servers/${serverId}/bridge`,
 		});
 	}
 
 	/** projects.bridge_roles */
-	async bridgeRoles(
-		serverId: string | number,
-	): Promise<components["schemas"]["RoleCatalog"]> {
-		return this.ctx.transport.request<components["schemas"]["RoleCatalog"]>({
+	async bridgeRoles(serverId: string | number): Promise<models.RoleCatalog> {
+		return this.ctx.transport.request<models.RoleCatalog>({
 			method: "GET",
 			path: `/v1/discord/servers/${serverId}/roles-catalog`,
 		});
@@ -901,10 +886,8 @@ export class ProjectsNs {
 	async projectsList(params?: {
 		page?: number;
 		perPage?: number;
-	}): Promise<components["schemas"]["WorkspaceListResponse"]> {
-		return this.ctx.transport.request<
-			components["schemas"]["WorkspaceListResponse"]
-		>({
+	}): Promise<models.WorkspaceListResponse> {
+		return this.ctx.transport.request<models.WorkspaceListResponse>({
 			method: "GET",
 			path: `/v1/me/projects`,
 			query: { page: params?.page, per_page: params?.perPage },
@@ -914,10 +897,11 @@ export class ProjectsNs {
 	/** projects.projects_resolve */
 	async projectsResolve(
 		projectRef: string,
-	): Promise<components["schemas"]["WorkspaceResolveResponse"]> {
-		return this.ctx.transport.request<
-			components["schemas"]["WorkspaceResolveResponse"]
-		>({ method: "GET", path: `/v1/me/projects/resolve/${projectRef}` });
+	): Promise<models.WorkspaceResolveResponse> {
+		return this.ctx.transport.request<models.WorkspaceResolveResponse>({
+			method: "GET",
+			path: `/v1/me/projects/resolve/${projectRef}`,
+		});
 	}
 
 	/** projects.list */
@@ -932,10 +916,8 @@ export class ProjectsNs {
 		page?: number;
 		perPage?: number;
 		sort?: string;
-	}): Promise<components["schemas"]["ProjectListResponse"]> {
-		return this.ctx.transport.request<
-			components["schemas"]["ProjectListResponse"]
-		>({
+	}): Promise<models.ProjectListResponse> {
+		return this.ctx.transport.request<models.ProjectListResponse>({
 			method: "GET",
 			path: `/v1/projects`,
 			query: {
@@ -955,20 +937,21 @@ export class ProjectsNs {
 
 	/** projects.create */
 	async create(
-		body: components["schemas"]["ProjectCreateRequest"],
-	): Promise<components["schemas"]["ProjectCreateResponse"]> {
-		return this.ctx.transport.request<
-			components["schemas"]["ProjectCreateResponse"]
-		>({ method: "POST", path: `/v1/projects`, body });
+		body: models.ProjectCreateRequest,
+	): Promise<models.ProjectCreateResponse> {
+		return this.ctx.transport.request<models.ProjectCreateResponse>({
+			method: "POST",
+			path: `/v1/projects`,
+			body,
+		});
 	}
 
 	/** projects.resolve */
-	async resolve(
-		projectRef: string,
-	): Promise<components["schemas"]["ProjectResolveResponse"]> {
-		return this.ctx.transport.request<
-			components["schemas"]["ProjectResolveResponse"]
-		>({ method: "GET", path: `/v1/projects/resolve/${projectRef}` });
+	async resolve(projectRef: string): Promise<models.ProjectResolveResponse> {
+		return this.ctx.transport.request<models.ProjectResolveResponse>({
+			method: "GET",
+			path: `/v1/projects/resolve/${projectRef}`,
+		});
 	}
 }
 
@@ -978,11 +961,13 @@ export class RbacNs {
 
 	/** rbac.batch_resolve */
 	async batchResolve(
-		body: components["schemas"]["BatchResolveRequest"],
-	): Promise<components["schemas"]["BatchResolveResponse"]> {
-		return this.ctx.transport.request<
-			components["schemas"]["BatchResolveResponse"]
-		>({ method: "POST", path: `/v1/rbac/batch-resolve`, body });
+		body: models.BatchResolveRequest,
+	): Promise<models.BatchResolveResponse> {
+		return this.ctx.transport.request<models.BatchResolveResponse>({
+			method: "POST",
+			path: `/v1/rbac/batch-resolve`,
+			body,
+		});
 	}
 }
 
@@ -1014,8 +999,8 @@ export class StatsNs {
 		hosting?: string;
 		verified?: string;
 		role?: string;
-	}): Promise<components["schemas"]["FilterStats"]> {
-		return this.ctx.transport.request<components["schemas"]["FilterStats"]>({
+	}): Promise<models.FilterStats> {
+		return this.ctx.transport.request<models.FilterStats>({
 			method: "GET",
 			path: `/v1/stats/filter`,
 			query: {
@@ -1032,10 +1017,11 @@ export class StatsNs {
 	}
 
 	/** stats.live */
-	async live(): Promise<components["schemas"]["LiveDashboardStats"]> {
-		return this.ctx.transport.request<
-			components["schemas"]["LiveDashboardStats"]
-		>({ method: "GET", path: `/v1/stats/live` });
+	async live(): Promise<models.LiveDashboardStats> {
+		return this.ctx.transport.request<models.LiveDashboardStats>({
+			method: "GET",
+			path: `/v1/stats/live`,
+		});
 	}
 }
 
@@ -1044,9 +1030,7 @@ export class TicketsNs {
 	constructor(private readonly ctx: ClientContext) {}
 
 	/** tickets.create */
-	async create(
-		body: components["schemas"]["TicketCreateRequest"],
-	): Promise<Ticket> {
+	async create(body: models.TicketCreateRequest): Promise<Ticket> {
 		const data = await this.ctx.transport.request({
 			method: "POST",
 			path: `/v1/community/tickets`,
@@ -1078,8 +1062,8 @@ export class UpdatesNs {
 		channel?: string;
 		platform?: string;
 		serverId?: string;
-	}): Promise<components["schemas"]["UpdateManifest"]> {
-		return this.ctx.transport.request<components["schemas"]["UpdateManifest"]>({
+	}): Promise<models.UpdateManifest> {
+		return this.ctx.transport.request<models.UpdateManifest>({
 			method: "GET",
 			path: `/v1/launcher/updates/manifest`,
 			query: {
@@ -1094,9 +1078,9 @@ export class UpdatesNs {
 	async manifestUpsert(
 		channel: string,
 		platform: string,
-		body: components["schemas"]["UpdateManifestUpsert"],
-	): Promise<components["schemas"]["UpdateManifest"]> {
-		return this.ctx.transport.request<components["schemas"]["UpdateManifest"]>({
+		body: models.UpdateManifestUpsert,
+	): Promise<models.UpdateManifest> {
+		return this.ctx.transport.request<models.UpdateManifest>({
 			method: "PUT",
 			path: `/v1/launcher/updates/manifests/${channel}/${platform}`,
 			body,
@@ -1107,8 +1091,8 @@ export class UpdatesNs {
 	async manifestDelete(
 		channel: string,
 		platform: string,
-	): Promise<components["schemas"]["DeleteAck"]> {
-		return this.ctx.transport.request<components["schemas"]["DeleteAck"]>({
+	): Promise<models.DeleteAck> {
+		return this.ctx.transport.request<models.DeleteAck>({
 			method: "POST",
 			path: `/v1/launcher/updates/manifests/${channel}/${platform}/delete`,
 		});
@@ -1116,11 +1100,13 @@ export class UpdatesNs {
 
 	/** updates.report */
 	async report(
-		body: components["schemas"]["UpdateReportInput"],
-	): Promise<components["schemas"]["UpdateReportAck"]> {
-		return this.ctx.transport.request<components["schemas"]["UpdateReportAck"]>(
-			{ method: "POST", path: `/v1/launcher/updates/report`, body },
-		);
+		body: models.UpdateReportInput,
+	): Promise<models.UpdateReportAck> {
+		return this.ctx.transport.request<models.UpdateReportAck>({
+			method: "POST",
+			path: `/v1/launcher/updates/report`,
+			body,
+		});
 	}
 }
 
@@ -1129,9 +1115,7 @@ export class UsersNs {
 	constructor(private readonly ctx: ClientContext) {}
 
 	/** users.batch */
-	async batch(
-		body: components["schemas"]["BatchPublicProfilesRequest"],
-	): Promise<User[]> {
+	async batch(body: models.BatchPublicProfilesRequest): Promise<User[]> {
 		const data = (await this.ctx.transport.request({
 			method: "POST",
 			path: `/v1/users/public-profiles`,
@@ -1157,10 +1141,8 @@ export class UsersNs {
 	}
 
 	/** users.engagement */
-	async engagement(
-		userId: string,
-	): Promise<components["schemas"]["UserEngagement"]> {
-		return this.ctx.transport.request<components["schemas"]["UserEngagement"]>({
+	async engagement(userId: string): Promise<models.UserEngagement> {
+		return this.ctx.transport.request<models.UserEngagement>({
 			method: "GET",
 			path: `/v1/community/users/${userId}/engagement`,
 		});
@@ -1170,10 +1152,8 @@ export class UsersNs {
 	async activityList(
 		userId: string,
 		params?: { limit?: number },
-	): Promise<components["schemas"]["UserRecentActivity"]> {
-		return this.ctx.transport.request<
-			components["schemas"]["UserRecentActivity"]
-		>({
+	): Promise<models.UserRecentActivity> {
+		return this.ctx.transport.request<models.UserRecentActivity>({
 			method: "GET",
 			path: `/v1/community/users/${userId}/recent-activity`,
 			query: { limit: params?.limit },
@@ -1187,56 +1167,67 @@ export class VerificationNs {
 
 	/** verification.start_dns */
 	async startDns(
-		body: components["schemas"]["VerificationStartRequest"],
-	): Promise<components["schemas"]["DnsVerification"]> {
-		return this.ctx.transport.request<components["schemas"]["DnsVerification"]>(
-			{ method: "POST", path: `/v1/servers/verification/dns`, body },
-		);
+		body: models.VerificationStartRequest,
+	): Promise<models.DnsVerification> {
+		return this.ctx.transport.request<models.DnsVerification>({
+			method: "POST",
+			path: `/v1/servers/verification/dns`,
+			body,
+		});
 	}
 
 	/** verification.check_dns */
 	async checkDns(
-		body: components["schemas"]["VerificationCheckRequest"],
-	): Promise<components["schemas"]["DnsVerification"]> {
-		return this.ctx.transport.request<components["schemas"]["DnsVerification"]>(
-			{ method: "POST", path: `/v1/servers/verification/dns/check`, body },
-		);
+		body: models.VerificationCheckRequest,
+	): Promise<models.DnsVerification> {
+		return this.ctx.transport.request<models.DnsVerification>({
+			method: "POST",
+			path: `/v1/servers/verification/dns/check`,
+			body,
+		});
 	}
 
 	/** verification.start_motd */
 	async startMotd(
-		body: components["schemas"]["VerificationStartRequest"],
-	): Promise<components["schemas"]["MotdVerification"]> {
-		return this.ctx.transport.request<
-			components["schemas"]["MotdVerification"]
-		>({ method: "POST", path: `/v1/servers/verification/motd`, body });
+		body: models.VerificationStartRequest,
+	): Promise<models.MotdVerification> {
+		return this.ctx.transport.request<models.MotdVerification>({
+			method: "POST",
+			path: `/v1/servers/verification/motd`,
+			body,
+		});
 	}
 
 	/** verification.check_motd */
 	async checkMotd(
-		body: components["schemas"]["VerificationCheckRequest"],
-	): Promise<components["schemas"]["MotdVerification"]> {
-		return this.ctx.transport.request<
-			components["schemas"]["MotdVerification"]
-		>({ method: "POST", path: `/v1/servers/verification/motd/check`, body });
+		body: models.VerificationCheckRequest,
+	): Promise<models.MotdVerification> {
+		return this.ctx.transport.request<models.MotdVerification>({
+			method: "POST",
+			path: `/v1/servers/verification/motd/check`,
+			body,
+		});
 	}
 
 	/** verification.start_plugin */
 	async startPlugin(
-		body: components["schemas"]["PluginVerificationStartRequest"],
-	): Promise<components["schemas"]["PluginVerification"]> {
-		return this.ctx.transport.request<
-			components["schemas"]["PluginVerification"]
-		>({ method: "POST", path: `/v1/servers/verification/plugin`, body });
+		body: models.PluginVerificationStartRequest,
+	): Promise<models.PluginVerification> {
+		return this.ctx.transport.request<models.PluginVerification>({
+			method: "POST",
+			path: `/v1/servers/verification/plugin`,
+			body,
+		});
 	}
 
 	/** verification.check_plugin */
 	async checkPlugin(
 		serverId: string | number,
-	): Promise<components["schemas"]["PluginVerification"]> {
-		return this.ctx.transport.request<
-			components["schemas"]["PluginVerification"]
-		>({ method: "GET", path: `/v1/servers/verification/plugin/${serverId}` });
+	): Promise<models.PluginVerification> {
+		return this.ctx.transport.request<models.PluginVerification>({
+			method: "GET",
+			path: `/v1/servers/verification/plugin/${serverId}`,
+		});
 	}
 }
 
@@ -1245,9 +1236,7 @@ export class WhitelistBindingsNs {
 	constructor(private readonly ctx: ClientContext) {}
 
 	/** whitelist.bindings.create */
-	async create(
-		body: components["schemas"]["WhitelistBindingWriteRequest"],
-	): Promise<Binding> {
+	async create(body: models.WhitelistBindingWriteRequest): Promise<Binding> {
 		const data = await this.ctx.transport.request({
 			method: "POST",
 			path: `/v1/whitelist/bindings`,
@@ -1285,9 +1274,7 @@ export class WhitelistFormsNs {
 	}
 
 	/** whitelist.forms.create */
-	async create(
-		body: components["schemas"]["WhitelistFormCreateRequest"],
-	): Promise<Form> {
+	async create(body: models.WhitelistFormCreateRequest): Promise<Form> {
 		const data = await this.ctx.transport.request({
 			method: "POST",
 			path: `/v1/whitelist/forms`,

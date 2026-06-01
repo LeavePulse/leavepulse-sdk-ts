@@ -2,6 +2,7 @@
 import { Resource } from "../runtime/resource";
 import { TopicSubscription } from "../runtime/realtime";
 import type { components } from "../types";
+import type * as models from "../models";
 import type { ClientContext } from "../client";
 import type { Application } from "./Application";
 import type { Build } from "./Build";
@@ -30,11 +31,13 @@ export class Me extends Resource<Data> {
 
 	/** me.issue_ws_token */
 	async issueWsToken(
-		body: components["schemas"]["WsTokenRequest"],
-	): Promise<components["schemas"]["WsTokenResponse"]> {
-		return this.ctx.transport.request<components["schemas"]["WsTokenResponse"]>(
-			{ method: "POST", path: `/v1/auth/ws-token`, body },
-		);
+		body: models.WsTokenRequest,
+	): Promise<models.WsTokenResponse> {
+		return this.ctx.transport.request<models.WsTokenResponse>({
+			method: "POST",
+			path: `/v1/auth/ws-token`,
+			body,
+		});
 	}
 
 	/** builds.list */
@@ -50,8 +53,8 @@ export class Me extends Resource<Data> {
 	}
 
 	/** me.engagement */
-	async engagement(): Promise<components["schemas"]["UserEngagement"]> {
-		return this.ctx.transport.request<components["schemas"]["UserEngagement"]>({
+	async engagement(): Promise<models.UserEngagement> {
+		return this.ctx.transport.request<models.UserEngagement>({
 			method: "GET",
 			path: `/v1/community/projects/me/engagement`,
 		});
@@ -59,51 +62,50 @@ export class Me extends Resource<Data> {
 
 	/** me.account.change_email */
 	async accountChangeEmail(
-		body: components["schemas"]["EmailChangeRequest"],
-	): Promise<components["schemas"]["EmailChangeResult"]> {
-		return this.ctx.transport.request<
-			components["schemas"]["EmailChangeResult"]
-		>({ method: "POST", path: `/v1/me/account/actions/change-email`, body });
+		body: models.EmailChangeRequest,
+	): Promise<models.EmailChangeResult> {
+		return this.ctx.transport.request<models.EmailChangeResult>({
+			method: "POST",
+			path: `/v1/me/account/actions/change-email`,
+			body,
+		});
 	}
 
 	/** me.account.delete */
-	async accountDelete(): Promise<
-		components["schemas"]["AccountDeletionResult"]
-	> {
-		return this.ctx.transport.request<
-			components["schemas"]["AccountDeletionResult"]
-		>({ method: "POST", path: `/v1/me/account/actions/delete` });
+	async accountDelete(): Promise<models.AccountDeletionResult> {
+		return this.ctx.transport.request<models.AccountDeletionResult>({
+			method: "POST",
+			path: `/v1/me/account/actions/delete`,
+		});
 	}
 
 	/** me.account.export */
-	async accountExport(): Promise<components["schemas"]["AccountExport"]> {
-		return this.ctx.transport.request<components["schemas"]["AccountExport"]>({
+	async accountExport(): Promise<models.AccountExport> {
+		return this.ctx.transport.request<models.AccountExport>({
 			method: "GET",
 			path: `/v1/me/account/export`,
 		});
 	}
 
 	/** me.avatar.remove */
-	async avatarRemove(): Promise<components["schemas"]["UserProfile"]> {
-		return this.ctx.transport.request<components["schemas"]["UserProfile"]>({
+	async avatarRemove(): Promise<models.UserProfile> {
+		return this.ctx.transport.request<models.UserProfile>({
 			method: "DELETE",
 			path: `/v1/me/avatar`,
 		});
 	}
 
 	/** me.avatar.upload */
-	async avatarUpload(): Promise<components["schemas"]["UserProfile"]> {
-		return this.ctx.transport.request<components["schemas"]["UserProfile"]>({
+	async avatarUpload(): Promise<models.UserProfile> {
+		return this.ctx.transport.request<models.UserProfile>({
 			method: "POST",
 			path: `/v1/me/avatar`,
 		});
 	}
 
 	/** me.avatar.set */
-	async avatarSet(
-		body: components["schemas"]["AvatarUrlRequest"],
-	): Promise<components["schemas"]["UserProfile"]> {
-		return this.ctx.transport.request<components["schemas"]["UserProfile"]>({
+	async avatarSet(body: models.AvatarUrlRequest): Promise<models.UserProfile> {
+		return this.ctx.transport.request<models.UserProfile>({
 			method: "PUT",
 			path: `/v1/me/avatar`,
 			body,
@@ -113,55 +115,59 @@ export class Me extends Resource<Data> {
 	/** me.minecraft.unlink */
 	async minecraftUnlink(
 		accountId: string | number,
-	): Promise<components["schemas"]["MinecraftUnlinkResult"]> {
-		return this.ctx.transport.request<
-			components["schemas"]["MinecraftUnlinkResult"]
-		>({ method: "DELETE", path: `/v1/me/minecraft/accounts/${accountId}` });
+	): Promise<models.MinecraftUnlinkResult> {
+		return this.ctx.transport.request<models.MinecraftUnlinkResult>({
+			method: "DELETE",
+			path: `/v1/me/minecraft/accounts/${accountId}`,
+		});
 	}
 
 	/** me.minecraft.link_code */
 	async minecraftLinkCode(
-		body: components["schemas"]["MinecraftLinkCodeRequest"],
-	): Promise<components["schemas"]["MinecraftLinkCodeResponse"]> {
-		return this.ctx.transport.request<
-			components["schemas"]["MinecraftLinkCodeResponse"]
-		>({ method: "POST", path: `/v1/me/minecraft/link-code`, body });
+		body: models.MinecraftLinkCodeRequest,
+	): Promise<models.MinecraftLinkCodeResponse> {
+		return this.ctx.transport.request<models.MinecraftLinkCodeResponse>({
+			method: "POST",
+			path: `/v1/me/minecraft/link-code`,
+			body,
+		});
 	}
 
 	/** me.minecraft.complete_link */
 	async minecraftCompleteLink(
-		body: components["schemas"]["LinkCompletionRequest"],
-	): Promise<components["schemas"]["LinkCompletionResponse"]> {
-		return this.ctx.transport.request<
-			components["schemas"]["LinkCompletionResponse"]
-		>({ method: "POST", path: `/v1/me/minecraft/link/complete`, body });
+		body: models.LinkCompletionRequest,
+	): Promise<models.LinkCompletionResponse> {
+		return this.ctx.transport.request<models.LinkCompletionResponse>({
+			method: "POST",
+			path: `/v1/me/minecraft/link/complete`,
+			body,
+		});
 	}
 
 	/** me.minecraft.official_link_start */
-	async minecraftOfficialLinkStart(): Promise<
-		components["schemas"]["MinecraftOfficialLinkStart"]
-	> {
-		return this.ctx.transport.request<
-			components["schemas"]["MinecraftOfficialLinkStart"]
-		>({ method: "POST", path: `/v1/me/minecraft/official/start` });
+	async minecraftOfficialLinkStart(): Promise<models.MinecraftOfficialLinkStart> {
+		return this.ctx.transport.request<models.MinecraftOfficialLinkStart>({
+			method: "POST",
+			path: `/v1/me/minecraft/official/start`,
+		});
 	}
 
 	/** me.minecraft.resolve */
 	async minecraftResolve(
-		body: components["schemas"]["MinecraftResolveRequest"],
-	): Promise<components["schemas"]["MinecraftCandidateAccount"]> {
-		return this.ctx.transport.request<
-			components["schemas"]["MinecraftCandidateAccount"]
-		>({ method: "POST", path: `/v1/me/minecraft/resolve`, body });
+		body: models.MinecraftResolveRequest,
+	): Promise<models.MinecraftCandidateAccount> {
+		return this.ctx.transport.request<models.MinecraftCandidateAccount>({
+			method: "POST",
+			path: `/v1/me/minecraft/resolve`,
+			body,
+		});
 	}
 
 	/** me.minecraft.state */
 	async minecraftState(params?: {
 		projectId?: string;
-	}): Promise<components["schemas"]["MinecraftVerificationState"]> {
-		return this.ctx.transport.request<
-			components["schemas"]["MinecraftVerificationState"]
-		>({
+	}): Promise<models.MinecraftVerificationState> {
+		return this.ctx.transport.request<models.MinecraftVerificationState>({
 			method: "GET",
 			path: `/v1/me/minecraft/state`,
 			query: { project_id: params?.projectId },
@@ -169,42 +175,45 @@ export class Me extends Resource<Data> {
 	}
 
 	/** me.notifications.get */
-	async notificationsGet(): Promise<
-		components["schemas"]["NotificationPreferences"]
-	> {
-		return this.ctx.transport.request<
-			components["schemas"]["NotificationPreferences"]
-		>({ method: "GET", path: `/v1/me/notifications` });
+	async notificationsGet(): Promise<models.NotificationPreferences> {
+		return this.ctx.transport.request<models.NotificationPreferences>({
+			method: "GET",
+			path: `/v1/me/notifications`,
+		});
 	}
 
 	/** me.notifications.update */
 	async notificationsUpdate(
-		body: components["schemas"]["NotificationPreferencesUpdate"],
-	): Promise<components["schemas"]["NotificationPreferences"]> {
-		return this.ctx.transport.request<
-			components["schemas"]["NotificationPreferences"]
-		>({ method: "PATCH", path: `/v1/me/notifications`, body });
+		body: models.NotificationPreferencesUpdate,
+	): Promise<models.NotificationPreferences> {
+		return this.ctx.transport.request<models.NotificationPreferences>({
+			method: "PATCH",
+			path: `/v1/me/notifications`,
+			body,
+		});
 	}
 
 	/** me.oauth.list */
-	async oauthList(): Promise<components["schemas"]["OAuthProvidersResponse"]> {
-		return this.ctx.transport.request<
-			components["schemas"]["OAuthProvidersResponse"]
-		>({ method: "GET", path: `/v1/me/oauth/providers` });
+	async oauthList(): Promise<models.OAuthProvidersResponse> {
+		return this.ctx.transport.request<models.OAuthProvidersResponse>({
+			method: "GET",
+			path: `/v1/me/oauth/providers`,
+		});
 	}
 
 	/** me.oauth.link_start */
 	async oauthLinkStart(
 		provider: string,
-	): Promise<components["schemas"]["OAuthLinkStartResponse"]> {
-		return this.ctx.transport.request<
-			components["schemas"]["OAuthLinkStartResponse"]
-		>({ method: "POST", path: `/v1/me/oauth/${provider}/link/start` });
+	): Promise<models.OAuthLinkStartResponse> {
+		return this.ctx.transport.request<models.OAuthLinkStartResponse>({
+			method: "POST",
+			path: `/v1/me/oauth/${provider}/link/start`,
+		});
 	}
 
 	/** me.password.status */
-	async passwordStatus(): Promise<components["schemas"]["PasswordStatus"]> {
-		return this.ctx.transport.request<components["schemas"]["PasswordStatus"]>({
+	async passwordStatus(): Promise<models.PasswordStatus> {
+		return this.ctx.transport.request<models.PasswordStatus>({
 			method: "GET",
 			path: `/v1/me/password`,
 		});
@@ -212,27 +221,31 @@ export class Me extends Resource<Data> {
 
 	/** me.password.set */
 	async passwordSet(
-		body: components["schemas"]["PasswordSetRequest"],
-	): Promise<components["schemas"]["PasswordMutationResult"]> {
-		return this.ctx.transport.request<
-			components["schemas"]["PasswordMutationResult"]
-		>({ method: "PUT", path: `/v1/me/password`, body });
+		body: models.PasswordSetRequest,
+	): Promise<models.PasswordMutationResult> {
+		return this.ctx.transport.request<models.PasswordMutationResult>({
+			method: "PUT",
+			path: `/v1/me/password`,
+			body,
+		});
 	}
 
 	/** me.password.change */
 	async passwordChange(
-		body: components["schemas"]["PasswordChangeRequest"],
-	): Promise<components["schemas"]["PasswordMutationResult"]> {
-		return this.ctx.transport.request<
-			components["schemas"]["PasswordMutationResult"]
-		>({ method: "POST", path: `/v1/me/password/actions/change`, body });
+		body: models.PasswordChangeRequest,
+	): Promise<models.PasswordMutationResult> {
+		return this.ctx.transport.request<models.PasswordMutationResult>({
+			method: "POST",
+			path: `/v1/me/password/actions/change`,
+			body,
+		});
 	}
 
 	/** me.profile.update */
 	async profileUpdate(
-		body: components["schemas"]["ProfileUpdateRequest"],
-	): Promise<components["schemas"]["UserProfile"]> {
-		return this.ctx.transport.request<components["schemas"]["UserProfile"]>({
+		body: models.ProfileUpdateRequest,
+	): Promise<models.UserProfile> {
+		return this.ctx.transport.request<models.UserProfile>({
 			method: "POST",
 			path: `/v1/me/profile`,
 			body,
@@ -252,19 +265,16 @@ export class Me extends Resource<Data> {
 	}
 
 	/** me.sessions.revoke_others */
-	async sessionsRevokeOthers(): Promise<
-		components["schemas"]["RevokeOtherSessionsResult"]
-	> {
-		return this.ctx.transport.request<
-			components["schemas"]["RevokeOtherSessionsResult"]
-		>({ method: "POST", path: `/v1/me/sessions/actions/revoke-others` });
+	async sessionsRevokeOthers(): Promise<models.RevokeOtherSessionsResult> {
+		return this.ctx.transport.request<models.RevokeOtherSessionsResult>({
+			method: "POST",
+			path: `/v1/me/sessions/actions/revoke-others`,
+		});
 	}
 
 	/** me.stats */
-	async stats(params?: {
-		estimated?: boolean;
-	}): Promise<components["schemas"]["MyPlayerStats"]> {
-		return this.ctx.transport.request<components["schemas"]["MyPlayerStats"]>({
+	async stats(params?: { estimated?: boolean }): Promise<models.MyPlayerStats> {
+		return this.ctx.transport.request<models.MyPlayerStats>({
 			method: "GET",
 			path: `/v1/me/stats`,
 			query: { estimated: params?.estimated },
@@ -272,33 +282,32 @@ export class Me extends Resource<Data> {
 	}
 
 	/** me.stats_unverified */
-	async statsUnverified(): Promise<components["schemas"]["MyPlayerStats"]> {
-		return this.ctx.transport.request<components["schemas"]["MyPlayerStats"]>({
+	async statsUnverified(): Promise<models.MyPlayerStats> {
+		return this.ctx.transport.request<models.MyPlayerStats>({
 			method: "GET",
 			path: `/v1/me/stats/unverified`,
 		});
 	}
 
 	/** me.totp.status */
-	async totpStatus(): Promise<components["schemas"]["TotpStatus"]> {
-		return this.ctx.transport.request<components["schemas"]["TotpStatus"]>({
+	async totpStatus(): Promise<models.TotpStatus> {
+		return this.ctx.transport.request<models.TotpStatus>({
 			method: "GET",
 			path: `/v1/me/totp`,
 		});
 	}
 
 	/** me.totp.begin */
-	async totpBegin(): Promise<components["schemas"]["TotpBeginResult"]> {
-		return this.ctx.transport.request<components["schemas"]["TotpBeginResult"]>(
-			{ method: "POST", path: `/v1/me/totp/actions/begin` },
-		);
+	async totpBegin(): Promise<models.TotpBeginResult> {
+		return this.ctx.transport.request<models.TotpBeginResult>({
+			method: "POST",
+			path: `/v1/me/totp/actions/begin`,
+		});
 	}
 
 	/** me.totp.confirm */
-	async totpConfirm(
-		body: components["schemas"]["TotpCodeRequest"],
-	): Promise<components["schemas"]["TotpStatus"]> {
-		return this.ctx.transport.request<components["schemas"]["TotpStatus"]>({
+	async totpConfirm(body: models.TotpCodeRequest): Promise<models.TotpStatus> {
+		return this.ctx.transport.request<models.TotpStatus>({
 			method: "POST",
 			path: `/v1/me/totp/actions/confirm`,
 			body,
@@ -306,10 +315,8 @@ export class Me extends Resource<Data> {
 	}
 
 	/** me.totp.disable */
-	async totpDisable(
-		body: components["schemas"]["TotpCodeRequest"],
-	): Promise<components["schemas"]["TotpStatus"]> {
-		return this.ctx.transport.request<components["schemas"]["TotpStatus"]>({
+	async totpDisable(body: models.TotpCodeRequest): Promise<models.TotpStatus> {
+		return this.ctx.transport.request<models.TotpStatus>({
 			method: "POST",
 			path: `/v1/me/totp/actions/disable`,
 			body,
@@ -358,10 +365,8 @@ export class Me extends Resource<Data> {
 		page?: number;
 		perPage?: number;
 		includeOk?: boolean;
-	}): Promise<components["schemas"]["MyServerIssuesPage"]> {
-		return this.ctx.transport.request<
-			components["schemas"]["MyServerIssuesPage"]
-		>({
+	}): Promise<models.MyServerIssuesPage> {
+		return this.ctx.transport.request<models.MyServerIssuesPage>({
 			method: "GET",
 			path: `/v1/servers/mine/issues`,
 			query: {
@@ -374,7 +379,7 @@ export class Me extends Resource<Data> {
 
 	/** me.servers.create_planned */
 	async serversCreatePlanned(
-		body: components["schemas"]["CreatePlannedServerRequest"],
+		body: models.CreatePlannedServerRequest,
 	): Promise<Server> {
 		const data = await this.ctx.transport.request({
 			method: "POST",

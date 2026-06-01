@@ -1,6 +1,7 @@
 // Generated from the LeavePulse contract. Do not edit.
 import { Resource } from "../runtime/resource";
 import type { components } from "../types";
+import type * as models from "../models";
 import type { ClientContext } from "../client";
 
 type Data = components["schemas"]["WhitelistFormDetail"];
@@ -44,9 +45,7 @@ export class Form extends Resource<Data> {
 	}
 
 	/** form.update */
-	async update(
-		body: components["schemas"]["WhitelistFormUpdateRequest"],
-	): Promise<this> {
+	async update(body: models.WhitelistFormUpdateRequest): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "PATCH",
 			path: `/v1/whitelist/forms/${this.id}`,
@@ -58,7 +57,7 @@ export class Form extends Resource<Data> {
 
 	/** form.set_import_mapping */
 	async setImportMapping(
-		body: components["schemas"]["WhitelistFormImportMappingRequest"],
+		body: models.WhitelistFormImportMappingRequest,
 	): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "PATCH",

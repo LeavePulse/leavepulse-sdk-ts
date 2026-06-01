@@ -1,6 +1,7 @@
 // Generated from the LeavePulse contract. Do not edit.
 import { Resource } from "../runtime/resource";
 import type { components } from "../types";
+import type * as models from "../models";
 import type { ClientContext } from "../client";
 
 type Data = components["schemas"]["PublicProfile"];
@@ -31,10 +32,8 @@ export class User extends Resource<Data> {
 	/** user.heatmap */
 	async heatmap(params?: {
 		days?: number;
-	}): Promise<components["schemas"]["ProfileActivityHeatmap"]> {
-		return this.ctx.transport.request<
-			components["schemas"]["ProfileActivityHeatmap"]
-		>({
+	}): Promise<models.ProfileActivityHeatmap> {
+		return this.ctx.transport.request<models.ProfileActivityHeatmap>({
 			method: "GET",
 			path: `/v1/users/${this.id}/profile/activity`,
 			query: { days: params?.days },
@@ -42,24 +41,23 @@ export class User extends Resource<Data> {
 	}
 
 	/** user.gameplay */
-	async gameplay(): Promise<components["schemas"]["ProfileGameplaySummary"]> {
-		return this.ctx.transport.request<
-			components["schemas"]["ProfileGameplaySummary"]
-		>({ method: "GET", path: `/v1/users/${this.id}/profile/gameplay` });
+	async gameplay(): Promise<models.ProfileGameplaySummary> {
+		return this.ctx.transport.request<models.ProfileGameplaySummary>({
+			method: "GET",
+			path: `/v1/users/${this.id}/profile/gameplay`,
+		});
 	}
 
 	/** user.ownership */
-	async ownership(): Promise<components["schemas"]["ProfileOwnershipSummary"]> {
-		return this.ctx.transport.request<
-			components["schemas"]["ProfileOwnershipSummary"]
-		>({ method: "GET", path: `/v1/users/${this.id}/profile/ownership` });
+	async ownership(): Promise<models.ProfileOwnershipSummary> {
+		return this.ctx.transport.request<models.ProfileOwnershipSummary>({
+			method: "GET",
+			path: `/v1/users/${this.id}/profile/ownership`,
+		});
 	}
 
 	/** user.report */
-	async report(
-		userId: string,
-		body: components["schemas"]["ReportUserRequest"],
-	): Promise<this> {
+	async report(userId: string, body: models.ReportUserRequest): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "POST",
 			path: `/v1/community/users/${userId}/report`,

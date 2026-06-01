@@ -1,6 +1,6 @@
 // Generated from the LeavePulse contract. Do not edit.
 import { Resource } from "../runtime/resource";
-import type { components } from "../types";
+import type * as models from "../models";
 import type { ClientContext } from "../client";
 
 type Data = { id: string | number } & Record<string, unknown> & {
@@ -48,7 +48,7 @@ export class Comment extends Resource<Data> {
 	/** comment.reply */
 	async reply(
 		projectId: string,
-		body: components["schemas"]["CommentCreateRequest"],
+		body: models.CommentCreateRequest,
 		params?: { targetLocale?: string },
 	): Promise<Comment> {
 		const data = await this.ctx.transport.request({

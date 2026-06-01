@@ -1,6 +1,7 @@
 // Generated from the LeavePulse contract. Do not edit.
 import { Resource } from "../runtime/resource";
 import type { components } from "../types";
+import type * as models from "../models";
 import type { ClientContext } from "../client";
 
 type Data = components["schemas"]["Build"] & { user_id?: string | number };
@@ -67,17 +68,16 @@ export class Build extends Resource<Data> {
 	}
 
 	/** build.collaborators.list */
-	async collaboratorsList(): Promise<
-		components["schemas"]["CollaboratorList"]
-	> {
-		return this.ctx.transport.request<
-			components["schemas"]["CollaboratorList"]
-		>({ method: "GET", path: `/v1/builds/${this.id}/collaborators` });
+	async collaboratorsList(): Promise<models.CollaboratorList> {
+		return this.ctx.transport.request<models.CollaboratorList>({
+			method: "GET",
+			path: `/v1/builds/${this.id}/collaborators`,
+		});
 	}
 
 	/** build.config.url */
-	async configUrl(): Promise<components["schemas"]["ConfigBlobRef"]> {
-		return this.ctx.transport.request<components["schemas"]["ConfigBlobRef"]>({
+	async configUrl(): Promise<models.ConfigBlobRef> {
+		return this.ctx.transport.request<models.ConfigBlobRef>({
 			method: "GET",
 			path: `/v1/builds/${this.id}/config`,
 		});
@@ -94,9 +94,7 @@ export class Build extends Resource<Data> {
 	}
 
 	/** build.update */
-	async update(
-		body: components["schemas"]["BuildUpdateRequest"],
-	): Promise<this> {
+	async update(body: models.BuildUpdateRequest): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "PATCH",
 			path: `/v1/builds/${this.id}`,
@@ -107,9 +105,7 @@ export class Build extends Resource<Data> {
 	}
 
 	/** build.collaborators.add */
-	async collaboratorsAdd(
-		body: components["schemas"]["CollaboratorAddRequest"],
-	): Promise<this> {
+	async collaboratorsAdd(body: models.CollaboratorAddRequest): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "POST",
 			path: `/v1/builds/${this.id}/collaborators`,
@@ -130,9 +126,7 @@ export class Build extends Resource<Data> {
 	}
 
 	/** build.config.confirm */
-	async configConfirm(
-		body: components["schemas"]["ConfigBlobConfirmRequest"],
-	): Promise<this> {
+	async configConfirm(body: models.ConfigBlobConfirmRequest): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "POST",
 			path: `/v1/builds/${this.id}/config/confirm`,
@@ -143,9 +137,7 @@ export class Build extends Resource<Data> {
 	}
 
 	/** build.config.upload */
-	async configUpload(
-		body: components["schemas"]["ConfigBlobUploadRequest"],
-	): Promise<this> {
+	async configUpload(body: models.ConfigBlobUploadRequest): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "POST",
 			path: `/v1/builds/${this.id}/config/upload`,

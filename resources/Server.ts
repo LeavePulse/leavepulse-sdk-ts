@@ -2,6 +2,7 @@
 import { Resource } from "../runtime/resource";
 import { TopicSubscription } from "../runtime/realtime";
 import type { components } from "../types";
+import type * as models from "../models";
 import type { ClientContext } from "../client";
 import type { Application } from "./Application";
 import type { Ticket } from "./Ticket";
@@ -169,8 +170,8 @@ export class Server extends Resource<Data> {
 		minecraftUuid?: string;
 		minecraftNick?: string;
 		namedServerId?: number;
-	}): Promise<components["schemas"]["PlayerStats"]> {
-		return this.ctx.transport.request<components["schemas"]["PlayerStats"]>({
+	}): Promise<models.PlayerStats> {
+		return this.ctx.transport.request<models.PlayerStats>({
 			method: "GET",
 			path: `/v1/monitoring/servers/${this.id}/player-stats`,
 			query: {
@@ -183,8 +184,8 @@ export class Server extends Resource<Data> {
 	}
 
 	/** server.bot */
-	async bot(): Promise<components["schemas"]["ServerBot"]> {
-		return this.ctx.transport.request<components["schemas"]["ServerBot"]>({
+	async bot(): Promise<models.ServerBot> {
+		return this.ctx.transport.request<models.ServerBot>({
 			method: "GET",
 			path: `/v1/servers/${this.id}/bot`,
 		});
@@ -197,8 +198,8 @@ export class Server extends Resource<Data> {
 		page?: number;
 		eventTypes?: string;
 		player?: string;
-	}): Promise<components["schemas"]["ServerEvents"]> {
-		return this.ctx.transport.request<components["schemas"]["ServerEvents"]>({
+	}): Promise<models.ServerEvents> {
+		return this.ctx.transport.request<models.ServerEvents>({
 			method: "GET",
 			path: `/v1/servers/${this.id}/events`,
 			query: {
@@ -214,92 +215,89 @@ export class Server extends Resource<Data> {
 	/** server.history.list */
 	async historyList(params?: {
 		period?: string;
-	}): Promise<components["schemas"]["HistoryResponse"]> {
-		return this.ctx.transport.request<components["schemas"]["HistoryResponse"]>(
-			{
-				method: "GET",
-				path: `/v1/servers/${this.id}/history`,
-				query: { period: params?.period },
-			},
-		);
+	}): Promise<models.HistoryResponse> {
+		return this.ctx.transport.request<models.HistoryResponse>({
+			method: "GET",
+			path: `/v1/servers/${this.id}/history`,
+			query: { period: params?.period },
+		});
 	}
 
 	/** server.icons.list */
-	async iconsList(): Promise<components["schemas"]["IconHistory"]> {
-		return this.ctx.transport.request<components["schemas"]["IconHistory"]>({
+	async iconsList(): Promise<models.IconHistory> {
+		return this.ctx.transport.request<models.IconHistory>({
 			method: "GET",
 			path: `/v1/servers/${this.id}/icons/history`,
 		});
 	}
 
 	/** server.voting */
-	async voting(): Promise<components["schemas"]["VotingLinks"]> {
-		return this.ctx.transport.request<components["schemas"]["VotingLinks"]>({
+	async voting(): Promise<models.VotingLinks> {
+		return this.ctx.transport.request<models.VotingLinks>({
 			method: "GET",
 			path: `/v1/servers/${this.id}/integrations/voting`,
 		});
 	}
 
 	/** server.launch_manifest */
-	async launchManifest(): Promise<
-		components["schemas"]["ServerLaunchManifest"]
-	> {
-		return this.ctx.transport.request<
-			components["schemas"]["ServerLaunchManifest"]
-		>({ method: "GET", path: `/v1/servers/${this.id}/launch-manifest` });
+	async launchManifest(): Promise<models.ServerLaunchManifest> {
+		return this.ctx.transport.request<models.ServerLaunchManifest>({
+			method: "GET",
+			path: `/v1/servers/${this.id}/launch-manifest`,
+		});
 	}
 
 	/** server.live */
-	async live(): Promise<components["schemas"]["LiveStatus"]> {
-		return this.ctx.transport.request<components["schemas"]["LiveStatus"]>({
+	async live(): Promise<models.LiveStatus> {
+		return this.ctx.transport.request<models.LiveStatus>({
 			method: "GET",
 			path: `/v1/servers/${this.id}/live`,
 		});
 	}
 
 	/** server.maintenance */
-	async maintenance(): Promise<components["schemas"]["ServerMaintenance"]> {
-		return this.ctx.transport.request<
-			components["schemas"]["ServerMaintenance"]
-		>({ method: "GET", path: `/v1/servers/${this.id}/maintenance` });
+	async maintenance(): Promise<models.ServerMaintenance> {
+		return this.ctx.transport.request<models.ServerMaintenance>({
+			method: "GET",
+			path: `/v1/servers/${this.id}/maintenance`,
+		});
 	}
 
 	/** server.ownership */
-	async ownership(): Promise<components["schemas"]["ServerOwnership"]> {
-		return this.ctx.transport.request<components["schemas"]["ServerOwnership"]>(
-			{ method: "GET", path: `/v1/servers/${this.id}/ownership` },
-		);
+	async ownership(): Promise<models.ServerOwnership> {
+		return this.ctx.transport.request<models.ServerOwnership>({
+			method: "GET",
+			path: `/v1/servers/${this.id}/ownership`,
+		});
 	}
 
 	/** server.root */
-	async root(): Promise<components["schemas"]["ServerRoot"]> {
-		return this.ctx.transport.request<components["schemas"]["ServerRoot"]>({
+	async root(): Promise<models.ServerRoot> {
+		return this.ctx.transport.request<models.ServerRoot>({
 			method: "GET",
 			path: `/v1/servers/${this.id}/root`,
 		});
 	}
 
 	/** server.discord */
-	async discord(): Promise<components["schemas"]["DiscordLink"]> {
-		return this.ctx.transport.request<components["schemas"]["DiscordLink"]>({
+	async discord(): Promise<models.DiscordLink> {
+		return this.ctx.transport.request<models.DiscordLink>({
 			method: "GET",
 			path: `/v1/servers/${this.id}/social/discord`,
 		});
 	}
 
 	/** server.social */
-	async social(): Promise<components["schemas"]["SocialLinks"]> {
-		return this.ctx.transport.request<components["schemas"]["SocialLinks"]>({
+	async social(): Promise<models.SocialLinks> {
+		return this.ctx.transport.request<models.SocialLinks>({
 			method: "GET",
 			path: `/v1/servers/${this.id}/social/links`,
 		});
 	}
 
 	/** server.stats */
-	async stats(params?: {
-		period?: string;
-	}): Promise<components["schemas"]["ServerStats"]> {
-		return this.ctx.transport.request<components["schemas"]["ServerStats"]>({
+	async stats(params?: { period?: string }): Promise<models.ServerStats> {
+		return this.ctx.transport.request<models.ServerStats>({
 			method: "GET",
 			path: `/v1/servers/${this.id}/stats`,
 			query: { period: params?.period },
@@ -307,26 +305,26 @@ export class Server extends Resource<Data> {
 	}
 
 	/** server.subservers.list */
-	async subserversList(): Promise<components["schemas"]["ServerSubservers"]> {
-		return this.ctx.transport.request<
-			components["schemas"]["ServerSubservers"]
-		>({ method: "GET", path: `/v1/servers/${this.id}/subservers` });
+	async subserversList(): Promise<models.ServerSubservers> {
+		return this.ctx.transport.request<models.ServerSubservers>({
+			method: "GET",
+			path: `/v1/servers/${this.id}/subservers`,
+		});
 	}
 
 	/** server.team */
-	async team(): Promise<components["schemas"]["ServerTeamPublic"]> {
-		return this.ctx.transport.request<
-			components["schemas"]["ServerTeamPublic"]
-		>({ method: "GET", path: `/v1/servers/${this.id}/team` });
+	async team(): Promise<models.ServerTeamPublic> {
+		return this.ctx.transport.request<models.ServerTeamPublic>({
+			method: "GET",
+			path: `/v1/servers/${this.id}/team`,
+		});
 	}
 
 	/** server.team_sync.targets */
 	async teamSyncTargets(params?: {
 		roleId?: string;
-	}): Promise<components["schemas"]["MinecraftGroupTargets"]> {
-		return this.ctx.transport.request<
-			components["schemas"]["MinecraftGroupTargets"]
-		>({
+	}): Promise<models.MinecraftGroupTargets> {
+		return this.ctx.transport.request<models.MinecraftGroupTargets>({
 			method: "GET",
 			path: `/v1/servers/${this.id}/team-sync/minecraft-targets`,
 			query: { role_id: params?.roleId },
@@ -334,33 +332,31 @@ export class Server extends Resource<Data> {
 	}
 
 	/** server.team.manage */
-	async teamManage(): Promise<components["schemas"]["ServerTeamManage"]> {
-		return this.ctx.transport.request<
-			components["schemas"]["ServerTeamManage"]
-		>({ method: "GET", path: `/v1/servers/${this.id}/team/manage` });
+	async teamManage(): Promise<models.ServerTeamManage> {
+		return this.ctx.transport.request<models.ServerTeamManage>({
+			method: "GET",
+			path: `/v1/servers/${this.id}/team/manage`,
+		});
 	}
 
 	/** server.telemetry */
 	async telemetry(params?: {
 		period?: string;
 		source?: string;
-	}): Promise<components["schemas"]["ServerTelemetry"]> {
-		return this.ctx.transport.request<components["schemas"]["ServerTelemetry"]>(
-			{
-				method: "GET",
-				path: `/v1/servers/${this.id}/telemetry`,
-				query: { period: params?.period, source: params?.source },
-			},
-		);
+	}): Promise<models.ServerTelemetry> {
+		return this.ctx.transport.request<models.ServerTelemetry>({
+			method: "GET",
+			path: `/v1/servers/${this.id}/telemetry`,
+			query: { period: params?.period, source: params?.source },
+		});
 	}
 
 	/** server.translations.list */
-	async translationsList(): Promise<
-		components["schemas"]["ServerTranslations"]
-	> {
-		return this.ctx.transport.request<
-			components["schemas"]["ServerTranslations"]
-		>({ method: "GET", path: `/v1/servers/${this.id}/translations` });
+	async translationsList(): Promise<models.ServerTranslations> {
+		return this.ctx.transport.request<models.ServerTranslations>({
+			method: "GET",
+			path: `/v1/servers/${this.id}/translations`,
+		});
 	}
 
 	/** server.whitelist.applications */
@@ -385,20 +381,19 @@ export class Server extends Resource<Data> {
 	}
 
 	/** server.whitelist */
-	async whitelist(): Promise<components["schemas"]["WhitelistConfig"]> {
-		return this.ctx.transport.request<components["schemas"]["WhitelistConfig"]>(
-			{ method: "GET", path: `/v1/servers/${this.id}/whitelist/config` },
-		);
+	async whitelist(): Promise<models.WhitelistConfig> {
+		return this.ctx.transport.request<models.WhitelistConfig>({
+			method: "GET",
+			path: `/v1/servers/${this.id}/whitelist/config`,
+		});
 	}
 
 	/** server.whitelist.direct */
 	async whitelistDirect(params?: {
 		page?: number;
 		perPage?: number;
-	}): Promise<components["schemas"]["WhitelistDirectEntryPage"]> {
-		return this.ctx.transport.request<
-			components["schemas"]["WhitelistDirectEntryPage"]
-		>({
+	}): Promise<models.WhitelistDirectEntryPage> {
+		return this.ctx.transport.request<models.WhitelistDirectEntryPage>({
 			method: "GET",
 			path: `/v1/servers/${this.id}/whitelist/direct`,
 			query: { page: params?.page, per_page: params?.perPage },
@@ -410,10 +405,8 @@ export class Server extends Resource<Data> {
 		status?: string;
 		page?: number;
 		perPage?: number;
-	}): Promise<components["schemas"]["WhitelistImportJobPage"]> {
-		return this.ctx.transport.request<
-			components["schemas"]["WhitelistImportJobPage"]
-		>({
+	}): Promise<models.WhitelistImportJobPage> {
+		return this.ctx.transport.request<models.WhitelistImportJobPage>({
 			method: "GET",
 			path: `/v1/servers/${this.id}/whitelist/imports`,
 			query: {
@@ -427,19 +420,15 @@ export class Server extends Resource<Data> {
 	/** server.whitelist.import */
 	async whitelistImport(
 		jobId: string | number,
-	): Promise<components["schemas"]["WhitelistImportJob"]> {
-		return this.ctx.transport.request<
-			components["schemas"]["WhitelistImportJob"]
-		>({
+	): Promise<models.WhitelistImportJob> {
+		return this.ctx.transport.request<models.WhitelistImportJob>({
 			method: "GET",
 			path: `/v1/servers/${this.id}/whitelist/imports/${jobId}`,
 		});
 	}
 
 	/** server.change_address */
-	async changeAddress(
-		body: components["schemas"]["ServerChangeAddressRequest"],
-	): Promise<this> {
+	async changeAddress(body: models.ServerChangeAddressRequest): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "POST",
 			path: `/v1/servers/${this.id}/actions/change-address`,
@@ -450,9 +439,7 @@ export class Server extends Resource<Data> {
 	}
 
 	/** server.change_slug */
-	async changeSlug(
-		body: components["schemas"]["ServerChangeSlugRequest"],
-	): Promise<this> {
+	async changeSlug(body: models.ServerChangeSlugRequest): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "POST",
 			path: `/v1/servers/${this.id}/actions/change-slug`,
@@ -473,9 +460,7 @@ export class Server extends Resource<Data> {
 	}
 
 	/** server.rename */
-	async rename(
-		body: components["schemas"]["ServerRenameRequest"],
-	): Promise<this> {
+	async rename(body: models.ServerRenameRequest): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "POST",
 			path: `/v1/servers/${this.id}/actions/rename`,
@@ -487,7 +472,7 @@ export class Server extends Resource<Data> {
 
 	/** server.set_bedrock_port */
 	async setBedrockPort(
-		body: components["schemas"]["ServerSetBedrockPortRequest"],
+		body: models.ServerSetBedrockPortRequest,
 	): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "POST",
@@ -500,7 +485,7 @@ export class Server extends Resource<Data> {
 
 	/** server.set_description */
 	async setDescription(
-		body: components["schemas"]["ServerSetDescriptionRequest"],
+		body: models.ServerSetDescriptionRequest,
 	): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "POST",
@@ -512,9 +497,7 @@ export class Server extends Resource<Data> {
 	}
 
 	/** server.set_parent */
-	async setParent(
-		body: components["schemas"]["ServerSetParentRequest"],
-	): Promise<this> {
+	async setParent(body: models.ServerSetParentRequest): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "POST",
 			path: `/v1/servers/${this.id}/actions/set-parent`,
@@ -525,9 +508,7 @@ export class Server extends Resource<Data> {
 	}
 
 	/** server.set_ping_port */
-	async setPingPort(
-		body: components["schemas"]["ServerSetPingPortRequest"],
-	): Promise<this> {
+	async setPingPort(body: models.ServerSetPingPortRequest): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "POST",
 			path: `/v1/servers/${this.id}/actions/set-ping-port`,
@@ -538,9 +519,7 @@ export class Server extends Resource<Data> {
 	}
 
 	/** server.set_regions */
-	async setRegions(
-		body: components["schemas"]["ServerSetRegionsRequest"],
-	): Promise<this> {
+	async setRegions(body: models.ServerSetRegionsRequest): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "POST",
 			path: `/v1/servers/${this.id}/actions/set-regions`,
@@ -551,9 +530,7 @@ export class Server extends Resource<Data> {
 	}
 
 	/** server.set_role */
-	async setRole(
-		body: components["schemas"]["ServerSetRoleRequest"],
-	): Promise<this> {
+	async setRole(body: models.ServerSetRoleRequest): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "POST",
 			path: `/v1/servers/${this.id}/actions/set-role`,
@@ -565,7 +542,7 @@ export class Server extends Resource<Data> {
 
 	/** server.set_show_description */
 	async setShowDescription(
-		body: components["schemas"]["ServerSetShowDescriptionRequest"],
+		body: models.ServerSetShowDescriptionRequest,
 	): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "POST",
@@ -578,7 +555,7 @@ export class Server extends Resource<Data> {
 
 	/** server.set_show_in_public */
 	async setShowInPublic(
-		body: components["schemas"]["ServerSetShowInPublicRequest"],
+		body: models.ServerSetShowInPublicRequest,
 	): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "POST",
@@ -591,7 +568,7 @@ export class Server extends Resource<Data> {
 
 	/** server.set_team_enabled */
 	async setTeamEnabled(
-		body: components["schemas"]["ServerSetTeamEnabledRequest"],
+		body: models.ServerSetTeamEnabledRequest,
 	): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "POST",
@@ -604,7 +581,7 @@ export class Server extends Resource<Data> {
 
 	/** server.set_version_override */
 	async setVersionOverride(
-		body: components["schemas"]["ServerSetVersionOverrideRequest"],
+		body: models.ServerSetVersionOverrideRequest,
 	): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "POST",
@@ -616,9 +593,7 @@ export class Server extends Resource<Data> {
 	}
 
 	/** server.bot.update */
-	async botUpdate(
-		body: components["schemas"]["ServerBotUpdateRequest"],
-	): Promise<this> {
+	async botUpdate(body: models.ServerBotUpdateRequest): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "PATCH",
 			path: `/v1/servers/${this.id}/bot`,
@@ -629,9 +604,7 @@ export class Server extends Resource<Data> {
 	}
 
 	/** server.issue_gateway_token */
-	async issueGatewayToken(
-		body: components["schemas"]["GatewayTokenRequest"],
-	): Promise<this> {
+	async issueGatewayToken(body: models.GatewayTokenRequest): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "POST",
 			path: `/v1/servers/${this.id}/gateway-token`,
@@ -652,9 +625,7 @@ export class Server extends Resource<Data> {
 	}
 
 	/** server.icons.select */
-	async iconsSelect(
-		body: components["schemas"]["IconSelectRequest"],
-	): Promise<this> {
+	async iconsSelect(body: models.IconSelectRequest): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "POST",
 			path: `/v1/servers/${this.id}/icon/select`,
@@ -665,9 +636,7 @@ export class Server extends Resource<Data> {
 	}
 
 	/** server.voting.update */
-	async votingUpdate(
-		body: components["schemas"]["VotingLinksUpdateRequest"],
-	): Promise<this> {
+	async votingUpdate(body: models.VotingLinksUpdateRequest): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "PATCH",
 			path: `/v1/servers/${this.id}/integrations/voting`,
@@ -679,7 +648,7 @@ export class Server extends Resource<Data> {
 
 	/** server.maintenance.update */
 	async maintenanceUpdate(
-		body: components["schemas"]["ServerMaintenanceUpdateRequest"],
+		body: models.ServerMaintenanceUpdateRequest,
 	): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "PATCH",
@@ -691,9 +660,7 @@ export class Server extends Resource<Data> {
 	}
 
 	/** server.motd.update */
-	async motdUpdate(
-		body: components["schemas"]["ServerMotdUpdateRequest"],
-	): Promise<this> {
+	async motdUpdate(body: models.ServerMotdUpdateRequest): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "PATCH",
 			path: `/v1/servers/${this.id}/motd`,
@@ -714,9 +681,7 @@ export class Server extends Resource<Data> {
 	}
 
 	/** server.discord.update */
-	async discordUpdate(
-		body: components["schemas"]["DiscordLinkUpdateRequest"],
-	): Promise<this> {
+	async discordUpdate(body: models.DiscordLinkUpdateRequest): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "PATCH",
 			path: `/v1/servers/${this.id}/social/discord`,
@@ -727,9 +692,7 @@ export class Server extends Resource<Data> {
 	}
 
 	/** server.discord.verify */
-	async discordVerify(
-		body: components["schemas"]["DiscordVerifyRequest"],
-	): Promise<this> {
+	async discordVerify(body: models.DiscordVerifyRequest): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "POST",
 			path: `/v1/servers/${this.id}/social/discord/verify`,
@@ -740,9 +703,7 @@ export class Server extends Resource<Data> {
 	}
 
 	/** server.social.update */
-	async socialUpdate(
-		body: components["schemas"]["SocialLinksUpdateRequest"],
-	): Promise<this> {
+	async socialUpdate(body: models.SocialLinksUpdateRequest): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "PATCH",
 			path: `/v1/servers/${this.id}/social/links`,
@@ -753,9 +714,7 @@ export class Server extends Resource<Data> {
 	}
 
 	/** server.social.verify */
-	async socialVerify(
-		body: components["schemas"]["SocialLinkVerifyRequest"],
-	): Promise<this> {
+	async socialVerify(body: models.SocialLinkVerifyRequest): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "POST",
 			path: `/v1/servers/${this.id}/social/verify`,
@@ -776,9 +735,7 @@ export class Server extends Resource<Data> {
 	}
 
 	/** server.members.create */
-	async membersCreate(
-		body: components["schemas"]["TeamMemberCreateRequest"],
-	): Promise<this> {
+	async membersCreate(body: models.TeamMemberCreateRequest): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "POST",
 			path: `/v1/servers/${this.id}/team/members`,
@@ -801,7 +758,7 @@ export class Server extends Resource<Data> {
 	/** server.members.update */
 	async membersUpdate(
 		memberId: string | number,
-		body: components["schemas"]["TeamMemberUpdateRequest"],
+		body: models.TeamMemberUpdateRequest,
 	): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "PATCH",
@@ -813,9 +770,7 @@ export class Server extends Resource<Data> {
 	}
 
 	/** server.roles.create */
-	async rolesCreate(
-		body: components["schemas"]["TeamRoleCreateRequest"],
-	): Promise<this> {
+	async rolesCreate(body: models.TeamRoleCreateRequest): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "POST",
 			path: `/v1/servers/${this.id}/team/roles`,
@@ -838,7 +793,7 @@ export class Server extends Resource<Data> {
 	/** server.roles.update */
 	async rolesUpdate(
 		roleId: string | number,
-		body: components["schemas"]["TeamRoleUpdateRequest"],
+		body: models.TeamRoleUpdateRequest,
 	): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "PATCH",
@@ -863,7 +818,7 @@ export class Server extends Resource<Data> {
 	async translationsSet(
 		field: string,
 		locale: string,
-		body: components["schemas"]["ServerTranslationUpsertRequest"],
+		body: models.ServerTranslationUpsertRequest,
 	): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "PATCH",
@@ -876,7 +831,7 @@ export class Server extends Resource<Data> {
 
 	/** server.whitelist.add_direct */
 	async whitelistAddDirect(
-		body: components["schemas"]["WhitelistDirectAddRequest"],
+		body: models.WhitelistDirectAddRequest,
 	): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "POST",
@@ -899,7 +854,7 @@ export class Server extends Resource<Data> {
 
 	/** server.whitelist.create_import */
 	async whitelistCreateImport(
-		body: components["schemas"]["WhitelistImportRequest"],
+		body: models.WhitelistImportRequest,
 	): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "POST",
@@ -912,7 +867,7 @@ export class Server extends Resource<Data> {
 
 	/** server.whitelist.pull_minecraft_import */
 	async whitelistPullMinecraftImport(
-		body: components["schemas"]["WhitelistMinecraftPullRequest"],
+		body: models.WhitelistMinecraftPullRequest,
 	): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "POST",

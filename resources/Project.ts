@@ -2,6 +2,7 @@
 import { Resource } from "../runtime/resource";
 import { TopicSubscription } from "../runtime/realtime";
 import type { components } from "../types";
+import type * as models from "../models";
 import type { ClientContext } from "../client";
 import type { Binding } from "./Binding";
 import type { Comment } from "./Comment";
@@ -103,20 +104,18 @@ export class Project extends Resource<Data> {
 	}
 
 	/** project.comments.liked */
-	async commentsLiked(): Promise<components["schemas"]["LikedCommentIds"]> {
-		return this.ctx.transport.request<components["schemas"]["LikedCommentIds"]>(
-			{
-				method: "GET",
-				path: `/v1/community/projects/${this.id}/comments/liked`,
-			},
-		);
+	async commentsLiked(): Promise<models.LikedCommentIds> {
+		return this.ctx.transport.request<models.LikedCommentIds>({
+			method: "GET",
+			path: `/v1/community/projects/${this.id}/comments/liked`,
+		});
 	}
 
 	/** project.comments.mine */
 	async commentsMine(params?: {
 		targetLocale?: string;
-	}): Promise<components["schemas"]["MyComment"]> {
-		return this.ctx.transport.request<components["schemas"]["MyComment"]>({
+	}): Promise<models.MyComment> {
+		return this.ctx.transport.request<models.MyComment>({
 			method: "GET",
 			path: `/v1/community/projects/${this.id}/comments/me`,
 			query: { target_locale: params?.targetLocale },
@@ -124,29 +123,24 @@ export class Project extends Resource<Data> {
 	}
 
 	/** project.engagement */
-	async engagement(): Promise<components["schemas"]["ProjectEngagement"]> {
-		return this.ctx.transport.request<
-			components["schemas"]["ProjectEngagement"]
-		>({ method: "GET", path: `/v1/community/projects/${this.id}/engagement` });
+	async engagement(): Promise<models.ProjectEngagement> {
+		return this.ctx.transport.request<models.ProjectEngagement>({
+			method: "GET",
+			path: `/v1/community/projects/${this.id}/engagement`,
+		});
 	}
 
 	/** project.engagement.status */
-	async engagementStatus(): Promise<
-		components["schemas"]["ProjectEngagementStatus"]
-	> {
-		return this.ctx.transport.request<
-			components["schemas"]["ProjectEngagementStatus"]
-		>({
+	async engagementStatus(): Promise<models.ProjectEngagementStatus> {
+		return this.ctx.transport.request<models.ProjectEngagementStatus>({
 			method: "GET",
 			path: `/v1/community/projects/${this.id}/engagement/status`,
 		});
 	}
 
 	/** project.votes.list */
-	async votesList(params?: {
-		limit?: number;
-	}): Promise<components["schemas"]["RecentVotes"]> {
-		return this.ctx.transport.request<components["schemas"]["RecentVotes"]>({
+	async votesList(params?: { limit?: number }): Promise<models.RecentVotes> {
+		return this.ctx.transport.request<models.RecentVotes>({
 			method: "GET",
 			path: `/v1/community/projects/${this.id}/votes`,
 			query: { limit: params?.limit },
@@ -154,30 +148,27 @@ export class Project extends Resource<Data> {
 	}
 
 	/** me.projects.get */
-	async meProjectsGet(): Promise<components["schemas"]["WorkspaceDetail"]> {
-		return this.ctx.transport.request<components["schemas"]["WorkspaceDetail"]>(
-			{ method: "GET", path: `/v1/me/projects/${this.id}` },
-		);
+	async meProjectsGet(): Promise<models.WorkspaceDetail> {
+		return this.ctx.transport.request<models.WorkspaceDetail>({
+			method: "GET",
+			path: `/v1/me/projects/${this.id}`,
+		});
 	}
 
 	/** project.history.list */
 	async historyList(params?: {
 		period?: string;
-	}): Promise<components["schemas"]["HistoryResponse"]> {
-		return this.ctx.transport.request<components["schemas"]["HistoryResponse"]>(
-			{
-				method: "GET",
-				path: `/v1/monitoring/projects/${this.id}/history`,
-				query: { period: params?.period },
-			},
-		);
+	}): Promise<models.HistoryResponse> {
+		return this.ctx.transport.request<models.HistoryResponse>({
+			method: "GET",
+			path: `/v1/monitoring/projects/${this.id}/history`,
+			query: { period: params?.period },
+		});
 	}
 
 	/** project.stats */
-	async stats(params?: {
-		period?: string;
-	}): Promise<components["schemas"]["ProjectStats"]> {
-		return this.ctx.transport.request<components["schemas"]["ProjectStats"]>({
+	async stats(params?: { period?: string }): Promise<models.ProjectStats> {
+		return this.ctx.transport.request<models.ProjectStats>({
 			method: "GET",
 			path: `/v1/projects/${this.id}/stats`,
 			query: { period: params?.period },
@@ -187,10 +178,8 @@ export class Project extends Resource<Data> {
 	/** project.team_sync.targets */
 	async teamSyncTargets(params?: {
 		roleId?: string;
-	}): Promise<components["schemas"]["DiscordRoleTargets"]> {
-		return this.ctx.transport.request<
-			components["schemas"]["DiscordRoleTargets"]
-		>({
+	}): Promise<models.DiscordRoleTargets> {
+		return this.ctx.transport.request<models.DiscordRoleTargets>({
 			method: "GET",
 			path: `/v1/projects/${this.id}/team-sync/discord-targets`,
 			query: { role_id: params?.roleId },
@@ -223,7 +212,7 @@ export class Project extends Resource<Data> {
 
 	/** project.comments.create */
 	async commentsCreate(
-		body: components["schemas"]["CommentCreateRequest"],
+		body: models.CommentCreateRequest,
 		params?: { targetLocale?: string },
 	): Promise<Comment> {
 		const data = await this.ctx.transport.request({
@@ -258,7 +247,7 @@ export class Project extends Resource<Data> {
 	/** project.bridge.update */
 	async bridgeUpdate(
 		serverId: string | number,
-		body: components["schemas"]["BridgeSettingsUpdateRequest"],
+		body: models.BridgeSettingsUpdateRequest,
 	): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "PATCH",
@@ -272,7 +261,7 @@ export class Project extends Resource<Data> {
 	/** project.bridge.import */
 	async bridgeImport(
 		serverId: string | number,
-		body: components["schemas"]["ImportPullRequest"],
+		body: models.ImportPullRequest,
 	): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "POST",
@@ -284,9 +273,7 @@ export class Project extends Resource<Data> {
 	}
 
 	/** project.change_slug */
-	async changeSlug(
-		body: components["schemas"]["WorkspaceChangeSlugRequest"],
-	): Promise<this> {
+	async changeSlug(body: models.WorkspaceChangeSlugRequest): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "POST",
 			path: `/v1/me/projects/${this.id}/actions/change-slug`,
@@ -297,9 +284,7 @@ export class Project extends Resource<Data> {
 	}
 
 	/** project.rename */
-	async rename(
-		body: components["schemas"]["WorkspaceRenameRequest"],
-	): Promise<this> {
+	async rename(body: models.WorkspaceRenameRequest): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "POST",
 			path: `/v1/me/projects/${this.id}/actions/rename`,
@@ -311,7 +296,7 @@ export class Project extends Resource<Data> {
 
 	/** project.set_online_strategy */
 	async setOnlineStrategy(
-		body: components["schemas"]["WorkspaceSetOnlineStrategyRequest"],
+		body: models.WorkspaceSetOnlineStrategyRequest,
 	): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "POST",
@@ -324,7 +309,7 @@ export class Project extends Resource<Data> {
 
 	/** project.set_rollout_mode */
 	async setRolloutMode(
-		body: components["schemas"]["WorkspaceSetRolloutModeRequest"],
+		body: models.WorkspaceSetRolloutModeRequest,
 	): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "POST",
@@ -337,7 +322,7 @@ export class Project extends Resource<Data> {
 
 	/** project.policies.create */
 	async policiesCreate(
-		body: components["schemas"]["WhitelistBindingWriteRequest"],
+		body: models.WhitelistBindingWriteRequest,
 	): Promise<Binding> {
 		const data = await this.ctx.transport.request({
 			method: "POST",
@@ -360,7 +345,7 @@ export class Project extends Resource<Data> {
 	/** project.policies.update */
 	async policiesUpdate(
 		policyId: string | number,
-		body: components["schemas"]["WhitelistBindingWriteRequest"],
+		body: models.WhitelistBindingWriteRequest,
 	): Promise<Binding> {
 		const data = await this.ctx.transport.request({
 			method: "PATCH",

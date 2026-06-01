@@ -1,7 +1,7 @@
 // Generated from the LeavePulse contract. Do not edit.
 import { Resource } from "../runtime/resource";
 import { TopicSubscription } from "../runtime/realtime";
-import type { components } from "../types";
+import type * as models from "../models";
 import type { ClientContext } from "../client";
 
 type Data = { id: string | number } & Record<string, unknown>;
@@ -25,16 +25,15 @@ export class Ticket extends Resource<Data> {
 	}
 
 	/** ticket.messages.list */
-	async messagesList(): Promise<components["schemas"]["TicketMessageList"]> {
-		return this.ctx.transport.request<
-			components["schemas"]["TicketMessageList"]
-		>({ method: "GET", path: `/v1/community/tickets/${this.id}/messages` });
+	async messagesList(): Promise<models.TicketMessageList> {
+		return this.ctx.transport.request<models.TicketMessageList>({
+			method: "GET",
+			path: `/v1/community/tickets/${this.id}/messages`,
+		});
 	}
 
 	/** ticket.set_status */
-	async setStatus(
-		body: components["schemas"]["TicketStatusUpdateRequest"],
-	): Promise<this> {
+	async setStatus(body: models.TicketStatusUpdateRequest): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "PATCH",
 			path: `/v1/community/tickets/${this.id}`,
@@ -45,9 +44,7 @@ export class Ticket extends Resource<Data> {
 	}
 
 	/** ticket.reply */
-	async reply(
-		body: components["schemas"]["TicketMessageCreateRequest"],
-	): Promise<this> {
+	async reply(body: models.TicketMessageCreateRequest): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "POST",
 			path: `/v1/community/tickets/${this.id}/messages`,
