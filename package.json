@@ -1,0 +1,22 @@
+{
+	"name": "@leavepulse/sdk",
+	"version": "0.3.0",
+	"description": "Generated resource SDK for the LeavePulse platform contract.",
+	"type": "module",
+	"module": "index.ts",
+	"types": "index.ts",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/LeavePulse/leavepulse-sdk-ts.git"
+	},
+	"publishConfig": {
+		"registry": "https://npm.pkg.github.com"
+	},
+	"exports": {
+		".": "./index.ts",
+		"./types": "./types.ts",
+		"./auth-types": "./auth-types.ts"
+	},
+	"sideEffects": false,
+	"license": "UNLICENSED"
+}
