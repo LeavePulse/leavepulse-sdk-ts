@@ -77,8 +77,8 @@ export type ConfigBlobUploadRequest =
 	components["schemas"]["ConfigBlobUploadRequest"];
 export type CreateLinkTokenRequest =
 	components["schemas"]["CreateLinkTokenRequest"];
-export type CreatePlannedServerRequest =
-	components["schemas"]["CreatePlannedServerRequest"];
+export type CreateProjectServerRequest =
+	components["schemas"]["CreateProjectServerRequest"];
 export type CreateStatusOverrideRequest =
 	components["schemas"]["CreateStatusOverrideRequest"];
 export type DeleteAck = components["schemas"]["DeleteAck"];

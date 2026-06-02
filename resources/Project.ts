@@ -167,6 +167,18 @@ export class Project extends Resource<Data> {
 		});
 	}
 
+	/** project.servers.create */
+	async serversCreate(
+		body: models.CreateProjectServerRequest,
+	): Promise<Server> {
+		const data = await this.ctx.transport.request({
+			method: "POST",
+			path: `/v1/projects/${this.id}/servers`,
+			body,
+		});
+		return this.ctx.hydrate("Server", data) as Server;
+	}
+
 	/** project.stats */
 	async stats(params?: { period?: string }): Promise<models.ProjectStats> {
 		return this.ctx.transport.request<models.ProjectStats>({

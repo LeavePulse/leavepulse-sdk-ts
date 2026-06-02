@@ -388,18 +388,6 @@ export class Me extends Resource<Data> {
 		});
 	}
 
-	/** me.servers.create_planned */
-	async serversCreatePlanned(
-		body: models.CreatePlannedServerRequest,
-	): Promise<Server> {
-		const data = await this.ctx.transport.request({
-			method: "POST",
-			path: `/v1/servers/mine/planned`,
-			body,
-		});
-		return this.ctx.hydrate("Server", data) as Server;
-	}
-
 	/** Subscribe to `user.server_issues` (private realtime). */
 	onServerIssues(): TopicSubscription {
 		return new TopicSubscription(this.ctx.realtime, "user.server_issues");

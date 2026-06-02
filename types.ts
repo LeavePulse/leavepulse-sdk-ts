@@ -2457,6 +2457,26 @@ export interface paths {
 		patch?: never;
 		trace?: never;
 	};
+	"/v1/projects/{project_id}/servers": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
+		/**
+		 * Add a server to the project
+		 * @description Create a server under this project. A server always belongs to a project and has no owner of its own — ownership is the project's.
+		 */
+		post: operations["project.servers.create"];
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
 	"/v1/projects/{project_id}/stats": {
 		parameters: {
 			query?: never;
@@ -2624,26 +2644,6 @@ export interface paths {
 		get: operations["me.servers.issues"];
 		put?: never;
 		post?: never;
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/v1/servers/mine/planned": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get?: never;
-		put?: never;
-		/**
-		 * Create planned server
-		 * @description Create a new server entry in ``planned`` lifecycle state. Caller becomes owner unless ``owner_id`` is provided (which requires platform-admin power). When ``project_id`` is provided, ownership inherits from the project.
-		 */
-		post: operations["me.servers.create_planned"];
 		delete?: never;
 		options?: never;
 		head?: never;
@@ -4387,7 +4387,7 @@ export interface components {
 		AdminProject: {
 			creator_user_id?: components["schemas"]["Snowflake"] | null;
 			display_server_id?: components["schemas"]["Snowflake"] | null;
-			id: number;
+			id: components["schemas"]["Snowflake"];
 			lifecycle_state?: components["schemas"]["LifecycleState"];
 			name: string;
 			online_server_id?: components["schemas"]["Snowflake"] | null;
@@ -4809,13 +4809,11 @@ export interface components {
 		CreateLinkTokenRequest: {
 			project_id: components["schemas"]["Snowflake"];
 		};
-		/** CreatePlannedServerRequest */
-		CreatePlannedServerRequest: {
+		/** CreateProjectServerRequest */
+		CreateProjectServerRequest: {
 			address: string;
 			description?: string | null;
 			name?: string | null;
-			owner_id?: components["schemas"]["Snowflake"] | null;
-			project_id?: components["schemas"]["Snowflake"] | null;
 		};
 		/** CreateStatusOverrideRequest */
 		CreateStatusOverrideRequest: {
@@ -5231,7 +5229,7 @@ export interface components {
 		/** LinkedMinecraftAccount */
 		LinkedMinecraftAccount: {
 			account_type: components["schemas"]["MinecraftAccountType"];
-			id: number;
+			id: components["schemas"]["Snowflake"];
 			identity_scope_id?: components["schemas"]["Snowflake"] | null;
 			identity_scope_type: components["schemas"]["MinecraftIdentityScopeType"];
 			link_source: components["schemas"]["MinecraftLinkSource"];
@@ -5394,7 +5392,7 @@ export interface components {
 		/** MinecraftVerificationAccount */
 		MinecraftVerificationAccount: {
 			account_type: components["schemas"]["MinecraftAccountType"];
-			id: number;
+			id: components["schemas"]["Snowflake"];
 			minecraft_nick?: string | null;
 			minecraft_uuid?: string | null;
 			verification_status: components["schemas"]["MinecraftVerificationStatus"];
@@ -5751,7 +5749,7 @@ export interface components {
 			freshness_state?: components["schemas"]["FreshnessState"];
 			game_editions?: string[];
 			hearts?: number | null;
-			id: number;
+			id: components["schemas"]["Snowflake"];
 			last_status_at?: string | null;
 			max_players?: number | null;
 			name: string;
@@ -5790,7 +5788,7 @@ export interface components {
 		};
 		/** ProjectCreateResponse */
 		ProjectCreateResponse: {
-			id: number;
+			id: components["schemas"]["Snowflake"];
 			lifecycle_state?: components["schemas"]["LifecycleState"];
 			name: string;
 			public_entrypoint?: string | null;
@@ -6015,7 +6013,7 @@ export interface components {
 			favicon_url?: string | null;
 			game_edition?: components["schemas"]["GameEdition"] | null;
 			icon_url?: string | null;
-			id: number;
+			id: components["schemas"]["Snowflake"];
 			ip_or_domain: string;
 			/** @default false */
 			is_verified: boolean;
@@ -6043,7 +6041,7 @@ export interface components {
 		ServerDetail: {
 			bedrock_port?: number | null;
 			game_edition?: components["schemas"]["GameEdition"] | null;
-			id: number;
+			id: components["schemas"]["Snowflake"];
 			ip_or_domain: string;
 			/** @default false */
 			is_verified: boolean;
@@ -6223,7 +6221,7 @@ export interface components {
 			favicon_url?: string | null;
 			game_edition?: components["schemas"]["GameEdition"] | null;
 			icon_url?: string | null;
-			id: number;
+			id: components["schemas"]["Snowflake"];
 			ip_or_domain: string;
 			/** @default false */
 			is_verified: boolean;
@@ -6436,7 +6434,7 @@ export interface components {
 		};
 		/** TeamMemberItem */
 		TeamMemberItem: {
-			id: number;
+			id: components["schemas"]["Snowflake"];
 			is_owner: boolean;
 			is_public: boolean;
 			member_state?: components["schemas"]["MemberState"];
@@ -6489,7 +6487,7 @@ export interface components {
 			color?: string | null;
 			discord_role_id?: string | null;
 			icon?: string | null;
-			id: number;
+			id: components["schemas"]["Snowflake"];
 			/** @default false */
 			is_public: boolean;
 			key: string;
@@ -6520,7 +6518,7 @@ export interface components {
 		};
 		/** TeamScopeServer */
 		TeamScopeServer: {
-			id: number;
+			id: components["schemas"]["Snowflake"];
 			name: string;
 			server_role: components["schemas"]["ServerRole"];
 			slug?: string | null;
@@ -6659,7 +6657,7 @@ export interface components {
 		/** UnlinkedMinecraftAccount */
 		UnlinkedMinecraftAccount: {
 			account_type: string;
-			id: number;
+			id: components["schemas"]["Snowflake"];
 			identity_scope_id?: components["schemas"]["Snowflake"] | null;
 			identity_scope_type: string;
 			link_source: string;
@@ -6740,7 +6738,7 @@ export interface components {
 			email?: string | null;
 			/** @default false */
 			email_verified: boolean;
-			id: number;
+			id: components["schemas"]["Snowflake"];
 			privacy?: components["schemas"]["me_ProfilePrivacy"];
 			slug?: string | null;
 			status: string;
@@ -6771,7 +6769,7 @@ export interface components {
 		/** VerificationServerSummary */
 		VerificationServerSummary: {
 			game_edition?: components["schemas"]["GameEdition"] | null;
-			id: number;
+			id: components["schemas"]["Snowflake"];
 			ip_or_domain: string;
 			is_verified: boolean;
 			owner_id?: components["schemas"]["Snowflake"] | null;
@@ -6833,7 +6831,7 @@ export interface components {
 			created_at: string;
 			discord_name?: string | null;
 			form_id?: components["schemas"]["Snowflake"] | null;
-			id: number;
+			id: components["schemas"]["Snowflake"];
 			minecraft_account_type?:
 				| components["schemas"]["MinecraftAccountType"]
 				| null;
@@ -6957,7 +6955,7 @@ export interface components {
 		WhitelistDirectEntry: {
 			added_by_user_id?: components["schemas"]["Snowflake"] | null;
 			created_at: string;
-			id: number;
+			id: components["schemas"]["Snowflake"];
 			minecraft_account_type?:
 				| components["schemas"]["MinecraftAccountType"]
 				| null;
@@ -6995,7 +6993,7 @@ export interface components {
 		WhitelistFormCard: {
 			auto_approve_enabled: boolean;
 			description?: string | null;
-			id: number;
+			id: components["schemas"]["Snowflake"];
 			name: string;
 			project_id?: components["schemas"]["Snowflake"] | null;
 			require_discord: boolean;
@@ -7066,7 +7064,7 @@ export interface components {
 			entries_updated: number;
 			error_reason?: string | null;
 			expires_at?: string | null;
-			id: number;
+			id: components["schemas"]["Snowflake"];
 			include_history: boolean;
 			payload?: unknown;
 			server_id: components["schemas"]["Snowflake"];
@@ -7165,7 +7163,7 @@ export interface components {
 			freshness_state?: components["schemas"]["FreshnessState"];
 			game_editions?: string[];
 			hearts?: number | null;
-			id: number;
+			id: components["schemas"]["Snowflake"];
 			last_status_at?: string | null;
 			lifecycle_state?: components["schemas"]["LifecycleState"];
 			max_players?: number | null;
@@ -12993,6 +12991,50 @@ export interface operations {
 			};
 		};
 	};
+	"project.servers.create": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path: {
+				project_id: components["schemas"]["Snowflake"];
+			};
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				"application/json": components["schemas"]["CreateProjectServerRequest"];
+			};
+		};
+		responses: {
+			/** @description Document created, URL follows */
+			201: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ServerCard"];
+				};
+			};
+			/** @description Bad request syntax or unsupported method */
+			400: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": {
+						detail: string;
+						extra?:
+							| null
+							| {
+									[key: string]: unknown;
+							  }
+							| unknown[];
+						status_code: number;
+					};
+				};
+			};
+		};
+	};
 	"project.stats": {
 		parameters: {
 			query?: {
@@ -13431,48 +13473,6 @@ export interface operations {
 				};
 				content: {
 					"application/json": components["schemas"]["MyServerIssuesPage"];
-				};
-			};
-			/** @description Bad request syntax or unsupported method */
-			400: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": {
-						detail: string;
-						extra?:
-							| null
-							| {
-									[key: string]: unknown;
-							  }
-							| unknown[];
-						status_code: number;
-					};
-				};
-			};
-		};
-	};
-	"me.servers.create_planned": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody: {
-			content: {
-				"application/json": components["schemas"]["CreatePlannedServerRequest"];
-			};
-		};
-		responses: {
-			/** @description Document created, URL follows */
-			201: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ServerCard"];
 				};
 			};
 			/** @description Bad request syntax or unsupported method */
