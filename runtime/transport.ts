@@ -19,6 +19,50 @@ export type HttpMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
  */
 export type Channel = "platform" | "auth";
 
+/**
+ * A file to upload, in the style of discord.py's `File`. Wrap a `Blob`/`File`
+ * (or raw bytes) with a filename and optional content type, then hand it to a
+ * multipart SDK method (e.g. `server.iconsUpload(new LeavePulseFile(blob))`).
+ */
+export class LeavePulseFile {
+	readonly data: Blob;
+	readonly filename: string;
+	readonly contentType?: string;
+
+	constructor(
+		data: Blob | ArrayBuffer | Uint8Array,
+		filename = "upload",
+		contentType?: string,
+	) {
+		this.data =
+			data instanceof Blob
+				? data
+				: new Blob(
+						[data as BlobPart],
+						contentType ? { type: contentType } : {},
+					);
+		this.filename = filename;
+		this.contentType = contentType;
+	}
+
+	/** The part as a `Blob` carrying the right content type, for `FormData`. */
+	toBlob(): Blob {
+		if (this.contentType && this.data.type !== this.contentType) {
+			return new Blob([this.data], { type: this.contentType });
+		}
+		return this.data;
+	}
+}
+
+/** A `multipart/form-data` upload: one file part plus scalar form fields. */
+export interface MultipartBody {
+	/** Form field name for the binary part (e.g. `file`, `avatar`). */
+	fileField: string;
+	file?: LeavePulseFile;
+	/** Scalar fields sent alongside the file; undefined values are dropped. */
+	fields?: Record<string, string | number | boolean | undefined>;
+}
+
 export interface TransportRequest {
 	method: HttpMethod;
 	/** Path relative to the channel root, e.g. `/v1/projects/1` or `/auth/login`. */
@@ -29,6 +73,8 @@ export interface TransportRequest {
 	query?: Record<string, string | number | boolean | undefined>;
 	/** JSON request body. */
 	body?: unknown;
+	/** Multipart upload body; mutually exclusive with `body`. */
+	multipart?: MultipartBody;
 	/**
 	 * Send `If-None-Match` with this ETag so the server can answer `304 Not
 	 * Modified` and skip resending an unchanged body. Only meaningful through
@@ -57,6 +103,22 @@ export interface Transport {
 	 * server registries) without refetching unchanged bodies.
 	 */
 	conditional<T>(req: TransportRequest): Promise<ConditionalResult<T>>;
+}
+
+/** Assemble a `FormData` body from a multipart descriptor. */
+export function buildFormData(multipart: MultipartBody): FormData {
+	const form = new FormData();
+	if (multipart.file) {
+		form.append(
+			multipart.fileField,
+			multipart.file.toBlob(),
+			multipart.file.filename,
+		);
+	}
+	for (const [key, value] of Object.entries(multipart.fields ?? {})) {
+		if (value !== undefined) form.append(key, String(value));
+	}
+	return form;
 }
 
 /** Build a path with an encoded query string from a TransportRequest. */
@@ -140,18 +202,28 @@ export class BearerTransport implements Transport {
 				: this.baseUrl;
 		const url = base.replace(/\/$/, "") + buildPath(req);
 
+		// A multipart upload sends FormData; the runtime must NOT set Content-Type
+		// (the browser adds the multipart boundary). JSON bodies set it explicitly.
+		const multipartBody = req.multipart
+			? buildFormData(req.multipart)
+			: undefined;
+
 		let attempt = 0;
 		for (;;) {
 			const response = await this.fetchImpl(url, {
 				method: req.method,
 				headers: {
 					Authorization: `Bearer ${this.token}`,
-					...(req.body !== undefined
+					...(req.body !== undefined && !multipartBody
 						? { "Content-Type": "application/json" }
 						: {}),
 					...(req.ifNoneMatch ? { "If-None-Match": req.ifNoneMatch } : {}),
 				},
-				body: req.body !== undefined ? JSON.stringify(req.body) : undefined,
+				body: multipartBody
+					? multipartBody
+					: req.body !== undefined
+						? JSON.stringify(req.body)
+						: undefined,
 			});
 
 			if (response.ok || passThrough(response.status)) return response;

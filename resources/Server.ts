@@ -3,6 +3,7 @@ import { Resource } from "../runtime/resource";
 import { TopicSubscription } from "../runtime/realtime";
 import type { components } from "../types";
 import type * as models from "../models";
+import type { LeavePulseFile } from "../runtime/transport";
 import type { ClientContext } from "../client";
 import type { Application } from "./Application";
 import type { Ticket } from "./Ticket";
@@ -615,10 +616,11 @@ export class Server extends Resource<Data> {
 	}
 
 	/** server.icons.upload */
-	async iconsUpload(): Promise<this> {
+	async iconsUpload(file: LeavePulseFile, sync?: string): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "POST",
 			path: `/v1/servers/${this.id}/icon`,
+			multipart: { fileField: "file", file, fields: { sync: sync } },
 		});
 		this.ctx.hydrate("Server", data);
 		return this;

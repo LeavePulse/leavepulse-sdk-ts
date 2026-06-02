@@ -3,6 +3,7 @@ import { Resource } from "../runtime/resource";
 import { TopicSubscription } from "../runtime/realtime";
 import type { components } from "../types";
 import type * as models from "../models";
+import type { LeavePulseFile } from "../runtime/transport";
 import type { ClientContext } from "../client";
 import type { Application } from "./Application";
 import type { Build } from "./Build";
@@ -96,10 +97,11 @@ export class Me extends Resource<Data> {
 	}
 
 	/** me.avatar.upload */
-	async avatarUpload(): Promise<models.UserProfile> {
+	async avatarUpload(file: LeavePulseFile): Promise<models.UserProfile> {
 		return this.ctx.transport.request<models.UserProfile>({
 			method: "POST",
 			path: `/v1/me/avatar`,
+			multipart: { fileField: "file", file, fields: {} },
 		});
 	}
 

@@ -23,8 +23,14 @@ export type {
 	Channel,
 	RetryOptions,
 	ConditionalResult,
+	MultipartBody,
 } from "./runtime/transport";
-export { BearerTransport, buildPath } from "./runtime/transport";
+export {
+	BearerTransport,
+	buildPath,
+	buildFormData,
+	LeavePulseFile,
+} from "./runtime/transport";
 export {
 	LeavePulseError,
 	HTTPException,
