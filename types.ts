@@ -5251,6 +5251,11 @@ export interface components {
 			source?: components["schemas"]["TrustState"] | null;
 			version?: string | null;
 		};
+		/** ManifestComponent */
+		ManifestComponent: {
+			path: string;
+			sha256: string;
+		};
 		/** MeResponse */
 		MeResponse: {
 			email?: string | null;
@@ -6642,6 +6647,9 @@ export interface components {
 		UpdateManifest: {
 			artifact_id: string;
 			channel: string;
+			components?: {
+				[key: string]: components["schemas"]["ManifestComponent"];
+			};
 			download_url?: string | null;
 			download_urls?: string[];
 			file_name: string;
@@ -6656,6 +6664,9 @@ export interface components {
 		/** UpdateManifestUpsert */
 		UpdateManifestUpsert: {
 			artifact_id?: string | null;
+			components?: {
+				[key: string]: components["schemas"]["ManifestComponent"];
+			};
 			download_url?: string | null;
 			download_urls?: string[];
 			file_name?: string | null;

@@ -874,6 +874,30 @@ export class ProjectsNs {
 		});
 	}
 
+	/** projects.bridge_update */
+	async bridgeUpdate(
+		serverId: string | number,
+		body: models.BridgeSettingsUpdateRequest,
+	): Promise<models.BridgeSettings> {
+		return this.ctx.transport.request<models.BridgeSettings>({
+			method: "PATCH",
+			path: `/v1/discord/servers/${serverId}/bridge`,
+			body,
+		});
+	}
+
+	/** projects.bridge_import */
+	async bridgeImport(
+		serverId: string | number,
+		body: models.ImportPullRequest,
+	): Promise<models.ImportPull> {
+		return this.ctx.transport.request<models.ImportPull>({
+			method: "POST",
+			path: `/v1/discord/servers/${serverId}/import-pull`,
+			body,
+		});
+	}
+
 	/** projects.bridge_roles */
 	async bridgeRoles(serverId: string | number): Promise<models.RoleCatalog> {
 		return this.ctx.transport.request<models.RoleCatalog>({

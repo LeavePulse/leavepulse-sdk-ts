@@ -244,34 +244,6 @@ export class Project extends Resource<Data> {
 		return this;
 	}
 
-	/** project.bridge.update */
-	async bridgeUpdate(
-		serverId: string | number,
-		body: models.BridgeSettingsUpdateRequest,
-	): Promise<this> {
-		const data = await this.ctx.transport.request({
-			method: "PATCH",
-			path: `/v1/discord/servers/${serverId}/bridge`,
-			body,
-		});
-		this.ctx.hydrate("Project", data);
-		return this;
-	}
-
-	/** project.bridge.import */
-	async bridgeImport(
-		serverId: string | number,
-		body: models.ImportPullRequest,
-	): Promise<this> {
-		const data = await this.ctx.transport.request({
-			method: "POST",
-			path: `/v1/discord/servers/${serverId}/import-pull`,
-			body,
-		});
-		this.ctx.hydrate("Project", data);
-		return this;
-	}
-
 	/** project.change_slug */
 	async changeSlug(body: models.WorkspaceChangeSlugRequest): Promise<this> {
 		const data = await this.ctx.transport.request({
