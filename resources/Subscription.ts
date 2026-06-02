@@ -1,8 +1,9 @@
 // Generated from the LeavePulse contract. Do not edit.
 import { Resource } from "../runtime/resource";
+import type { components } from "../types";
 import type { ClientContext } from "../client";
 
-type Data = { id: string | number } & Record<string, unknown>;
+type Data = components["schemas"]["Subscription"];
 
 export class Subscription extends Resource<Data> {
 	constructor(

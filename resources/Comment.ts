@@ -1,12 +1,11 @@
 // Generated from the LeavePulse contract. Do not edit.
 import { Resource } from "../runtime/resource";
+import type { components } from "../types";
 import type * as models from "../models";
 import type { ClientContext } from "../client";
 import type { Snowflake } from "../runtime/snowflake";
 
-type Data = { id: string | number } & Record<string, unknown> & {
-		project_id?: string | number;
-	};
+type Data = components["schemas"]["Comment"] & { project_id?: string | number };
 
 export class Comment extends Resource<Data> {
 	constructor(
