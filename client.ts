@@ -4,6 +4,7 @@ import { IdentityMap } from "./runtime/cache";
 import type { Identified } from "./runtime/cache";
 import { extractId } from "./runtime/resource";
 import { MalformedResponse } from "./runtime/errors";
+import type { Snowflake } from "./runtime/snowflake";
 import type { RealtimeTransport } from "./runtime/realtime";
 import { Application } from "./resources/Application";
 import { Binding } from "./resources/Binding";
@@ -116,7 +117,7 @@ export class LeavePulse {
 		return this.hydrate("Build", data) as Build;
 	}
 
-	async form(id: string | number): Promise<Form> {
+	async form(id: Snowflake): Promise<Form> {
 		const data = await this.ctx.transport.request({
 			method: "GET",
 			path: `/v1/whitelist/forms/${id}`,
@@ -132,7 +133,7 @@ export class LeavePulse {
 		return this.hydrate("Me", data) as Me;
 	}
 
-	async project(id: string | number): Promise<Project> {
+	async project(id: Snowflake): Promise<Project> {
 		const data = await this.ctx.transport.request({
 			method: "GET",
 			path: `/v1/projects/${id}`,
@@ -140,7 +141,7 @@ export class LeavePulse {
 		return this.hydrate("Project", data, "project") as Project;
 	}
 
-	async server(id: string | number): Promise<Server> {
+	async server(id: Snowflake): Promise<Server> {
 		const data = await this.ctx.transport.request({
 			method: "GET",
 			path: `/v1/servers/${id}`,

@@ -5,6 +5,7 @@ import type { components } from "../types";
 import type * as models from "../models";
 import type { LeavePulseFile } from "../runtime/transport";
 import type { ClientContext } from "../client";
+import type { Snowflake } from "../runtime/snowflake";
 import type { Application } from "./Application";
 import type { Build } from "./Build";
 import type { Server } from "./Server";
@@ -116,7 +117,7 @@ export class Me extends Resource<Data> {
 
 	/** me.minecraft.unlink */
 	async minecraftUnlink(
-		accountId: string | number,
+		accountId: Snowflake,
 	): Promise<models.MinecraftUnlinkResult> {
 		return this.ctx.transport.request<models.MinecraftUnlinkResult>({
 			method: "DELETE",
@@ -167,7 +168,7 @@ export class Me extends Resource<Data> {
 
 	/** me.minecraft.state */
 	async minecraftState(params?: {
-		projectId?: string;
+		projectId?: Snowflake;
 	}): Promise<models.MinecraftVerificationState> {
 		return this.ctx.transport.request<models.MinecraftVerificationState>({
 			method: "GET",

@@ -2,6 +2,7 @@
 import { Resource } from "../runtime/resource";
 import type * as models from "../models";
 import type { ClientContext } from "../client";
+import type { Snowflake } from "../runtime/snowflake";
 
 type Data = { id: string | number } & Record<string, unknown> & {
 		binding_id?: string | number;
@@ -32,7 +33,7 @@ export class Binding extends Resource<Data> {
 
 	/** binding.entries.list */
 	async entriesList(
-		bindingId: string | number,
+		bindingId: Snowflake,
 		params?: { page?: number; perPage?: number },
 	): Promise<models.WhitelistDirectEntryPage> {
 		return this.ctx.transport.request<models.WhitelistDirectEntryPage>({
@@ -43,7 +44,7 @@ export class Binding extends Resource<Data> {
 	}
 
 	/** binding.delete */
-	async delete(bindingId: string | number): Promise<this> {
+	async delete(bindingId: Snowflake): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "DELETE",
 			path: `/v1/whitelist/bindings/${bindingId}`,
@@ -54,7 +55,7 @@ export class Binding extends Resource<Data> {
 
 	/** binding.update */
 	async update(
-		bindingId: string | number,
+		bindingId: Snowflake,
 		body: models.WhitelistBindingWriteRequest,
 	): Promise<this> {
 		const data = await this.ctx.transport.request({
@@ -68,7 +69,7 @@ export class Binding extends Resource<Data> {
 
 	/** binding.test */
 	async test(
-		bindingId: string | number,
+		bindingId: Snowflake,
 		params?: { audience?: string },
 	): Promise<this> {
 		const data = await this.ctx.transport.request({
@@ -82,7 +83,7 @@ export class Binding extends Resource<Data> {
 
 	/** binding.entries.add */
 	async entriesAdd(
-		bindingId: string | number,
+		bindingId: Snowflake,
 		body: models.WhitelistDirectAddRequest,
 	): Promise<this> {
 		const data = await this.ctx.transport.request({
@@ -95,7 +96,7 @@ export class Binding extends Resource<Data> {
 	}
 
 	/** binding.entries.remove */
-	async entriesRemove(bindingId: string | number): Promise<this> {
+	async entriesRemove(bindingId: Snowflake): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "DELETE",
 			path: `/v1/whitelist/bindings/${bindingId}/direct/entries/${this.id}`,

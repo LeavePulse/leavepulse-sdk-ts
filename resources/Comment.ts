@@ -2,6 +2,7 @@
 import { Resource } from "../runtime/resource";
 import type * as models from "../models";
 import type { ClientContext } from "../client";
+import type { Snowflake } from "../runtime/snowflake";
 
 type Data = { id: string | number } & Record<string, unknown> & {
 		project_id?: string | number;
@@ -26,7 +27,7 @@ export class Comment extends Resource<Data> {
 	}
 
 	/** comment.delete */
-	async delete(projectId: string): Promise<this> {
+	async delete(projectId: Snowflake): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "DELETE",
 			path: `/v1/community/projects/${projectId}/comments/${this.id}`,
@@ -36,7 +37,7 @@ export class Comment extends Resource<Data> {
 	}
 
 	/** comment.like */
-	async like(projectId: string): Promise<this> {
+	async like(projectId: Snowflake): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "POST",
 			path: `/v1/community/projects/${projectId}/comments/${this.id}/like`,
@@ -47,7 +48,7 @@ export class Comment extends Resource<Data> {
 
 	/** comment.reply */
 	async reply(
-		projectId: string,
+		projectId: Snowflake,
 		body: models.CommentCreateRequest,
 		params?: { targetLocale?: string },
 	): Promise<Comment> {

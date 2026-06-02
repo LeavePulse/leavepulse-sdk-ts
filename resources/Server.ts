@@ -5,6 +5,7 @@ import type { components } from "../types";
 import type * as models from "../models";
 import type { LeavePulseFile } from "../runtime/transport";
 import type { ClientContext } from "../client";
+import type { Snowflake } from "../runtime/snowflake";
 import type { Application } from "./Application";
 import type { Ticket } from "./Ticket";
 
@@ -167,7 +168,7 @@ export class Server extends Resource<Data> {
 
 	/** server.player_stats */
 	async playerStats(params?: {
-		userId?: string;
+		userId?: Snowflake;
 		minecraftUuid?: string;
 		minecraftNick?: string;
 		namedServerId?: number;
@@ -323,7 +324,7 @@ export class Server extends Resource<Data> {
 
 	/** server.team_sync.targets */
 	async teamSyncTargets(params?: {
-		roleId?: string;
+		roleId?: Snowflake;
 	}): Promise<models.MinecraftGroupTargets> {
 		return this.ctx.transport.request<models.MinecraftGroupTargets>({
 			method: "GET",
@@ -419,9 +420,7 @@ export class Server extends Resource<Data> {
 	}
 
 	/** server.whitelist.import */
-	async whitelistImport(
-		jobId: string | number,
-	): Promise<models.WhitelistImportJob> {
+	async whitelistImport(jobId: Snowflake): Promise<models.WhitelistImportJob> {
 		return this.ctx.transport.request<models.WhitelistImportJob>({
 			method: "GET",
 			path: `/v1/servers/${this.id}/whitelist/imports/${jobId}`,
@@ -748,7 +747,7 @@ export class Server extends Resource<Data> {
 	}
 
 	/** server.members.delete */
-	async membersDelete(memberId: string | number): Promise<this> {
+	async membersDelete(memberId: Snowflake): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "DELETE",
 			path: `/v1/servers/${this.id}/team/members/${memberId}`,
@@ -759,7 +758,7 @@ export class Server extends Resource<Data> {
 
 	/** server.members.update */
 	async membersUpdate(
-		memberId: string | number,
+		memberId: Snowflake,
 		body: models.TeamMemberUpdateRequest,
 	): Promise<this> {
 		const data = await this.ctx.transport.request({
@@ -783,7 +782,7 @@ export class Server extends Resource<Data> {
 	}
 
 	/** server.roles.delete */
-	async rolesDelete(roleId: string | number): Promise<this> {
+	async rolesDelete(roleId: Snowflake): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "DELETE",
 			path: `/v1/servers/${this.id}/team/roles/${roleId}`,
@@ -794,7 +793,7 @@ export class Server extends Resource<Data> {
 
 	/** server.roles.update */
 	async rolesUpdate(
-		roleId: string | number,
+		roleId: Snowflake,
 		body: models.TeamRoleUpdateRequest,
 	): Promise<this> {
 		const data = await this.ctx.transport.request({
@@ -845,7 +844,7 @@ export class Server extends Resource<Data> {
 	}
 
 	/** server.whitelist.remove_direct */
-	async whitelistRemoveDirect(entryId: string | number): Promise<this> {
+	async whitelistRemoveDirect(entryId: Snowflake): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "DELETE",
 			path: `/v1/servers/${this.id}/whitelist/direct/${entryId}`,

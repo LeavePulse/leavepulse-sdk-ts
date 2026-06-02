@@ -1,6 +1,7 @@
 // Generated from the LeavePulse contract. Do not edit.
 import type { ClientContext } from "./client";
 import type * as models from "./models";
+import type { Snowflake } from "./runtime/snowflake";
 import type { Binding } from "./resources/Binding";
 import type { Build } from "./resources/Build";
 import type { Form } from "./resources/Form";
@@ -24,9 +25,9 @@ export class AdminDiscoveryNs {
 		source?: string;
 		edition?: string;
 		region?: string;
-		minSources?: string;
-		minMcOnline?: string;
-		minDiscordMembers?: string;
+		minSources?: number;
+		minMcOnline?: number;
+		minDiscordMembers?: number;
 		sort?: string;
 	}): Promise<unknown> {
 		return this.ctx.transport.request<unknown>({
@@ -50,7 +51,7 @@ export class AdminDiscoveryNs {
 
 	/** admin.discovery.edit */
 	async edit(
-		candidateId: string | number,
+		candidateId: Snowflake,
 		body: models.DiscoveryCandidateEditRequest,
 	): Promise<unknown> {
 		return this.ctx.transport.request<unknown>({
@@ -62,8 +63,8 @@ export class AdminDiscoveryNs {
 
 	/** admin.discovery.approve */
 	async approve(
-		candidateId: string | number,
-		params?: { showInPublic?: boolean; serverId?: string },
+		candidateId: Snowflake,
+		params?: { showInPublic?: boolean; serverId?: Snowflake },
 	): Promise<unknown> {
 		return this.ctx.transport.request<unknown>({
 			method: "POST",
@@ -77,7 +78,7 @@ export class AdminDiscoveryNs {
 
 	/** admin.discovery.ignore */
 	async ignore(
-		candidateId: string | number,
+		candidateId: Snowflake,
 		params?: { reason?: string },
 	): Promise<unknown> {
 		return this.ctx.transport.request<unknown>({
@@ -89,7 +90,7 @@ export class AdminDiscoveryNs {
 
 	/** admin.discovery.observations */
 	async observations(
-		candidateId: string | number,
+		candidateId: Snowflake,
 		params?: { limit?: number },
 	): Promise<unknown> {
 		return this.ctx.transport.request<unknown>({
@@ -100,7 +101,7 @@ export class AdminDiscoveryNs {
 	}
 
 	/** admin.discovery.preview */
-	async preview(candidateId: string | number): Promise<unknown> {
+	async preview(candidateId: Snowflake): Promise<unknown> {
 		return this.ctx.transport.request<unknown>({
 			method: "GET",
 			path: `/v1/admin/discovery/candidates/${candidateId}/preview`,
@@ -122,7 +123,7 @@ export class AdminOverridesNs {
 
 	/** admin.overrides.list */
 	async list(
-		serverId: string | number,
+		serverId: Snowflake,
 		params?: { start?: string; end?: string },
 	): Promise<models.StatusOverrideItem> {
 		return this.ctx.transport.request<models.StatusOverrideItem>({
@@ -134,7 +135,7 @@ export class AdminOverridesNs {
 
 	/** admin.overrides.create */
 	async create(
-		serverId: string | number,
+		serverId: Snowflake,
 		body: models.CreateStatusOverrideRequest,
 	): Promise<models.StatusOverrideItem> {
 		return this.ctx.transport.request<models.StatusOverrideItem>({
@@ -146,7 +147,7 @@ export class AdminOverridesNs {
 
 	/** admin.overrides.delete */
 	async delete(
-		serverId: string | number,
+		serverId: Snowflake,
 		overrideId: string,
 	): Promise<models.DeleteStatusOverrideResponse> {
 		return this.ctx.transport.request<models.DeleteStatusOverrideResponse>({
@@ -193,7 +194,7 @@ export class AdminProjectsNs {
 
 	/** admin.projects.delete */
 	async delete(
-		projectId: string | number,
+		projectId: Snowflake,
 	): Promise<models.AdminProjectDeleteResponse> {
 		return this.ctx.transport.request<models.AdminProjectDeleteResponse>({
 			method: "DELETE",
@@ -203,7 +204,7 @@ export class AdminProjectsNs {
 
 	/** admin.projects.change_slug */
 	async changeSlug(
-		projectId: string | number,
+		projectId: Snowflake,
 		body: models.AdminChangeProjectSlugRequest,
 	): Promise<models.AdminProject> {
 		return this.ctx.transport.request<models.AdminProject>({
@@ -215,7 +216,7 @@ export class AdminProjectsNs {
 
 	/** admin.projects.rename */
 	async rename(
-		projectId: string | number,
+		projectId: Snowflake,
 		body: models.AdminRenameProjectRequest,
 	): Promise<models.AdminProject> {
 		return this.ctx.transport.request<models.AdminProject>({
@@ -227,7 +228,7 @@ export class AdminProjectsNs {
 
 	/** admin.projects.set_online_strategy */
 	async setOnlineStrategy(
-		projectId: string | number,
+		projectId: Snowflake,
 		body: models.AdminSetProjectOnlineStrategyRequest,
 	): Promise<models.AdminProject> {
 		return this.ctx.transport.request<models.AdminProject>({
@@ -239,7 +240,7 @@ export class AdminProjectsNs {
 
 	/** admin.projects.set_rollout_mode */
 	async setRolloutMode(
-		projectId: string | number,
+		projectId: Snowflake,
 		body: models.AdminSetProjectRolloutModeRequest,
 	): Promise<models.AdminProject> {
 		return this.ctx.transport.request<models.AdminProject>({
@@ -251,7 +252,7 @@ export class AdminProjectsNs {
 
 	/** admin.projects.transfer_ownership */
 	async transferOwnership(
-		projectId: string | number,
+		projectId: Snowflake,
 		body: models.AdminTransferOwnershipRequest,
 	): Promise<models.AdminProject> {
 		return this.ctx.transport.request<models.AdminProject>({
@@ -284,9 +285,7 @@ export class AdminRolesNs {
 	}
 
 	/** admin.roles.delete */
-	async delete(
-		roleId: string | number,
-	): Promise<models.AdminRoleDeleteResponse> {
+	async delete(roleId: Snowflake): Promise<models.AdminRoleDeleteResponse> {
 		return this.ctx.transport.request<models.AdminRoleDeleteResponse>({
 			method: "DELETE",
 			path: `/v1/admin/roles/${roleId}`,
@@ -295,7 +294,7 @@ export class AdminRolesNs {
 
 	/** admin.roles.update */
 	async update(
-		roleId: string | number,
+		roleId: Snowflake,
 		body: models.AdminRoleRequest,
 	): Promise<models.AdminRole> {
 		return this.ctx.transport.request<models.AdminRole>({
@@ -343,7 +342,7 @@ export class AdminServersNs {
 	}
 
 	/** admin.servers.delete */
-	async delete(serverId: string | number): Promise<models.AdminDeleteResponse> {
+	async delete(serverId: Snowflake): Promise<models.AdminDeleteResponse> {
 		return this.ctx.transport.request<models.AdminDeleteResponse>({
 			method: "DELETE",
 			path: `/v1/admin/servers/${serverId}`,
@@ -352,7 +351,7 @@ export class AdminServersNs {
 
 	/** admin.servers.update */
 	async update(
-		serverId: string | number,
+		serverId: Snowflake,
 		body: models.AdminServerUpdateRequest,
 	): Promise<models.AdminServerSummary> {
 		return this.ctx.transport.request<models.AdminServerSummary>({
@@ -368,9 +367,7 @@ export class AdminSessionsNs {
 	constructor(private readonly ctx: ClientContext) {}
 
 	/** admin.sessions.revoke */
-	async revoke(
-		sessionId: string | number,
-	): Promise<models.SessionRevokeResult> {
+	async revoke(sessionId: Snowflake): Promise<models.SessionRevokeResult> {
 		return this.ctx.transport.request<models.SessionRevokeResult>({
 			method: "POST",
 			path: `/v1/admin/sessions/${sessionId}/actions/revoke`,
@@ -429,7 +426,7 @@ export class AdminUsersNs {
 	}
 
 	/** admin.users.get */
-	async get(userId: string | number): Promise<models.AdminUserDetail> {
+	async get(userId: Snowflake): Promise<models.AdminUserDetail> {
 		return this.ctx.transport.request<models.AdminUserDetail>({
 			method: "GET",
 			path: `/v1/admin/users/${userId}`,
@@ -438,7 +435,7 @@ export class AdminUsersNs {
 
 	/** admin.users.update */
 	async update(
-		userId: string | number,
+		userId: Snowflake,
 		body: models.AdminUserUpdateRequest,
 	): Promise<models.AdminUserDetail> {
 		return this.ctx.transport.request<models.AdminUserDetail>({
@@ -450,7 +447,7 @@ export class AdminUsersNs {
 
 	/** admin.users.set_discord */
 	async setDiscord(
-		userId: string | number,
+		userId: Snowflake,
 		body: models.AdminUserDiscordUpdateRequest,
 	): Promise<models.AdminUserDetail> {
 		return this.ctx.transport.request<models.AdminUserDetail>({
@@ -461,7 +458,7 @@ export class AdminUsersNs {
 	}
 
 	/** admin.users.roles */
-	async roles(userId: string | number): Promise<models.UserRolesResponse> {
+	async roles(userId: Snowflake): Promise<models.UserRolesResponse> {
 		return this.ctx.transport.request<models.UserRolesResponse>({
 			method: "GET",
 			path: `/v1/admin/users/${userId}/roles`,
@@ -470,7 +467,7 @@ export class AdminUsersNs {
 
 	/** admin.users.remove_role */
 	async removeRole(
-		userId: string | number,
+		userId: Snowflake,
 		roleSlug: string,
 	): Promise<models.UserRolesResponse> {
 		return this.ctx.transport.request<models.UserRolesResponse>({
@@ -481,7 +478,7 @@ export class AdminUsersNs {
 
 	/** admin.users.assign_role */
 	async assignRole(
-		userId: string | number,
+		userId: Snowflake,
 		roleSlug: string,
 	): Promise<models.UserRolesResponse> {
 		return this.ctx.transport.request<models.UserRolesResponse>({
@@ -491,7 +488,7 @@ export class AdminUsersNs {
 	}
 
 	/** admin.users.sessions */
-	async sessions(userId: string | number): Promise<models.SessionList> {
+	async sessions(userId: Snowflake): Promise<models.SessionList> {
 		return this.ctx.transport.request<models.SessionList>({
 			method: "GET",
 			path: `/v1/admin/users/${userId}/sessions`,
@@ -849,7 +846,7 @@ export class ProjectsNs {
 		features?: string;
 		region?: string;
 		hosting?: string;
-		verified?: string;
+		verified?: boolean;
 	}): Promise<models.ProjectFilterStats> {
 		return this.ctx.transport.request<models.ProjectFilterStats>({
 			method: "GET",
@@ -867,7 +864,7 @@ export class ProjectsNs {
 	}
 
 	/** projects.bridge */
-	async bridge(serverId: string | number): Promise<models.BridgeSettings> {
+	async bridge(serverId: Snowflake): Promise<models.BridgeSettings> {
 		return this.ctx.transport.request<models.BridgeSettings>({
 			method: "GET",
 			path: `/v1/discord/servers/${serverId}/bridge`,
@@ -876,7 +873,7 @@ export class ProjectsNs {
 
 	/** projects.bridge_update */
 	async bridgeUpdate(
-		serverId: string | number,
+		serverId: Snowflake,
 		body: models.BridgeSettingsUpdateRequest,
 	): Promise<models.BridgeSettings> {
 		return this.ctx.transport.request<models.BridgeSettings>({
@@ -888,7 +885,7 @@ export class ProjectsNs {
 
 	/** projects.bridge_import */
 	async bridgeImport(
-		serverId: string | number,
+		serverId: Snowflake,
 		body: models.ImportPullRequest,
 	): Promise<models.ImportPull> {
 		return this.ctx.transport.request<models.ImportPull>({
@@ -899,7 +896,7 @@ export class ProjectsNs {
 	}
 
 	/** projects.bridge_roles */
-	async bridgeRoles(serverId: string | number): Promise<models.RoleCatalog> {
+	async bridgeRoles(serverId: Snowflake): Promise<models.RoleCatalog> {
 		return this.ctx.transport.request<models.RoleCatalog>({
 			method: "GET",
 			path: `/v1/discord/servers/${serverId}/roles-catalog`,
@@ -936,7 +933,7 @@ export class ProjectsNs {
 		features?: string;
 		region?: string;
 		hosting?: string;
-		verified?: string;
+		verified?: boolean;
 		page?: number;
 		perPage?: number;
 		sort?: string;
@@ -1021,7 +1018,7 @@ export class StatsNs {
 		features?: string;
 		region?: string;
 		hosting?: string;
-		verified?: string;
+		verified?: boolean;
 		role?: string;
 	}): Promise<models.FilterStats> {
 		return this.ctx.transport.request<models.FilterStats>({
@@ -1085,7 +1082,7 @@ export class UpdatesNs {
 	async manifest(params?: {
 		channel?: string;
 		platform?: string;
-		serverId?: string;
+		serverId?: Snowflake;
 	}): Promise<models.UpdateManifest> {
 		return this.ctx.transport.request<models.UpdateManifest>({
 			method: "GET",
@@ -1165,7 +1162,7 @@ export class UsersNs {
 	}
 
 	/** users.engagement */
-	async engagement(userId: string): Promise<models.UserEngagement> {
+	async engagement(userId: Snowflake): Promise<models.UserEngagement> {
 		return this.ctx.transport.request<models.UserEngagement>({
 			method: "GET",
 			path: `/v1/community/users/${userId}/engagement`,
@@ -1174,7 +1171,7 @@ export class UsersNs {
 
 	/** users.activity_list */
 	async activityList(
-		userId: string,
+		userId: Snowflake,
 		params?: { limit?: number },
 	): Promise<models.UserRecentActivity> {
 		return this.ctx.transport.request<models.UserRecentActivity>({
@@ -1245,9 +1242,7 @@ export class VerificationNs {
 	}
 
 	/** verification.check_plugin */
-	async checkPlugin(
-		serverId: string | number,
-	): Promise<models.PluginVerification> {
+	async checkPlugin(serverId: Snowflake): Promise<models.PluginVerification> {
 		return this.ctx.transport.request<models.PluginVerification>({
 			method: "GET",
 			path: `/v1/servers/verification/plugin/${serverId}`,
@@ -1276,7 +1271,7 @@ export class WhitelistFormsNs {
 
 	/** whitelist.forms.list */
 	async list(params?: {
-		projectId?: string;
+		projectId?: Snowflake;
 		search?: string;
 		page?: number;
 		perPage?: number;

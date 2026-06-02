@@ -2,6 +2,7 @@
 import { Resource } from "../runtime/resource";
 import type * as models from "../models";
 import type { ClientContext } from "../client";
+import type { Snowflake } from "../runtime/snowflake";
 
 type Data = { id: string | number } & Record<string, unknown> & {
 		server_id?: string | number;
@@ -42,7 +43,7 @@ export class Application extends Resource<Data> {
 
 	/** server.whitelist.apply */
 	async whitelistApply(
-		serverId: string | number,
+		serverId: Snowflake,
 		body: models.WhitelistApplyRequest,
 	): Promise<this> {
 		const data = await this.ctx.transport.request({
@@ -56,7 +57,7 @@ export class Application extends Resource<Data> {
 
 	/** application.set_status */
 	async setStatus(
-		serverId: string | number,
+		serverId: Snowflake,
 		body: models.WhitelistStatusRequest,
 	): Promise<this> {
 		const data = await this.ctx.transport.request({
@@ -70,7 +71,7 @@ export class Application extends Resource<Data> {
 
 	/** application.approve */
 	async approve(
-		serverId: string | number,
+		serverId: Snowflake,
 		body: models.WhitelistDecisionRequest,
 	): Promise<this> {
 		const data = await this.ctx.transport.request({
@@ -84,7 +85,7 @@ export class Application extends Resource<Data> {
 
 	/** application.deny */
 	async deny(
-		serverId: string | number,
+		serverId: Snowflake,
 		body: models.WhitelistDecisionRequest,
 	): Promise<this> {
 		const data = await this.ctx.transport.request({
@@ -98,7 +99,7 @@ export class Application extends Resource<Data> {
 
 	/** application.resubmit */
 	async resubmit(
-		serverId: string | number,
+		serverId: Snowflake,
 		body: models.WhitelistApplyRequest,
 	): Promise<this> {
 		const data = await this.ctx.transport.request({

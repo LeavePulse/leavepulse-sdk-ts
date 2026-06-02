@@ -3,6 +3,7 @@ import { Resource } from "../runtime/resource";
 import type { components } from "../types";
 import type * as models from "../models";
 import type { ClientContext } from "../client";
+import type { Snowflake } from "../runtime/snowflake";
 
 type Data = components["schemas"]["PublicProfile"];
 
@@ -57,7 +58,10 @@ export class User extends Resource<Data> {
 	}
 
 	/** user.report */
-	async report(userId: string, body: models.ReportUserRequest): Promise<this> {
+	async report(
+		userId: Snowflake,
+		body: models.ReportUserRequest,
+	): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "POST",
 			path: `/v1/community/users/${userId}/report`,

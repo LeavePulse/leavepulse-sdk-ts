@@ -2,6 +2,7 @@
 export { LeavePulse } from "./client";
 export type { ClientContext } from "./client";
 export type * from "./models";
+export type { Snowflake } from "./runtime/snowflake";
 export { Application } from "./resources/Application";
 export { Binding } from "./resources/Binding";
 export { Build } from "./resources/Build";

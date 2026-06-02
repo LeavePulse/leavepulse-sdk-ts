@@ -3,6 +3,7 @@ import { Resource } from "../runtime/resource";
 import type { components } from "../types";
 import type * as models from "../models";
 import type { ClientContext } from "../client";
+import type { Snowflake } from "../runtime/snowflake";
 
 type Data = components["schemas"]["Build"] & { user_id?: string | number };
 
@@ -116,7 +117,7 @@ export class Build extends Resource<Data> {
 	}
 
 	/** build.collaborators.remove */
-	async collaboratorsRemove(userId: string): Promise<this> {
+	async collaboratorsRemove(userId: Snowflake): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "DELETE",
 			path: `/v1/builds/${this.id}/collaborators/${userId}`,

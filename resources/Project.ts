@@ -4,6 +4,7 @@ import { TopicSubscription } from "../runtime/realtime";
 import type { components } from "../types";
 import type * as models from "../models";
 import type { ClientContext } from "../client";
+import type { Snowflake } from "../runtime/snowflake";
 import type { Binding } from "./Binding";
 import type { Comment } from "./Comment";
 import type { Form } from "./Form";
@@ -177,7 +178,7 @@ export class Project extends Resource<Data> {
 
 	/** project.team_sync.targets */
 	async teamSyncTargets(params?: {
-		roleId?: string;
+		roleId?: Snowflake;
 	}): Promise<models.DiscordRoleTargets> {
 		return this.ctx.transport.request<models.DiscordRoleTargets>({
 			method: "GET",
@@ -305,7 +306,7 @@ export class Project extends Resource<Data> {
 	}
 
 	/** project.policies.delete */
-	async policiesDelete(policyId: string | number): Promise<this> {
+	async policiesDelete(policyId: Snowflake): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "DELETE",
 			path: `/v1/projects/${this.id}/whitelist/policies/${policyId}`,
@@ -316,7 +317,7 @@ export class Project extends Resource<Data> {
 
 	/** project.policies.update */
 	async policiesUpdate(
-		policyId: string | number,
+		policyId: Snowflake,
 		body: models.WhitelistBindingWriteRequest,
 	): Promise<Binding> {
 		const data = await this.ctx.transport.request({
@@ -329,7 +330,7 @@ export class Project extends Resource<Data> {
 
 	/** project.policies.test */
 	async policiesTest(
-		policyId: string | number,
+		policyId: Snowflake,
 		params?: { audience?: string },
 	): Promise<this> {
 		const data = await this.ctx.transport.request({

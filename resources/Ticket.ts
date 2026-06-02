@@ -3,6 +3,7 @@ import { Resource } from "../runtime/resource";
 import { TopicSubscription } from "../runtime/realtime";
 import type * as models from "../models";
 import type { ClientContext } from "../client";
+import type { Snowflake } from "../runtime/snowflake";
 
 type Data = { id: string | number } & Record<string, unknown>;
 
