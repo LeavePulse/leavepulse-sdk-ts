@@ -32,6 +32,7 @@ export {
 	buildFormData,
 	LeavePulseFile,
 } from "./runtime/transport";
+export { parseJson } from "./runtime/json";
 export {
 	LeavePulseError,
 	HTTPException,

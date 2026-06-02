@@ -7,6 +7,7 @@
 //   - MockTransport:    canned responses for tests.
 
 import { httpErrorFor, RateLimited, ServerError } from "./errors";
+import { parseJson } from "./json";
 
 export type HttpMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 
@@ -258,7 +259,8 @@ export class BearerTransport implements Transport {
 	async request<T>(req: TransportRequest): Promise<T> {
 		const response = await this.send(req);
 		if (response.status === 204) return undefined as T;
-		return (await response.json()) as T;
+		// parseJson (not response.json()) keeps 64-bit Snowflake ids precise.
+		return parseJson(await response.text()) as T;
 	}
 
 	async conditional<T>(req: TransportRequest): Promise<ConditionalResult<T>> {
@@ -269,7 +271,7 @@ export class BearerTransport implements Transport {
 		if (response.status === 404) return { status: "not_found" };
 		const etag = response.headers.get("etag") ?? undefined;
 		if (response.status === 304) return { status: "not_modified", etag };
-		const data = (await response.json()) as T;
+		const data = parseJson(await response.text()) as T;
 		return { status: "modified", data, etag };
 	}
 }

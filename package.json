@@ -1,6 +1,6 @@
 {
 	"name": "@leavepulse/sdk",
-	"version": "0.3.9",
+	"version": "0.3.10",
 	"description": "Generated resource SDK for the LeavePulse platform contract.",
 	"type": "module",
 	"module": "index.ts",
@@ -16,6 +16,9 @@
 		".": "./index.ts",
 		"./types": "./types.ts",
 		"./auth-types": "./auth-types.ts"
+	},
+	"dependencies": {
+		"lossless-json": "^4.0.0"
 	},
 	"sideEffects": false,
 	"license": "UNLICENSED"
