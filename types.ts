@@ -1829,6 +1829,26 @@ export interface paths {
 		patch?: never;
 		trace?: never;
 	};
+	"/v1/me/oauth/{provider}": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
+		post?: never;
+		/**
+		 * Unlink OAuth provider
+		 * @description Remove a linked OAuth provider from the current account. Refuses to remove the last remaining login method.
+		 */
+		delete: operations["me.oauth.unlink"];
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
 	"/v1/me/oauth/{provider}/link/start": {
 		parameters: {
 			query?: never;
@@ -5476,6 +5496,10 @@ export interface components {
 		/** OAuthProvidersResponse */
 		OAuthProvidersResponse: {
 			providers?: components["schemas"]["OAuthProviderStatus"][];
+		};
+		/** OAuthUnlinkResult */
+		OAuthUnlinkResult: {
+			status: string;
 		};
 		/**
 		 * OnlineState
@@ -11728,6 +11752,46 @@ export interface operations {
 				};
 				content: {
 					"application/json": components["schemas"]["OAuthProvidersResponse"];
+				};
+			};
+		};
+	};
+	"me.oauth.unlink": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path: {
+				provider: string;
+			};
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description Request fulfilled, document follows */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["OAuthUnlinkResult"];
+				};
+			};
+			/** @description Bad request syntax or unsupported method */
+			400: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": {
+						detail: string;
+						extra?:
+							| null
+							| {
+									[key: string]: unknown;
+							  }
+							| unknown[];
+						status_code: number;
+					};
 				};
 			};
 		};

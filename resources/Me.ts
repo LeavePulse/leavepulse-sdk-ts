@@ -204,6 +204,14 @@ export class Me extends Resource<Data> {
 		});
 	}
 
+	/** me.oauth.unlink */
+	async oauthUnlink(provider: string): Promise<models.OAuthUnlinkResult> {
+		return this.ctx.transport.request<models.OAuthUnlinkResult>({
+			method: "DELETE",
+			path: `/v1/me/oauth/${provider}`,
+		});
+	}
+
 	/** me.oauth.link_start */
 	async oauthLinkStart(
 		provider: string,

@@ -156,6 +156,7 @@ export type OAuthLinkStartResponse =
 	components["schemas"]["OAuthLinkStartResponse"];
 export type OAuthProvidersResponse =
 	components["schemas"]["OAuthProvidersResponse"];
+export type OAuthUnlinkResult = components["schemas"]["OAuthUnlinkResult"];
 export type Order = components["schemas"]["Order"];
 export type OrderList = components["schemas"]["OrderList"];
 export type PasswordChangeRequest =
