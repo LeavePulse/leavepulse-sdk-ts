@@ -373,8 +373,12 @@ export type LoginResponse = authComponents["schemas"]["LoginResponse"];
 export type LogoutResponse = authComponents["schemas"]["LogoutResponse"];
 export type OAuthCallbackRequest =
 	authComponents["schemas"]["OAuthCallbackRequest"];
+export type OAuthCaptchaConfirmRequest =
+	authComponents["schemas"]["OAuthCaptchaConfirmRequest"];
 export type OAuthStartResponse =
 	authComponents["schemas"]["OAuthStartResponse"];
+export type OAuthTotpConfirmRequest =
+	authComponents["schemas"]["OAuthTotpConfirmRequest"];
 export type RefreshTokenRequest =
 	authComponents["schemas"]["RefreshTokenRequest"];
 export type UserLogin = authComponents["schemas"]["UserLogin"];

@@ -653,7 +653,7 @@ export interface paths {
 		 * Confirm OAuth signup with captcha
 		 * @description Finalize an OAuth signup after solving the captcha challenge.
 		 */
-		post: operations["AuthOauthCaptchaConfirmOauthCaptchaConfirm"];
+		post: operations["auth.oauth.captcha_confirm"];
 		delete?: never;
 		options?: never;
 		head?: never;
@@ -713,7 +713,7 @@ export interface paths {
 		 * Confirm OAuth login with TOTP
 		 * @description Finalize an OAuth login after providing a valid TOTP code.
 		 */
-		post: operations["AuthOauthTotpConfirmOauthTotpConfirm"];
+		post: operations["auth.oauth.totp_confirm"];
 		delete?: never;
 		options?: never;
 		head?: never;
@@ -4027,7 +4027,7 @@ export interface operations {
 			};
 		};
 	};
-	AuthOauthCaptchaConfirmOauthCaptchaConfirm: {
+	"auth.oauth.captcha_confirm": {
 		parameters: {
 			query?: never;
 			header?: never;
@@ -4183,7 +4183,7 @@ export interface operations {
 			};
 		};
 	};
-	AuthOauthTotpConfirmOauthTotpConfirm: {
+	"auth.oauth.totp_confirm": {
 		parameters: {
 			query?: never;
 			header?: never;

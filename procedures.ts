@@ -562,6 +562,30 @@ export class AuthDeviceNs {
 export class AuthOauthNs {
 	constructor(private readonly ctx: ClientContext) {}
 
+	/** auth.oauth.captcha_confirm */
+	async captchaConfirm(
+		body: models.OAuthCaptchaConfirmRequest,
+	): Promise<unknown> {
+		return this.ctx.transport.request<unknown>({
+			method: "POST",
+			path: `/auth/oauth/captcha/confirm`,
+			body,
+			channel: "auth",
+		});
+	}
+
+	/** auth.oauth.totp_confirm */
+	async totpConfirm(
+		body: models.OAuthTotpConfirmRequest,
+	): Promise<models.LoginResponse> {
+		return this.ctx.transport.request<models.LoginResponse>({
+			method: "POST",
+			path: `/auth/oauth/totp/confirm`,
+			body,
+			channel: "auth",
+		});
+	}
+
 	/** auth.oauth.callback */
 	async callback(
 		provider: string,
