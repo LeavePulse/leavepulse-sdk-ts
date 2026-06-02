@@ -13,7 +13,6 @@ import { Comment } from "./resources/Comment";
 import { Form } from "./resources/Form";
 import { Me } from "./resources/Me";
 import { Order } from "./resources/Order";
-import { Product } from "./resources/Product";
 import { Project } from "./resources/Project";
 import { Server } from "./resources/Server";
 import { Session } from "./resources/Session";
@@ -177,7 +176,6 @@ export class LeavePulse {
 			Form: (d) => new Form(d as never, this.ctx),
 			Me: (d) => new Me(d as never, this.ctx),
 			Order: (d) => new Order(d as never, this.ctx),
-			Product: (d) => new Product(d as never, this.ctx),
 			Project: (d) => new Project(d as never, this.ctx),
 			Server: (d) => new Server(d as never, this.ctx),
 			Session: (d) => new Session(d as never, this.ctx),

@@ -6,7 +6,6 @@ import type { Binding } from "./resources/Binding";
 import type { Build } from "./resources/Build";
 import type { Form } from "./resources/Form";
 import type { Order } from "./resources/Order";
-import type { Product } from "./resources/Product";
 import type { Server } from "./resources/Server";
 import type { Subscription } from "./resources/Subscription";
 import type { Ticket } from "./resources/Ticket";
@@ -683,7 +682,7 @@ export class BillingProductsNs {
 	constructor(private readonly ctx: ClientContext) {}
 
 	/** billing.products.list */
-	async list(): Promise<Product[]> {
+	async list(): Promise<models.Product[]> {
 		const data = (await this.ctx.transport.request({
 			method: "GET",
 			path: `/v1/billing/products`,
@@ -691,7 +690,7 @@ export class BillingProductsNs {
 		const items = Array.isArray(data)
 			? data
 			: ((data as { items?: unknown[] }).items ?? []);
-		return this.ctx.hydrateMany("Product", items) as Product[];
+		return items as models.Product[];
 	}
 }
 

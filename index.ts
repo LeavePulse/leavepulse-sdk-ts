@@ -10,7 +10,6 @@ export { Comment } from "./resources/Comment";
 export { Form } from "./resources/Form";
 export { Me } from "./resources/Me";
 export { Order } from "./resources/Order";
-export { Product } from "./resources/Product";
 export { Project } from "./resources/Project";
 export { Server } from "./resources/Server";
 export { Session } from "./resources/Session";
