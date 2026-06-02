@@ -1,16 +1,26 @@
 // Generated from the LeavePulse contract. Do not edit.
-import type { ClientContext } from "../client";
+import { Resource } from "../runtime/resource";
+import type { components } from "../types";
 import type * as models from "../models";
+import type { ClientContext } from "../client";
 
-/** Order — a scope namespace (no instance identity). */
-export class Order {
-	constructor(private readonly ctx: ClientContext) {}
+type Data = components["schemas"]["Order"];
 
-	/** order.get */
-	async get(orderId: string): Promise<models.Order> {
-		return this.ctx.transport.request<models.Order>({
+export class Order extends Resource<Data> {
+	constructor(
+		data: Data,
+		private readonly ctx: ClientContext,
+	) {
+		super(data);
+	}
+
+	/** Re-fetch this Order and hydrate in place. */
+	async refresh(): Promise<this> {
+		const data = await this.ctx.transport.request({
 			method: "GET",
-			path: `/v1/billing/orders/${orderId}`,
+			path: `/v1/billing/orders/${this.id}`,
 		});
+		this.ctx.hydrate("Order", data);
+		return this;
 	}
 }

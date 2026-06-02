@@ -49,7 +49,6 @@ export interface ClientContext {
 
 export class LeavePulse {
 	private readonly ctx: ClientContext;
-	readonly order: Order;
 	readonly admin: AdminNs;
 	readonly auth: AuthNs;
 	readonly billing: BillingNs;
@@ -90,7 +89,6 @@ export class LeavePulse {
 			hydrateMany: (type, raw) =>
 				Array.isArray(raw) ? raw.map((d) => this.hydrate(type, d)) : [],
 		};
-		this.order = new Order(this.ctx);
 		this.admin = new AdminNs(this.ctx);
 		this.auth = new AuthNs(this.ctx);
 		this.billing = new BillingNs(this.ctx);
@@ -133,6 +131,14 @@ export class LeavePulse {
 		return this.hydrate("Me", data) as Me;
 	}
 
+	async order(id: string): Promise<Order> {
+		const data = await this.ctx.transport.request({
+			method: "GET",
+			path: `/v1/billing/orders/${id}`,
+		});
+		return this.hydrate("Order", data) as Order;
+	}
+
 	async project(id: Snowflake): Promise<Project> {
 		const data = await this.ctx.transport.request({
 			method: "GET",
@@ -172,6 +178,7 @@ export class LeavePulse {
 			Comment: (d) => new Comment(d as never, this.ctx),
 			Form: (d) => new Form(d as never, this.ctx),
 			Me: (d) => new Me(d as never, this.ctx),
+			Order: (d) => new Order(d as never, this.ctx),
 			Product: (d) => new Product(d as never, this.ctx),
 			Project: (d) => new Project(d as never, this.ctx),
 			Server: (d) => new Server(d as never, this.ctx),
