@@ -49,6 +49,7 @@ export interface ClientContext {
 
 export class LeavePulse {
 	private readonly ctx: ClientContext;
+	private _me?: Me;
 	readonly admin: AdminNs;
 	readonly auth: AuthNs;
 	readonly billing: BillingNs;
@@ -123,12 +124,9 @@ export class LeavePulse {
 		return this.hydrate("Form", data) as Form;
 	}
 
-	async me(): Promise<Me> {
-		const data = await this.ctx.transport.request({
-			method: "GET",
-			path: `/v1/me`,
-		});
-		return this.hydrate("Me", data) as Me;
+	get me(): Me {
+		this._me ??= new Me({} as never, this.ctx);
+		return this._me;
 	}
 
 	async order(id: string): Promise<Order> {
