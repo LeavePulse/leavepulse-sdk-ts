@@ -119,10 +119,27 @@ export async function fetchCached<T>(
 	});
 
 	switch (result.status) {
-		case "not_modified":
-			// Server confirmed the cached copy is current. (If the cache was empty
-			// this shouldn't happen, but fall back to whatever we have.)
-			return cached?.body ?? null;
+		case "not_modified": {
+			// Server confirmed the cached copy is current — return it.
+			if (cached) return cached.body;
+			// We held a validator but no body (e.g. the store instance differs
+			// between SSR and client hydration, or the entry was evicted). The
+			// `304` carries no body, so re-fetch unconditionally to recover the
+			// full payload instead of reporting a phantom miss (which would
+			// surface as a bogus 404 in fetchCachedOrThrow).
+			const fresh = await transport.conditional<T>(req);
+			if (fresh.status === "modified") {
+				if (fresh.etag) {
+					await store.set<T>(key, { etag: fresh.etag, body: fresh.data });
+				}
+				return fresh.data;
+			}
+			if (fresh.status === "not_found") {
+				await store.delete(key);
+				return null;
+			}
+			return null;
+		}
 		case "modified":
 			if (result.etag) {
 				await store.set<T>(key, { etag: result.etag, body: result.data });
