@@ -36,6 +36,11 @@ export class Server extends Resource<Data> {
 		return this;
 	}
 
+	/** Load this Server's data (alias of refresh). */
+	fetch(): Promise<this> {
+		return this.refresh();
+	}
+
 	/** Whether the current user may change_address (RFC §4). */
 	get canChangeAddress(): boolean {
 		return this.hasCapability("change_address", "server.change_address");

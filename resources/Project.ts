@@ -32,6 +32,11 @@ export class Project extends Resource<Data> {
 		return this;
 	}
 
+	/** Load this Project's data (alias of refresh). */
+	fetch(): Promise<this> {
+		return this.refresh();
+	}
+
 	/** Whether the current user may heart (RFC §4). */
 	get canHeart(): boolean {
 		return this.hasCapability("heart", "project.heart");

@@ -25,6 +25,11 @@ export class User extends Resource<Data> {
 		return this;
 	}
 
+	/** Load this User's data (alias of refresh). */
+	fetch(): Promise<this> {
+		return this.refresh();
+	}
+
 	/** Whether the current user may report (RFC §4). */
 	get canReport(): boolean {
 		return this.hasCapability("report", "user.report");

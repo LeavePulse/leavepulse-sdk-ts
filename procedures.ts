@@ -64,8 +64,8 @@ export class AdminDiscoveryNs {
 	async approve(
 		candidateId: Snowflake,
 		params?: { showInPublic?: boolean; serverId?: Snowflake },
-	): Promise<unknown> {
-		return this.ctx.transport.request<unknown>({
+	): Promise<models.DiscoveryApproveResult> {
+		return this.ctx.transport.request<models.DiscoveryApproveResult>({
 			method: "POST",
 			path: `/v1/admin/discovery/candidates/${candidateId}/actions/approve`,
 			query: {
@@ -79,8 +79,8 @@ export class AdminDiscoveryNs {
 	async ignore(
 		candidateId: Snowflake,
 		params?: { reason?: string },
-	): Promise<unknown> {
-		return this.ctx.transport.request<unknown>({
+	): Promise<models.DiscoveryIgnoreResult> {
+		return this.ctx.transport.request<models.DiscoveryIgnoreResult>({
 			method: "POST",
 			path: `/v1/admin/discovery/candidates/${candidateId}/actions/ignore`,
 			query: { reason: params?.reason },
@@ -564,8 +564,10 @@ export class AuthOauthNs {
 	/** auth.oauth.captcha_confirm */
 	async captchaConfirm(
 		body: models.OAuthCaptchaConfirmRequest,
-	): Promise<unknown> {
-		return this.ctx.transport.request<unknown>({
+	): Promise<models.LoginResponse | models.OAuthTotpChallengeResponse> {
+		return this.ctx.transport.request<
+			models.LoginResponse | models.OAuthTotpChallengeResponse
+		>({
 			method: "POST",
 			path: `/auth/oauth/captcha/confirm`,
 			body,
@@ -589,8 +591,20 @@ export class AuthOauthNs {
 	async callback(
 		provider: string,
 		body: models.OAuthCallbackRequest,
-	): Promise<unknown> {
-		return this.ctx.transport.request<unknown>({
+	): Promise<
+		| models.LoginResponse
+		| models.OAuthCaptchaChallengeResponse
+		| models.OAuthTotpChallengeResponse
+		| models.StatusResponse
+		| models.MinecraftAccountLinkResponse
+	> {
+		return this.ctx.transport.request<
+			| models.LoginResponse
+			| models.OAuthCaptchaChallengeResponse
+			| models.OAuthTotpChallengeResponse
+			| models.StatusResponse
+			| models.MinecraftAccountLinkResponse
+		>({
 			method: "POST",
 			path: `/auth/oauth/${provider}/callback`,
 			body,

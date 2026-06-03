@@ -44,6 +44,32 @@ export class IdentityMap {
 		return created;
 	}
 
+	/**
+	 * Return the canonical instance for (type, id) WITHOUT touching its data:
+	 * the existing one as-is, or a freshly constructed one (typically seeded
+	 * with just `{ id }`) on first sight. Used by sync id-accessors
+	 * (`client.project(1)`) that hand back a resource without a GET; data is
+	 * loaded on demand via `refresh()`. Unlike `upsert`, never overwrites an
+	 * already-hydrated instance.
+	 */
+	ensure<T extends Identified>(
+		type: string,
+		id: string | number,
+		factory: () => T,
+	): T {
+		const key = String(id);
+		let bucket = this.byType.get(type);
+		if (!bucket) {
+			bucket = new Map();
+			this.byType.set(type, bucket);
+		}
+		const existing = bucket.get(key);
+		if (existing) return existing as T;
+		const created = factory();
+		bucket.set(key, created);
+		return created;
+	}
+
 	get<T extends Identified>(type: string, id: string | number): T | undefined {
 		return this.byType.get(type)?.get(String(id)) as T | undefined;
 	}

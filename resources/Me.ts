@@ -31,6 +31,11 @@ export class Me extends Resource<Data> {
 		return this;
 	}
 
+	/** Load this Me's data (alias of refresh). */
+	fetch(): Promise<this> {
+		return this.refresh();
+	}
+
 	/** me.issue_ws_token */
 	async issueWsToken(
 		body: models.WsTokenRequest,

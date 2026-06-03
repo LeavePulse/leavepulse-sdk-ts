@@ -107,20 +107,20 @@ export class LeavePulse {
 		this.whitelist = new WhitelistNs(this.ctx);
 	}
 
-	async build(id: string): Promise<Build> {
-		const data = await this.ctx.transport.request({
-			method: "GET",
-			path: `/v1/builds/${id}`,
-		});
-		return this.hydrate("Build", data) as Build;
+	build(id: string): Build {
+		return this.ctx.cache.ensure(
+			"Build",
+			id,
+			() => new Build({ id } as never, this.ctx),
+		) as Build;
 	}
 
-	async form(id: Snowflake): Promise<Form> {
-		const data = await this.ctx.transport.request({
-			method: "GET",
-			path: `/v1/whitelist/forms/${id}`,
-		});
-		return this.hydrate("Form", data) as Form;
+	form(id: Snowflake): Form {
+		return this.ctx.cache.ensure(
+			"Form",
+			id,
+			() => new Form({ id } as never, this.ctx),
+		) as Form;
 	}
 
 	get me(): Me {
@@ -128,36 +128,36 @@ export class LeavePulse {
 		return this._me;
 	}
 
-	async order(id: string): Promise<Order> {
-		const data = await this.ctx.transport.request({
-			method: "GET",
-			path: `/v1/billing/orders/${id}`,
-		});
-		return this.hydrate("Order", data) as Order;
+	order(id: string): Order {
+		return this.ctx.cache.ensure(
+			"Order",
+			id,
+			() => new Order({ id } as never, this.ctx),
+		) as Order;
 	}
 
-	async project(id: Snowflake): Promise<Project> {
-		const data = await this.ctx.transport.request({
-			method: "GET",
-			path: `/v1/projects/${id}`,
-		});
-		return this.hydrate("Project", data, "project") as Project;
+	project(id: Snowflake): Project {
+		return this.ctx.cache.ensure(
+			"Project",
+			id,
+			() => new Project({ id } as never, this.ctx),
+		) as Project;
 	}
 
-	async server(id: Snowflake): Promise<Server> {
-		const data = await this.ctx.transport.request({
-			method: "GET",
-			path: `/v1/servers/${id}`,
-		});
-		return this.hydrate("Server", data) as Server;
+	server(id: Snowflake): Server {
+		return this.ctx.cache.ensure(
+			"Server",
+			id,
+			() => new Server({ id } as never, this.ctx),
+		) as Server;
 	}
 
-	async user(id: string): Promise<User> {
-		const data = await this.ctx.transport.request({
-			method: "GET",
-			path: `/v1/users/${id}/public-profile`,
-		});
-		return this.hydrate("User", data) as User;
+	user(id: string): User {
+		return this.ctx.cache.ensure(
+			"User",
+			id,
+			() => new User({ id } as never, this.ctx),
+		) as User;
 	}
 
 	/**

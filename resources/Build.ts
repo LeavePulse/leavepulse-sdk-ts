@@ -25,6 +25,11 @@ export class Build extends Resource<Data> {
 		return this;
 	}
 
+	/** Load this Build's data (alias of refresh). */
+	fetch(): Promise<this> {
+		return this.refresh();
+	}
+
 	/** Whether the current user may delete (RFC §4). */
 	get canDelete(): boolean {
 		return this.hasCapability("delete", "build.delete");

@@ -23,4 +23,9 @@ export class Order extends Resource<Data> {
 		this.ctx.hydrate("Order", data);
 		return this;
 	}
+
+	/** Load this Order's data (alias of refresh). */
+	fetch(): Promise<this> {
+		return this.refresh();
+	}
 }

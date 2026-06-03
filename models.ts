@@ -99,8 +99,12 @@ export type DiscordLinkUpdateRequest =
 export type DiscordRoleTargets = components["schemas"]["DiscordRoleTargets"];
 export type DiscordVerifyRequest =
 	components["schemas"]["DiscordVerifyRequest"];
+export type DiscoveryApproveResult =
+	components["schemas"]["DiscoveryApproveResult"];
 export type DiscoveryCandidateEditRequest =
 	components["schemas"]["DiscoveryCandidateEditRequest"];
+export type DiscoveryIgnoreResult =
+	components["schemas"]["DiscoveryIgnoreResult"];
 export type DnsVerification = components["schemas"]["DnsVerification"];
 export type EmailChangeRequest = components["schemas"]["EmailChangeRequest"];
 export type EmailChangeResult = components["schemas"]["EmailChangeResult"];
@@ -372,16 +376,23 @@ export type WsTokenRequest = components["schemas"]["WsTokenRequest"];
 export type WsTokenResponse = components["schemas"]["WsTokenResponse"];
 export type LoginResponse = authComponents["schemas"]["LoginResponse"];
 export type LogoutResponse = authComponents["schemas"]["LogoutResponse"];
+export type MinecraftAccountLinkResponse =
+	authComponents["schemas"]["MinecraftAccountLinkResponse"];
 export type OAuthCallbackRequest =
 	authComponents["schemas"]["OAuthCallbackRequest"];
+export type OAuthCaptchaChallengeResponse =
+	authComponents["schemas"]["OAuthCaptchaChallengeResponse"];
 export type OAuthCaptchaConfirmRequest =
 	authComponents["schemas"]["OAuthCaptchaConfirmRequest"];
 export type OAuthStartResponse =
 	authComponents["schemas"]["OAuthStartResponse"];
+export type OAuthTotpChallengeResponse =
+	authComponents["schemas"]["OAuthTotpChallengeResponse"];
 export type OAuthTotpConfirmRequest =
 	authComponents["schemas"]["OAuthTotpConfirmRequest"];
 export type RefreshTokenRequest =
 	authComponents["schemas"]["RefreshTokenRequest"];
+export type StatusResponse = authComponents["schemas"]["StatusResponse"];
 export type UserLogin = authComponents["schemas"]["UserLogin"];
 export type UserPublic = authComponents["schemas"]["UserPublic"];
 export type UserRegister = authComponents["schemas"]["UserRegister"];

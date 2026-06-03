@@ -4933,9 +4933,20 @@ export interface components {
 		DiscordVerifyRequest: {
 			invite_url?: string | null;
 		};
+		/** DiscoveryApproveResult */
+		DiscoveryApproveResult: {
+			candidate_id: number;
+			server_id?: number | null;
+			status: string;
+		};
 		/** DiscoveryCandidateEditRequest */
 		DiscoveryCandidateEditRequest: {
 			edits: unknown;
+		};
+		/** DiscoveryIgnoreResult */
+		DiscoveryIgnoreResult: {
+			candidate_id: number;
+			status: string;
 		};
 		/** DnsVerification */
 		DnsVerification: {
@@ -7451,9 +7462,7 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
-					"application/json": {
-						[key: string]: unknown;
-					};
+					"application/json": components["schemas"]["DiscoveryApproveResult"];
 				};
 			};
 			/** @description Bad request syntax or unsupported method */
@@ -7495,9 +7504,7 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
-					"application/json": {
-						[key: string]: unknown;
-					};
+					"application/json": components["schemas"]["DiscoveryIgnoreResult"];
 				};
 			};
 			/** @description Bad request syntax or unsupported method */
