@@ -11,9 +11,10 @@ import type { Comment } from "./Comment";
 import type { Form } from "./Form";
 import type { Server } from "./Server";
 
-type Data = components["schemas"]["ProjectDetail"] & {
-	policy_id?: string | number;
-};
+type Data = components["schemas"]["ProjectDetail"]["project"] &
+	Omit<components["schemas"]["ProjectDetail"], "project"> & {
+		policy_id?: string | number;
+	};
 
 export class Project extends Resource<Data> {
 	constructor(
