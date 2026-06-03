@@ -15,7 +15,7 @@ export class Form extends Resource<Data> {
 		super(data);
 	}
 
-	get id(): string | number {
+	override get id(): string | number {
 		return extractId(this.data as Record<string, unknown>, ["summary", "id"]);
 	}
 
