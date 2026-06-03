@@ -7,6 +7,7 @@
 // store the new body on `200`. Two stores ship (in-memory, localStorage);
 // implement `EtagStore` for anything else (SQLite, IndexedDB, …).
 
+import { NotFound } from "./errors";
 import type {
 	ConditionalResult,
 	Transport,
@@ -131,4 +132,23 @@ export async function fetchCached<T>(
 			await store.delete(key);
 			return null;
 	}
+}
+
+/**
+ * Like {@link fetchCached} but for endpoints that always yield a value: a `404`
+ * (null) is surfaced as a {@link NotFound} error, matching what a plain
+ * `transport.request` would throw. Generated GET methods route through this so
+ * their return type stays non-nullable.
+ */
+export async function fetchCachedOrThrow<T>(
+	transport: Transport,
+	store: EtagStore,
+	req: TransportRequest,
+	options: FetchCachedOptions = {},
+): Promise<T> {
+	const body = await fetchCached<T>(transport, store, req, options);
+	if (body === null) {
+		throw new NotFound(404, req, null, "");
+	}
+	return body;
 }

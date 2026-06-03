@@ -1,5 +1,6 @@
 // Generated from the LeavePulse contract. Do not edit.
 import { Resource } from "../runtime/resource";
+import { fetchCachedOrThrow } from "../runtime/etag-store";
 import type { components } from "../types";
 import type * as models from "../models";
 import type { ClientContext } from "../client";
@@ -17,10 +18,11 @@ export class Build extends Resource<Data> {
 
 	/** Re-fetch this Build and hydrate in place. */
 	async refresh(): Promise<this> {
-		const data = await this.ctx.transport.request({
-			method: "GET",
-			path: `/v1/builds/${this.id}`,
-		});
+		const data = await fetchCachedOrThrow(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{ method: "GET", path: `/v1/builds/${this.id}` },
+		);
 		this.ctx.hydrate("Build", data);
 		return this;
 	}
@@ -75,18 +77,20 @@ export class Build extends Resource<Data> {
 
 	/** build.collaborators.list */
 	async collaboratorsList(): Promise<models.CollaboratorList> {
-		return this.ctx.transport.request<models.CollaboratorList>({
-			method: "GET",
-			path: `/v1/builds/${this.id}/collaborators`,
-		});
+		return fetchCachedOrThrow<models.CollaboratorList>(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{ method: "GET", path: `/v1/builds/${this.id}/collaborators` },
+		);
 	}
 
 	/** build.config.url */
 	async configUrl(): Promise<models.ConfigBlobRef> {
-		return this.ctx.transport.request<models.ConfigBlobRef>({
-			method: "GET",
-			path: `/v1/builds/${this.id}/config`,
-		});
+		return fetchCachedOrThrow<models.ConfigBlobRef>(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{ method: "GET", path: `/v1/builds/${this.id}/config` },
+		);
 	}
 
 	/** build.delete */

@@ -1,6 +1,7 @@
 // Generated from the LeavePulse contract. Do not edit.
 import { Resource } from "../runtime/resource";
 import { TopicSubscription } from "../runtime/realtime";
+import { fetchCachedOrThrow } from "../runtime/etag-store";
 import type * as models from "../models";
 import type { ClientContext } from "../client";
 import type { Snowflake } from "../runtime/snowflake";
@@ -27,10 +28,11 @@ export class Ticket extends Resource<Data> {
 
 	/** ticket.messages.list */
 	async messagesList(): Promise<models.TicketMessageList> {
-		return this.ctx.transport.request<models.TicketMessageList>({
-			method: "GET",
-			path: `/v1/community/tickets/${this.id}/messages`,
-		});
+		return fetchCachedOrThrow<models.TicketMessageList>(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{ method: "GET", path: `/v1/community/tickets/${this.id}/messages` },
+		);
 	}
 
 	/** ticket.set_status */

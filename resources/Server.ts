@@ -1,6 +1,7 @@
 // Generated from the LeavePulse contract. Do not edit.
 import { Resource } from "../runtime/resource";
 import { TopicSubscription } from "../runtime/realtime";
+import { fetchCachedOrThrow } from "../runtime/etag-store";
 import type { components } from "../types";
 import type * as models from "../models";
 import type { LeavePulseFile } from "../runtime/transport";
@@ -28,10 +29,11 @@ export class Server extends Resource<Data> {
 
 	/** Re-fetch this Server and hydrate in place. */
 	async refresh(): Promise<this> {
-		const data = await this.ctx.transport.request({
-			method: "GET",
-			path: `/v1/servers/${this.id}`,
-		});
+		const data = await fetchCachedOrThrow(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{ method: "GET", path: `/v1/servers/${this.id}` },
+		);
 		this.ctx.hydrate("Server", data);
 		return this;
 	}
@@ -156,15 +158,19 @@ export class Server extends Resource<Data> {
 		limit?: number;
 		status?: string;
 	}): Promise<Ticket[]> {
-		const data = await this.ctx.transport.request<unknown>({
-			method: "GET",
-			path: `/v1/community/tickets/server/${this.id}`,
-			query: {
-				page: params?.page,
-				limit: params?.limit,
-				status: params?.status,
+		const data = await fetchCachedOrThrow<unknown>(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{
+				method: "GET",
+				path: `/v1/community/tickets/server/${this.id}`,
+				query: {
+					page: params?.page,
+					limit: params?.limit,
+					status: params?.status,
+				},
 			},
-		});
+		);
 		const items = Array.isArray(data)
 			? data
 			: ((data as { items?: unknown[] }).items ?? []);
@@ -178,24 +184,29 @@ export class Server extends Resource<Data> {
 		minecraftNick?: string;
 		namedServerId?: number;
 	}): Promise<models.PlayerStats> {
-		return this.ctx.transport.request<models.PlayerStats>({
-			method: "GET",
-			path: `/v1/monitoring/servers/${this.id}/player-stats`,
-			query: {
-				user_id: params?.userId,
-				minecraft_uuid: params?.minecraftUuid,
-				minecraft_nick: params?.minecraftNick,
-				named_server_id: params?.namedServerId,
+		return fetchCachedOrThrow<models.PlayerStats>(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{
+				method: "GET",
+				path: `/v1/monitoring/servers/${this.id}/player-stats`,
+				query: {
+					user_id: params?.userId,
+					minecraft_uuid: params?.minecraftUuid,
+					minecraft_nick: params?.minecraftNick,
+					named_server_id: params?.namedServerId,
+				},
 			},
-		});
+		);
 	}
 
 	/** server.bot */
 	async bot(): Promise<models.ServerBot> {
-		return this.ctx.transport.request<models.ServerBot>({
-			method: "GET",
-			path: `/v1/servers/${this.id}/bot`,
-		});
+		return fetchCachedOrThrow<models.ServerBot>(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{ method: "GET", path: `/v1/servers/${this.id}/bot` },
+		);
 	}
 
 	/** server.events.list */
@@ -206,144 +217,172 @@ export class Server extends Resource<Data> {
 		eventTypes?: string;
 		player?: string;
 	}): Promise<models.ServerEvents> {
-		return this.ctx.transport.request<models.ServerEvents>({
-			method: "GET",
-			path: `/v1/servers/${this.id}/events`,
-			query: {
-				period: params?.period,
-				limit: params?.limit,
-				page: params?.page,
-				event_types: params?.eventTypes,
-				player: params?.player,
+		return fetchCachedOrThrow<models.ServerEvents>(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{
+				method: "GET",
+				path: `/v1/servers/${this.id}/events`,
+				query: {
+					period: params?.period,
+					limit: params?.limit,
+					page: params?.page,
+					event_types: params?.eventTypes,
+					player: params?.player,
+				},
 			},
-		});
+		);
 	}
 
 	/** server.history.list */
 	async historyList(params?: {
 		period?: string;
 	}): Promise<models.HistoryResponse> {
-		return this.ctx.transport.request<models.HistoryResponse>({
-			method: "GET",
-			path: `/v1/servers/${this.id}/history`,
-			query: { period: params?.period },
-		});
+		return fetchCachedOrThrow<models.HistoryResponse>(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{
+				method: "GET",
+				path: `/v1/servers/${this.id}/history`,
+				query: { period: params?.period },
+			},
+		);
 	}
 
 	/** server.icons.list */
 	async iconsList(): Promise<models.IconHistory> {
-		return this.ctx.transport.request<models.IconHistory>({
-			method: "GET",
-			path: `/v1/servers/${this.id}/icons/history`,
-		});
+		return fetchCachedOrThrow<models.IconHistory>(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{ method: "GET", path: `/v1/servers/${this.id}/icons/history` },
+		);
 	}
 
 	/** server.voting */
 	async voting(): Promise<models.VotingLinks> {
-		return this.ctx.transport.request<models.VotingLinks>({
-			method: "GET",
-			path: `/v1/servers/${this.id}/integrations/voting`,
-		});
+		return fetchCachedOrThrow<models.VotingLinks>(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{ method: "GET", path: `/v1/servers/${this.id}/integrations/voting` },
+		);
 	}
 
 	/** server.launch_manifest */
 	async launchManifest(): Promise<models.ServerLaunchManifest> {
-		return this.ctx.transport.request<models.ServerLaunchManifest>({
-			method: "GET",
-			path: `/v1/servers/${this.id}/launch-manifest`,
-		});
+		return fetchCachedOrThrow<models.ServerLaunchManifest>(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{ method: "GET", path: `/v1/servers/${this.id}/launch-manifest` },
+		);
 	}
 
 	/** server.live */
 	async live(): Promise<models.LiveStatus> {
-		return this.ctx.transport.request<models.LiveStatus>({
-			method: "GET",
-			path: `/v1/servers/${this.id}/live`,
-		});
+		return fetchCachedOrThrow<models.LiveStatus>(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{ method: "GET", path: `/v1/servers/${this.id}/live` },
+		);
 	}
 
 	/** server.maintenance */
 	async maintenance(): Promise<models.ServerMaintenance> {
-		return this.ctx.transport.request<models.ServerMaintenance>({
-			method: "GET",
-			path: `/v1/servers/${this.id}/maintenance`,
-		});
+		return fetchCachedOrThrow<models.ServerMaintenance>(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{ method: "GET", path: `/v1/servers/${this.id}/maintenance` },
+		);
 	}
 
 	/** server.ownership */
 	async ownership(): Promise<models.ServerOwnership> {
-		return this.ctx.transport.request<models.ServerOwnership>({
-			method: "GET",
-			path: `/v1/servers/${this.id}/ownership`,
-		});
+		return fetchCachedOrThrow<models.ServerOwnership>(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{ method: "GET", path: `/v1/servers/${this.id}/ownership` },
+		);
 	}
 
 	/** server.root */
 	async root(): Promise<models.ServerRoot> {
-		return this.ctx.transport.request<models.ServerRoot>({
-			method: "GET",
-			path: `/v1/servers/${this.id}/root`,
-		});
+		return fetchCachedOrThrow<models.ServerRoot>(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{ method: "GET", path: `/v1/servers/${this.id}/root` },
+		);
 	}
 
 	/** server.discord */
 	async discord(): Promise<models.DiscordLink> {
-		return this.ctx.transport.request<models.DiscordLink>({
-			method: "GET",
-			path: `/v1/servers/${this.id}/social/discord`,
-		});
+		return fetchCachedOrThrow<models.DiscordLink>(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{ method: "GET", path: `/v1/servers/${this.id}/social/discord` },
+		);
 	}
 
 	/** server.social */
 	async social(): Promise<models.SocialLinks> {
-		return this.ctx.transport.request<models.SocialLinks>({
-			method: "GET",
-			path: `/v1/servers/${this.id}/social/links`,
-		});
+		return fetchCachedOrThrow<models.SocialLinks>(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{ method: "GET", path: `/v1/servers/${this.id}/social/links` },
+		);
 	}
 
 	/** server.stats */
 	async stats(params?: { period?: string }): Promise<models.ServerStats> {
-		return this.ctx.transport.request<models.ServerStats>({
-			method: "GET",
-			path: `/v1/servers/${this.id}/stats`,
-			query: { period: params?.period },
-		});
+		return fetchCachedOrThrow<models.ServerStats>(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{
+				method: "GET",
+				path: `/v1/servers/${this.id}/stats`,
+				query: { period: params?.period },
+			},
+		);
 	}
 
 	/** server.subservers.list */
 	async subserversList(): Promise<models.ServerSubservers> {
-		return this.ctx.transport.request<models.ServerSubservers>({
-			method: "GET",
-			path: `/v1/servers/${this.id}/subservers`,
-		});
+		return fetchCachedOrThrow<models.ServerSubservers>(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{ method: "GET", path: `/v1/servers/${this.id}/subservers` },
+		);
 	}
 
 	/** server.team */
 	async team(): Promise<models.ServerTeamPublic> {
-		return this.ctx.transport.request<models.ServerTeamPublic>({
-			method: "GET",
-			path: `/v1/servers/${this.id}/team`,
-		});
+		return fetchCachedOrThrow<models.ServerTeamPublic>(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{ method: "GET", path: `/v1/servers/${this.id}/team` },
+		);
 	}
 
 	/** server.team_sync.targets */
 	async teamSyncTargets(params?: {
 		roleId?: Snowflake;
 	}): Promise<models.MinecraftGroupTargets> {
-		return this.ctx.transport.request<models.MinecraftGroupTargets>({
-			method: "GET",
-			path: `/v1/servers/${this.id}/team-sync/minecraft-targets`,
-			query: { role_id: params?.roleId },
-		});
+		return fetchCachedOrThrow<models.MinecraftGroupTargets>(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{
+				method: "GET",
+				path: `/v1/servers/${this.id}/team-sync/minecraft-targets`,
+				query: { role_id: params?.roleId },
+			},
+		);
 	}
 
 	/** server.team.manage */
 	async teamManage(): Promise<models.ServerTeamManage> {
-		return this.ctx.transport.request<models.ServerTeamManage>({
-			method: "GET",
-			path: `/v1/servers/${this.id}/team/manage`,
-		});
+		return fetchCachedOrThrow<models.ServerTeamManage>(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{ method: "GET", path: `/v1/servers/${this.id}/team/manage` },
+		);
 	}
 
 	/** server.telemetry */
@@ -351,19 +390,24 @@ export class Server extends Resource<Data> {
 		period?: string;
 		source?: string;
 	}): Promise<models.ServerTelemetry> {
-		return this.ctx.transport.request<models.ServerTelemetry>({
-			method: "GET",
-			path: `/v1/servers/${this.id}/telemetry`,
-			query: { period: params?.period, source: params?.source },
-		});
+		return fetchCachedOrThrow<models.ServerTelemetry>(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{
+				method: "GET",
+				path: `/v1/servers/${this.id}/telemetry`,
+				query: { period: params?.period, source: params?.source },
+			},
+		);
 	}
 
 	/** server.translations.list */
 	async translationsList(): Promise<models.ServerTranslations> {
-		return this.ctx.transport.request<models.ServerTranslations>({
-			method: "GET",
-			path: `/v1/servers/${this.id}/translations`,
-		});
+		return fetchCachedOrThrow<models.ServerTranslations>(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{ method: "GET", path: `/v1/servers/${this.id}/translations` },
+		);
 	}
 
 	/** server.whitelist.applications */
@@ -372,15 +416,19 @@ export class Server extends Resource<Data> {
 		page?: number;
 		perPage?: number;
 	}): Promise<Application[]> {
-		const data = await this.ctx.transport.request<unknown>({
-			method: "GET",
-			path: `/v1/servers/${this.id}/whitelist/applications`,
-			query: {
-				status: params?.status,
-				page: params?.page,
-				per_page: params?.perPage,
+		const data = await fetchCachedOrThrow<unknown>(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{
+				method: "GET",
+				path: `/v1/servers/${this.id}/whitelist/applications`,
+				query: {
+					status: params?.status,
+					page: params?.page,
+					per_page: params?.perPage,
+				},
 			},
-		});
+		);
 		const items = Array.isArray(data)
 			? data
 			: ((data as { items?: unknown[] }).items ?? []);
@@ -389,10 +437,11 @@ export class Server extends Resource<Data> {
 
 	/** server.whitelist */
 	async whitelist(): Promise<models.WhitelistConfig> {
-		return this.ctx.transport.request<models.WhitelistConfig>({
-			method: "GET",
-			path: `/v1/servers/${this.id}/whitelist/config`,
-		});
+		return fetchCachedOrThrow<models.WhitelistConfig>(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{ method: "GET", path: `/v1/servers/${this.id}/whitelist/config` },
+		);
 	}
 
 	/** server.whitelist.direct */
@@ -400,11 +449,15 @@ export class Server extends Resource<Data> {
 		page?: number;
 		perPage?: number;
 	}): Promise<models.WhitelistDirectEntryPage> {
-		return this.ctx.transport.request<models.WhitelistDirectEntryPage>({
-			method: "GET",
-			path: `/v1/servers/${this.id}/whitelist/direct`,
-			query: { page: params?.page, per_page: params?.perPage },
-		});
+		return fetchCachedOrThrow<models.WhitelistDirectEntryPage>(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{
+				method: "GET",
+				path: `/v1/servers/${this.id}/whitelist/direct`,
+				query: { page: params?.page, per_page: params?.perPage },
+			},
+		);
 	}
 
 	/** server.whitelist.imports */
@@ -413,23 +466,31 @@ export class Server extends Resource<Data> {
 		page?: number;
 		perPage?: number;
 	}): Promise<models.WhitelistImportJobPage> {
-		return this.ctx.transport.request<models.WhitelistImportJobPage>({
-			method: "GET",
-			path: `/v1/servers/${this.id}/whitelist/imports`,
-			query: {
-				status: params?.status,
-				page: params?.page,
-				per_page: params?.perPage,
+		return fetchCachedOrThrow<models.WhitelistImportJobPage>(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{
+				method: "GET",
+				path: `/v1/servers/${this.id}/whitelist/imports`,
+				query: {
+					status: params?.status,
+					page: params?.page,
+					per_page: params?.perPage,
+				},
 			},
-		});
+		);
 	}
 
 	/** server.whitelist.import */
 	async whitelistImport(jobId: Snowflake): Promise<models.WhitelistImportJob> {
-		return this.ctx.transport.request<models.WhitelistImportJob>({
-			method: "GET",
-			path: `/v1/servers/${this.id}/whitelist/imports/${jobId}`,
-		});
+		return fetchCachedOrThrow<models.WhitelistImportJob>(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{
+				method: "GET",
+				path: `/v1/servers/${this.id}/whitelist/imports/${jobId}`,
+			},
+		);
 	}
 
 	/** server.change_address */

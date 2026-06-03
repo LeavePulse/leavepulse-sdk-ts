@@ -1,6 +1,7 @@
 // Generated from the LeavePulse contract. Do not edit.
 import { Resource } from "../runtime/resource";
 import { TopicSubscription } from "../runtime/realtime";
+import { fetchCachedOrThrow } from "../runtime/etag-store";
 import type { components } from "../types";
 import type * as models from "../models";
 import type { LeavePulseFile } from "../runtime/transport";
@@ -23,10 +24,11 @@ export class Me extends Resource<Data> {
 
 	/** Re-fetch this Me and hydrate in place. */
 	async refresh(): Promise<this> {
-		const data = await this.ctx.transport.request({
-			method: "GET",
-			path: `/v1/me`,
-		});
+		const data = await fetchCachedOrThrow(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{ method: "GET", path: `/v1/me` },
+		);
 		this.ctx.hydrate("Me", data);
 		return this;
 	}
@@ -49,10 +51,11 @@ export class Me extends Resource<Data> {
 
 	/** builds.list */
 	async buildsList(): Promise<Build[]> {
-		const data = await this.ctx.transport.request<unknown>({
-			method: "GET",
-			path: `/v1/builds`,
-		});
+		const data = await fetchCachedOrThrow<unknown>(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{ method: "GET", path: `/v1/builds` },
+		);
 		const items = Array.isArray(data)
 			? data
 			: ((data as { items?: unknown[] }).items ?? []);
@@ -61,10 +64,11 @@ export class Me extends Resource<Data> {
 
 	/** me.engagement */
 	async engagement(): Promise<models.UserEngagement> {
-		return this.ctx.transport.request<models.UserEngagement>({
-			method: "GET",
-			path: `/v1/community/projects/me/engagement`,
-		});
+		return fetchCachedOrThrow<models.UserEngagement>(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{ method: "GET", path: `/v1/community/projects/me/engagement` },
+		);
 	}
 
 	/** me.account.change_email */
@@ -88,10 +92,11 @@ export class Me extends Resource<Data> {
 
 	/** me.account.export */
 	async accountExport(): Promise<models.AccountExport> {
-		return this.ctx.transport.request<models.AccountExport>({
-			method: "GET",
-			path: `/v1/me/account/export`,
-		});
+		return fetchCachedOrThrow<models.AccountExport>(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{ method: "GET", path: `/v1/me/account/export` },
+		);
 	}
 
 	/** me.avatar.remove */
@@ -175,19 +180,24 @@ export class Me extends Resource<Data> {
 	async minecraftState(params?: {
 		projectId?: Snowflake;
 	}): Promise<models.MinecraftVerificationState> {
-		return this.ctx.transport.request<models.MinecraftVerificationState>({
-			method: "GET",
-			path: `/v1/me/minecraft/state`,
-			query: { project_id: params?.projectId },
-		});
+		return fetchCachedOrThrow<models.MinecraftVerificationState>(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{
+				method: "GET",
+				path: `/v1/me/minecraft/state`,
+				query: { project_id: params?.projectId },
+			},
+		);
 	}
 
 	/** me.notifications.get */
 	async notificationsGet(): Promise<models.NotificationPreferences> {
-		return this.ctx.transport.request<models.NotificationPreferences>({
-			method: "GET",
-			path: `/v1/me/notifications`,
-		});
+		return fetchCachedOrThrow<models.NotificationPreferences>(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{ method: "GET", path: `/v1/me/notifications` },
+		);
 	}
 
 	/** me.notifications.update */
@@ -203,10 +213,11 @@ export class Me extends Resource<Data> {
 
 	/** me.oauth.list */
 	async oauthList(): Promise<models.OAuthProvidersResponse> {
-		return this.ctx.transport.request<models.OAuthProvidersResponse>({
-			method: "GET",
-			path: `/v1/me/oauth/providers`,
-		});
+		return fetchCachedOrThrow<models.OAuthProvidersResponse>(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{ method: "GET", path: `/v1/me/oauth/providers` },
+		);
 	}
 
 	/** me.oauth.unlink */
@@ -229,10 +240,11 @@ export class Me extends Resource<Data> {
 
 	/** me.password.status */
 	async passwordStatus(): Promise<models.PasswordStatus> {
-		return this.ctx.transport.request<models.PasswordStatus>({
-			method: "GET",
-			path: `/v1/me/password`,
-		});
+		return fetchCachedOrThrow<models.PasswordStatus>(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{ method: "GET", path: `/v1/me/password` },
+		);
 	}
 
 	/** me.password.set */
@@ -270,10 +282,11 @@ export class Me extends Resource<Data> {
 
 	/** me.sessions.list */
 	async sessionsList(): Promise<Session[]> {
-		const data = await this.ctx.transport.request<unknown>({
-			method: "GET",
-			path: `/v1/me/sessions`,
-		});
+		const data = await fetchCachedOrThrow<unknown>(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{ method: "GET", path: `/v1/me/sessions` },
+		);
 		const items = Array.isArray(data)
 			? data
 			: ((data as { items?: unknown[] }).items ?? []);
@@ -290,27 +303,33 @@ export class Me extends Resource<Data> {
 
 	/** me.stats */
 	async stats(params?: { estimated?: boolean }): Promise<models.MyPlayerStats> {
-		return this.ctx.transport.request<models.MyPlayerStats>({
-			method: "GET",
-			path: `/v1/me/stats`,
-			query: { estimated: params?.estimated },
-		});
+		return fetchCachedOrThrow<models.MyPlayerStats>(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{
+				method: "GET",
+				path: `/v1/me/stats`,
+				query: { estimated: params?.estimated },
+			},
+		);
 	}
 
 	/** me.stats_unverified */
 	async statsUnverified(): Promise<models.MyPlayerStats> {
-		return this.ctx.transport.request<models.MyPlayerStats>({
-			method: "GET",
-			path: `/v1/me/stats/unverified`,
-		});
+		return fetchCachedOrThrow<models.MyPlayerStats>(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{ method: "GET", path: `/v1/me/stats/unverified` },
+		);
 	}
 
 	/** me.totp.status */
 	async totpStatus(): Promise<models.TotpStatus> {
-		return this.ctx.transport.request<models.TotpStatus>({
-			method: "GET",
-			path: `/v1/me/totp`,
-		});
+		return fetchCachedOrThrow<models.TotpStatus>(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{ method: "GET", path: `/v1/me/totp` },
+		);
 	}
 
 	/** me.totp.begin */
@@ -345,15 +364,19 @@ export class Me extends Resource<Data> {
 		page?: number;
 		perPage?: number;
 	}): Promise<Application[]> {
-		const data = await this.ctx.transport.request<unknown>({
-			method: "GET",
-			path: `/v1/me/whitelist/applications`,
-			query: {
-				status: params?.status,
-				page: params?.page,
-				per_page: params?.perPage,
+		const data = await fetchCachedOrThrow<unknown>(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{
+				method: "GET",
+				path: `/v1/me/whitelist/applications`,
+				query: {
+					status: params?.status,
+					page: params?.page,
+					per_page: params?.perPage,
+				},
 			},
-		});
+		);
 		const items = Array.isArray(data)
 			? data
 			: ((data as { items?: unknown[] }).items ?? []);
@@ -365,11 +388,15 @@ export class Me extends Resource<Data> {
 		page?: number;
 		perPage?: number;
 	}): Promise<Server[]> {
-		const data = await this.ctx.transport.request<unknown>({
-			method: "GET",
-			path: `/v1/servers/mine`,
-			query: { page: params?.page, per_page: params?.perPage },
-		});
+		const data = await fetchCachedOrThrow<unknown>(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{
+				method: "GET",
+				path: `/v1/servers/mine`,
+				query: { page: params?.page, per_page: params?.perPage },
+			},
+		);
 		const items = Array.isArray(data)
 			? data
 			: ((data as { items?: unknown[] }).items ?? []);
@@ -382,15 +409,19 @@ export class Me extends Resource<Data> {
 		perPage?: number;
 		includeOk?: boolean;
 	}): Promise<models.MyServerIssuesPage> {
-		return this.ctx.transport.request<models.MyServerIssuesPage>({
-			method: "GET",
-			path: `/v1/servers/mine/issues`,
-			query: {
-				page: params?.page,
-				per_page: params?.perPage,
-				include_ok: params?.includeOk,
+		return fetchCachedOrThrow<models.MyServerIssuesPage>(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{
+				method: "GET",
+				path: `/v1/servers/mine/issues`,
+				query: {
+					page: params?.page,
+					per_page: params?.perPage,
+					include_ok: params?.includeOk,
+				},
 			},
-		});
+		);
 	}
 
 	/** Subscribe to `user.server_issues` (private realtime). */

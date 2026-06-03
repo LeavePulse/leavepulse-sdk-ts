@@ -1,5 +1,6 @@
 // Generated from the LeavePulse contract. Do not edit.
 import { Resource, extractId } from "../runtime/resource";
+import { fetchCachedOrThrow } from "../runtime/etag-store";
 import type { components } from "../types";
 import type * as models from "../models";
 import type { ClientContext } from "../client";
@@ -21,10 +22,11 @@ export class Form extends Resource<Data> {
 
 	/** Re-fetch this Form and hydrate in place. */
 	async refresh(): Promise<this> {
-		const data = await this.ctx.transport.request({
-			method: "GET",
-			path: `/v1/whitelist/forms/${this.id}`,
-		});
+		const data = await fetchCachedOrThrow(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{ method: "GET", path: `/v1/whitelist/forms/${this.id}` },
+		);
 		this.ctx.hydrate("Form", data);
 		return this;
 	}

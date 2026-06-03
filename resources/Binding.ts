@@ -1,5 +1,6 @@
 // Generated from the LeavePulse contract. Do not edit.
 import { Resource } from "../runtime/resource";
+import { fetchCachedOrThrow } from "../runtime/etag-store";
 import type * as models from "../models";
 import type { ClientContext } from "../client";
 import type { Snowflake } from "../runtime/snowflake";
@@ -36,11 +37,15 @@ export class Binding extends Resource<Data> {
 		bindingId: Snowflake,
 		params?: { page?: number; perPage?: number },
 	): Promise<models.WhitelistDirectEntryPage> {
-		return this.ctx.transport.request<models.WhitelistDirectEntryPage>({
-			method: "GET",
-			path: `/v1/whitelist/bindings/${bindingId}/direct/entries`,
-			query: { page: params?.page, per_page: params?.perPage },
-		});
+		return fetchCachedOrThrow<models.WhitelistDirectEntryPage>(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{
+				method: "GET",
+				path: `/v1/whitelist/bindings/${bindingId}/direct/entries`,
+				query: { page: params?.page, per_page: params?.perPage },
+			},
+		);
 	}
 
 	/** binding.delete */

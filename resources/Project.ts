@@ -1,6 +1,7 @@
 // Generated from the LeavePulse contract. Do not edit.
 import { Resource } from "../runtime/resource";
 import { TopicSubscription } from "../runtime/realtime";
+import { fetchCachedOrThrow } from "../runtime/etag-store";
 import type { components } from "../types";
 import type * as models from "../models";
 import type { ClientContext } from "../client";
@@ -24,10 +25,11 @@ export class Project extends Resource<Data> {
 
 	/** Re-fetch this Project and hydrate in place. */
 	async refresh(): Promise<this> {
-		const data = await this.ctx.transport.request({
-			method: "GET",
-			path: `/v1/projects/${this.id}`,
-		});
+		const data = await fetchCachedOrThrow(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{ method: "GET", path: `/v1/projects/${this.id}` },
+		);
 		this.ctx.hydrate("Project", data, "project");
 		return this;
 	}
@@ -94,15 +96,19 @@ export class Project extends Resource<Data> {
 		limit?: number;
 		targetLocale?: string;
 	}): Promise<Comment[]> {
-		const data = await this.ctx.transport.request<unknown>({
-			method: "GET",
-			path: `/v1/community/projects/${this.id}/comments`,
-			query: {
-				page: params?.page,
-				limit: params?.limit,
-				target_locale: params?.targetLocale,
+		const data = await fetchCachedOrThrow<unknown>(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{
+				method: "GET",
+				path: `/v1/community/projects/${this.id}/comments`,
+				query: {
+					page: params?.page,
+					limit: params?.limit,
+					target_locale: params?.targetLocale,
+				},
 			},
-		});
+		);
 		const items = Array.isArray(data)
 			? data
 			: ((data as { items?: unknown[] }).items ?? []);
@@ -111,65 +117,87 @@ export class Project extends Resource<Data> {
 
 	/** project.comments.liked */
 	async commentsLiked(): Promise<models.LikedCommentIds> {
-		return this.ctx.transport.request<models.LikedCommentIds>({
-			method: "GET",
-			path: `/v1/community/projects/${this.id}/comments/liked`,
-		});
+		return fetchCachedOrThrow<models.LikedCommentIds>(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{
+				method: "GET",
+				path: `/v1/community/projects/${this.id}/comments/liked`,
+			},
+		);
 	}
 
 	/** project.comments.mine */
 	async commentsMine(params?: {
 		targetLocale?: string;
 	}): Promise<models.MyComment> {
-		return this.ctx.transport.request<models.MyComment>({
-			method: "GET",
-			path: `/v1/community/projects/${this.id}/comments/me`,
-			query: { target_locale: params?.targetLocale },
-		});
+		return fetchCachedOrThrow<models.MyComment>(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{
+				method: "GET",
+				path: `/v1/community/projects/${this.id}/comments/me`,
+				query: { target_locale: params?.targetLocale },
+			},
+		);
 	}
 
 	/** project.engagement */
 	async engagement(): Promise<models.ProjectEngagement> {
-		return this.ctx.transport.request<models.ProjectEngagement>({
-			method: "GET",
-			path: `/v1/community/projects/${this.id}/engagement`,
-		});
+		return fetchCachedOrThrow<models.ProjectEngagement>(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{ method: "GET", path: `/v1/community/projects/${this.id}/engagement` },
+		);
 	}
 
 	/** project.engagement.status */
 	async engagementStatus(): Promise<models.ProjectEngagementStatus> {
-		return this.ctx.transport.request<models.ProjectEngagementStatus>({
-			method: "GET",
-			path: `/v1/community/projects/${this.id}/engagement/status`,
-		});
+		return fetchCachedOrThrow<models.ProjectEngagementStatus>(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{
+				method: "GET",
+				path: `/v1/community/projects/${this.id}/engagement/status`,
+			},
+		);
 	}
 
 	/** project.votes.list */
 	async votesList(params?: { limit?: number }): Promise<models.RecentVotes> {
-		return this.ctx.transport.request<models.RecentVotes>({
-			method: "GET",
-			path: `/v1/community/projects/${this.id}/votes`,
-			query: { limit: params?.limit },
-		});
+		return fetchCachedOrThrow<models.RecentVotes>(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{
+				method: "GET",
+				path: `/v1/community/projects/${this.id}/votes`,
+				query: { limit: params?.limit },
+			},
+		);
 	}
 
 	/** me.projects.get */
 	async meProjectsGet(): Promise<models.WorkspaceDetail> {
-		return this.ctx.transport.request<models.WorkspaceDetail>({
-			method: "GET",
-			path: `/v1/me/projects/${this.id}`,
-		});
+		return fetchCachedOrThrow<models.WorkspaceDetail>(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{ method: "GET", path: `/v1/me/projects/${this.id}` },
+		);
 	}
 
 	/** project.history.list */
 	async historyList(params?: {
 		period?: string;
 	}): Promise<models.HistoryResponse> {
-		return this.ctx.transport.request<models.HistoryResponse>({
-			method: "GET",
-			path: `/v1/monitoring/projects/${this.id}/history`,
-			query: { period: params?.period },
-		});
+		return fetchCachedOrThrow<models.HistoryResponse>(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{
+				method: "GET",
+				path: `/v1/monitoring/projects/${this.id}/history`,
+				query: { period: params?.period },
+			},
+		);
 	}
 
 	/** project.servers.create */
@@ -186,30 +214,39 @@ export class Project extends Resource<Data> {
 
 	/** project.stats */
 	async stats(params?: { period?: string }): Promise<models.ProjectStats> {
-		return this.ctx.transport.request<models.ProjectStats>({
-			method: "GET",
-			path: `/v1/projects/${this.id}/stats`,
-			query: { period: params?.period },
-		});
+		return fetchCachedOrThrow<models.ProjectStats>(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{
+				method: "GET",
+				path: `/v1/projects/${this.id}/stats`,
+				query: { period: params?.period },
+			},
+		);
 	}
 
 	/** project.team_sync.targets */
 	async teamSyncTargets(params?: {
 		roleId?: Snowflake;
 	}): Promise<models.DiscordRoleTargets> {
-		return this.ctx.transport.request<models.DiscordRoleTargets>({
-			method: "GET",
-			path: `/v1/projects/${this.id}/team-sync/discord-targets`,
-			query: { role_id: params?.roleId },
-		});
+		return fetchCachedOrThrow<models.DiscordRoleTargets>(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{
+				method: "GET",
+				path: `/v1/projects/${this.id}/team-sync/discord-targets`,
+				query: { role_id: params?.roleId },
+			},
+		);
 	}
 
 	/** project.whitelist.forms */
 	async whitelistForms(): Promise<Form[]> {
-		const data = await this.ctx.transport.request<unknown>({
-			method: "GET",
-			path: `/v1/projects/${this.id}/whitelist/forms`,
-		});
+		const data = await fetchCachedOrThrow<unknown>(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{ method: "GET", path: `/v1/projects/${this.id}/whitelist/forms` },
+		);
 		const items = Array.isArray(data)
 			? data
 			: ((data as { items?: unknown[] }).items ?? []);
@@ -218,10 +255,11 @@ export class Project extends Resource<Data> {
 
 	/** project.policies */
 	async policies(): Promise<Binding[]> {
-		const data = await this.ctx.transport.request<unknown>({
-			method: "GET",
-			path: `/v1/projects/${this.id}/whitelist/policies`,
-		});
+		const data = await fetchCachedOrThrow<unknown>(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{ method: "GET", path: `/v1/projects/${this.id}/whitelist/policies` },
+		);
 		const items = Array.isArray(data)
 			? data
 			: ((data as { items?: unknown[] }).items ?? []);

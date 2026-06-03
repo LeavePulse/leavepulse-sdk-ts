@@ -1,6 +1,8 @@
 // Generated from the LeavePulse contract. Do not edit.
 import type { Transport } from "./runtime/transport";
 import { IdentityMap } from "./runtime/cache";
+import { MemoryEtagStore, fetchCached } from "./runtime/etag-store";
+import type { EtagStore } from "./runtime/etag-store";
 import type { Identified } from "./runtime/cache";
 import { extractId } from "./runtime/resource";
 import { MalformedResponse } from "./runtime/errors";
@@ -41,6 +43,7 @@ import {
 export interface ClientContext {
 	transport: Transport;
 	cache: IdentityMap;
+	etagStore: EtagStore;
 	hydrate(type: string, payload: unknown, dataRoot?: string): unknown;
 	hydrateMany(type: string, raw: unknown): unknown[];
 	realtime: RealtimeTransport;
@@ -66,8 +69,13 @@ export class LeavePulse {
 	readonly verification: VerificationNs;
 	readonly whitelist: WhitelistNs;
 
-	constructor(transport: Transport, realtime?: RealtimeTransport) {
+	constructor(
+		transport: Transport,
+		realtime?: RealtimeTransport,
+		etagStore?: EtagStore,
+	) {
 		const cache = new IdentityMap();
+		const etags = etagStore ?? new MemoryEtagStore();
 		const realtimeOrThrow =
 			realtime ??
 			(new Proxy(
@@ -83,6 +91,7 @@ export class LeavePulse {
 		this.ctx = {
 			transport,
 			cache,
+			etagStore: etags,
 			realtime: realtimeOrThrow,
 			hydrate: (type, payload, dataRoot) =>
 				this.hydrate(type, payload, dataRoot),

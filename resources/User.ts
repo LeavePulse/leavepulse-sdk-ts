@@ -1,5 +1,6 @@
 // Generated from the LeavePulse contract. Do not edit.
 import { Resource } from "../runtime/resource";
+import { fetchCachedOrThrow } from "../runtime/etag-store";
 import type { components } from "../types";
 import type * as models from "../models";
 import type { ClientContext } from "../client";
@@ -17,10 +18,11 @@ export class User extends Resource<Data> {
 
 	/** Re-fetch this User and hydrate in place. */
 	async refresh(): Promise<this> {
-		const data = await this.ctx.transport.request({
-			method: "GET",
-			path: `/v1/users/${this.id}/public-profile`,
-		});
+		const data = await fetchCachedOrThrow(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{ method: "GET", path: `/v1/users/${this.id}/public-profile` },
+		);
 		this.ctx.hydrate("User", data);
 		return this;
 	}
@@ -39,27 +41,33 @@ export class User extends Resource<Data> {
 	async heatmap(params?: {
 		days?: number;
 	}): Promise<models.ProfileActivityHeatmap> {
-		return this.ctx.transport.request<models.ProfileActivityHeatmap>({
-			method: "GET",
-			path: `/v1/users/${this.id}/profile/activity`,
-			query: { days: params?.days },
-		});
+		return fetchCachedOrThrow<models.ProfileActivityHeatmap>(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{
+				method: "GET",
+				path: `/v1/users/${this.id}/profile/activity`,
+				query: { days: params?.days },
+			},
+		);
 	}
 
 	/** user.gameplay */
 	async gameplay(): Promise<models.ProfileGameplaySummary> {
-		return this.ctx.transport.request<models.ProfileGameplaySummary>({
-			method: "GET",
-			path: `/v1/users/${this.id}/profile/gameplay`,
-		});
+		return fetchCachedOrThrow<models.ProfileGameplaySummary>(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{ method: "GET", path: `/v1/users/${this.id}/profile/gameplay` },
+		);
 	}
 
 	/** user.ownership */
 	async ownership(): Promise<models.ProfileOwnershipSummary> {
-		return this.ctx.transport.request<models.ProfileOwnershipSummary>({
-			method: "GET",
-			path: `/v1/users/${this.id}/profile/ownership`,
-		});
+		return fetchCachedOrThrow<models.ProfileOwnershipSummary>(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{ method: "GET", path: `/v1/users/${this.id}/profile/ownership` },
+		);
 	}
 
 	/** user.report */
