@@ -119,7 +119,7 @@ export class LeavePulse {
 		return this.ctx.cache.ensure(
 			"Form",
 			id,
-			() => new Form({ id } as never, this.ctx),
+			() => new Form({ summary: { id: id } } as never, this.ctx),
 		) as Form;
 	}
 

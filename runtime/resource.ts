@@ -14,9 +14,24 @@
 import type { Identified } from "./cache";
 
 /** Extract an instance id from a payload. Resources key on different fields:
- * most use `id`, some use a domain id (`user_id`). Falls back to the first
- * `*_id` field so identity-mapping works regardless of the schema's id name. */
-export function extractId(data: Record<string, unknown>): string | number {
+ * most use `id`, some use a domain id (`user_id`). When `idPath` is given the
+ * id lives at a nested path (`["summary", "id"]` for an envelope), so we walk it
+ * directly. Otherwise: top-level `id`, then the first `*_id` field, so identity
+ * mapping works regardless of the schema's id name. */
+export function extractId(
+	data: Record<string, unknown>,
+	idPath?: readonly string[],
+): string | number {
+	if (idPath && idPath.length > 0) {
+		let cursor: unknown = data;
+		for (const segment of idPath) {
+			if (cursor == null || typeof cursor !== "object") return "";
+			cursor = (cursor as Record<string, unknown>)[segment];
+		}
+		return typeof cursor === "string" || typeof cursor === "number"
+			? cursor
+			: "";
+	}
 	const direct = data.id;
 	if (typeof direct === "string" || typeof direct === "number") return direct;
 	for (const [key, value] of Object.entries(data)) {

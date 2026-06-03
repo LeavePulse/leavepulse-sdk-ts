@@ -1,5 +1,5 @@
 // Generated from the LeavePulse contract. Do not edit.
-import { Resource } from "../runtime/resource";
+import { Resource, extractId } from "../runtime/resource";
 import type { components } from "../types";
 import type * as models from "../models";
 import type { ClientContext } from "../client";
@@ -13,6 +13,10 @@ export class Form extends Resource<Data> {
 		private readonly ctx: ClientContext,
 	) {
 		super(data);
+	}
+
+	get id(): string | number {
+		return extractId(this.data as Record<string, unknown>, ["summary", "id"]);
 	}
 
 	/** Re-fetch this Form and hydrate in place. */
