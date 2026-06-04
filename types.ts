@@ -2293,6 +2293,46 @@ export interface paths {
 		patch?: never;
 		trace?: never;
 	};
+	"/v1/monitoring/me/stats": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		/**
+		 * My dashboard stats
+		 * @description Return aggregated playtime and activity statistics for the current user's verified Minecraft accounts, used by the dashboard.
+		 */
+		get: operations["monitoring.me.stats"];
+		put?: never;
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	"/v1/monitoring/me/stats/unverified": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		/**
+		 * My unverified dashboard stats
+		 * @description Return best-effort dashboard statistics reconstructed from unverified snapshots for the current user's linked Minecraft nicknames. Use when verified plugin data is unavailable.
+		 */
+		get: operations["monitoring.me.stats.unverified"];
+		put?: never;
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
 	"/v1/monitoring/projects/{project_id}/history": {
 		parameters: {
 			query?: never;
@@ -4875,6 +4915,26 @@ export interface components {
 			/** Format: date-time */
 			starts_at: string;
 		};
+		/** DashboardAccount */
+		DashboardAccount: {
+			nick?: string | null;
+			type?: string | null;
+			uuid?: string | null;
+		};
+		/** DashboardDailyActivityPoint */
+		DashboardDailyActivityPoint: {
+			/** @default 0 */
+			count: number;
+			date: string;
+		};
+		/** DashboardServerItem */
+		DashboardServerItem: {
+			/** @default 0 */
+			activity: number;
+			last_seen?: string | null;
+			playtime_seconds?: number | null;
+			server_id: components["schemas"]["Snowflake"];
+		};
 		/** DeleteAck */
 		DeleteAck: {
 			deleted: boolean;
@@ -5488,6 +5548,19 @@ export interface components {
 			/** @default false */
 			can_reply_to_comments: boolean;
 			comment?: components["schemas"]["Comment"] | null;
+		};
+		/** MyDashboardStats */
+		MyDashboardStats: {
+			accounts?: components["schemas"]["DashboardAccount"][];
+			daily_activity?: components["schemas"]["DashboardDailyActivityPoint"][];
+			/** @default false */
+			estimated: boolean;
+			events_breakdown?: {
+				[key: string]: number;
+			};
+			servers?: components["schemas"]["DashboardServerItem"][];
+			source?: string | null;
+			total_playtime_seconds: number;
 		};
 		/** MyPlayerStats */
 		MyPlayerStats: {
@@ -6314,6 +6387,7 @@ export interface components {
 			ip_or_domain: string;
 			/** @default false */
 			is_verified: boolean;
+			motd?: string | null;
 			parent_id?: components["schemas"]["Snowflake"] | null;
 			project_id?: components["schemas"]["Snowflake"] | null;
 			role: components["schemas"]["ServerRole"];
@@ -12732,6 +12806,46 @@ export interface operations {
 				};
 				content: {
 					"application/json": components["schemas"]["LandingStats"];
+				};
+			};
+		};
+	};
+	"monitoring.me.stats": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description Request fulfilled, document follows */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["MyDashboardStats"];
+				};
+			};
+		};
+	};
+	"monitoring.me.stats.unverified": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description Request fulfilled, document follows */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["MyDashboardStats"];
 				};
 			};
 		};
