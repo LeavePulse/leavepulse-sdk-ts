@@ -95,6 +95,87 @@ export class LocalStorageEtagStore implements EtagStore {
 	}
 }
 
+/**
+ * Browser-persistent cache backed by IndexedDB. Unlike `localStorage` it is
+ * asynchronous and not bound by the ~5 MB string quota, so it suits caching
+ * larger response bodies across sessions. Every operation degrades to a
+ * cache miss / no-op on failure (private mode, blocked storage, version
+ * conflicts), so a broken store never breaks a request.
+ */
+export class IndexedDbEtagStore implements EtagStore {
+	private dbPromise: Promise<IDBDatabase | null> | undefined;
+
+	/**
+	 * @param dbName   database name (one per app is plenty).
+	 * @param storeName object store holding the etag entries.
+	 */
+	constructor(
+		private readonly dbName = "lp-etag-cache",
+		private readonly storeName = "entries",
+	) {}
+
+	private openDb(): Promise<IDBDatabase | null> {
+		if (this.dbPromise) return this.dbPromise;
+		this.dbPromise = new Promise<IDBDatabase | null>((resolve) => {
+			const idb = typeof indexedDB !== "undefined" ? indexedDB : undefined;
+			if (!idb) {
+				resolve(null);
+				return;
+			}
+			let request: IDBOpenDBRequest;
+			try {
+				request = idb.open(this.dbName, 1);
+			} catch {
+				resolve(null);
+				return;
+			}
+			request.onupgradeneeded = () => {
+				const db = request.result;
+				if (!db.objectStoreNames.contains(this.storeName)) {
+					db.createObjectStore(this.storeName);
+				}
+			};
+			request.onsuccess = () => resolve(request.result);
+			request.onerror = () => resolve(null);
+			request.onblocked = () => resolve(null);
+		});
+		return this.dbPromise;
+	}
+
+	private async withStore<R>(
+		mode: IDBTransactionMode,
+		run: (store: IDBObjectStore) => IDBRequest,
+	): Promise<R | undefined> {
+		const db = await this.openDb();
+		if (!db) return undefined;
+		return new Promise<R | undefined>((resolve) => {
+			let req: IDBRequest;
+			try {
+				req = run(
+					db.transaction(this.storeName, mode).objectStore(this.storeName),
+				);
+			} catch {
+				resolve(undefined);
+				return;
+			}
+			req.onsuccess = () => resolve(req.result as R | undefined);
+			req.onerror = () => resolve(undefined);
+		});
+	}
+
+	async get<T>(key: string): Promise<EtagEntry<T> | undefined> {
+		return this.withStore<EtagEntry<T>>("readonly", (store) => store.get(key));
+	}
+
+	async set<T>(key: string, entry: EtagEntry<T>): Promise<void> {
+		await this.withStore("readwrite", (store) => store.put(entry, key));
+	}
+
+	async delete(key: string): Promise<void> {
+		await this.withStore("readwrite", (store) => store.delete(key));
+	}
+}
+
 export interface FetchCachedOptions {
 	/** Override the cache key (default: channel + method + path). */
 	key?: string;

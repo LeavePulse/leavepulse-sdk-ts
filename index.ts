@@ -56,6 +56,7 @@ export type {
 export {
 	MemoryEtagStore,
 	LocalStorageEtagStore,
+	IndexedDbEtagStore,
 	fetchCached,
 	defaultCacheKey,
 } from "./runtime/etag-store";

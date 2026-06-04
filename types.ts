@@ -6319,6 +6319,7 @@ export interface components {
 			role: components["schemas"]["ServerRole"];
 			/** Format: date-time */
 			updated_at: string;
+			verification_source?: components["schemas"]["TrustState"] | null;
 		};
 		/** ServerTeamManage */
 		ServerTeamManage: {
