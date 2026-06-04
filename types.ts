@@ -6139,7 +6139,7 @@ export interface components {
 			role: components["schemas"]["ServerRole"];
 			/** Format: date-time */
 			updated_at: string;
-			verification_source?: components["schemas"]["TrustState"] | null;
+			verification_source?: components["schemas"]["VerificationSource"] | null;
 		};
 		/** ServerEventPoint */
 		ServerEventPoint: {
@@ -6319,7 +6319,7 @@ export interface components {
 			role: components["schemas"]["ServerRole"];
 			/** Format: date-time */
 			updated_at: string;
-			verification_source?: components["schemas"]["TrustState"] | null;
+			verification_source?: components["schemas"]["VerificationSource"] | null;
 		};
 		/** ServerTeamManage */
 		ServerTeamManage: {
@@ -6882,9 +6882,15 @@ export interface components {
 			role: components["schemas"]["ServerRole"];
 			/** @default 0 */
 			verification_level: number;
-			verification_source?: components["schemas"]["TrustState"] | null;
+			verification_source?: components["schemas"]["VerificationSource"] | null;
 			verified_at?: string | null;
 		};
+		/**
+		 * VerificationSource
+		 * @description How a server's ownership was verified (provenance, not live trust).
+		 * @enum {string}
+		 */
+		VerificationSource: "plugin" | "motd" | "unknown";
 		/** VerificationStartRequest */
 		VerificationStartRequest: {
 			address: string;
