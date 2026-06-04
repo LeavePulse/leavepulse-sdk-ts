@@ -201,6 +201,15 @@ export class Project extends Resource<Data> {
 		);
 	}
 
+	/** project.live */
+	async live(): Promise<models.ProjectLiveStatus> {
+		return fetchCachedOrThrow<models.ProjectLiveStatus>(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{ method: "GET", path: `/v1/monitoring/projects/${this.id}/live` },
+		);
+	}
+
 	/** project.servers.create */
 	async serversCreate(
 		body: models.CreateProjectServerRequest,
@@ -239,6 +248,14 @@ export class Project extends Resource<Data> {
 				query: { role_id: params?.roleId },
 			},
 		);
+	}
+
+	/** project.whitelist.config */
+	async whitelistConfig(): Promise<unknown> {
+		return fetchCachedOrThrow<unknown>(this.ctx.transport, this.ctx.etagStore, {
+			method: "GET",
+			path: `/v1/projects/${this.id}/whitelist/config`,
+		});
 	}
 
 	/** project.whitelist.forms */

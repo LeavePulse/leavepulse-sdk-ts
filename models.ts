@@ -199,6 +199,7 @@ export type ProjectEngagementStatus =
 export type ProjectFilterStats = components["schemas"]["ProjectFilterStats"];
 export type ProjectHeartResult = components["schemas"]["ProjectHeartResult"];
 export type ProjectListResponse = components["schemas"]["ProjectListResponse"];
+export type ProjectLiveStatus = components["schemas"]["ProjectLiveStatus"];
 export type ProjectResolveResponse =
 	components["schemas"]["ProjectResolveResponse"];
 export type ProjectStats = components["schemas"]["ProjectStats"];

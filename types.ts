@@ -2313,6 +2313,26 @@ export interface paths {
 		patch?: never;
 		trace?: never;
 	};
+	"/v1/monitoring/projects/{project_id}/live": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		/**
+		 * Get project live status
+		 * @description Return the aggregated live availability snapshot for one project: rolled-up online state and player count plus the per-server live items the rollup was derived from.
+		 */
+		get: operations["project.live"];
+		put?: never;
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
 	"/v1/monitoring/servers/{server_id}/player-stats": {
 		parameters: {
 			query?: never;
@@ -2509,6 +2529,26 @@ export interface paths {
 		 * @description Return the mapped Discord roles for one project with the resolved desired set of Discord user ids per role. Optionally filter to one role via ``role_id``.
 		 */
 		get: operations["project.team_sync.targets"];
+		put?: never;
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	"/v1/projects/{project_id}/whitelist/config": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		/**
+		 * Public whitelist config for a project
+		 * @description Return the public whitelist application options for a project — one entry per server that accepts applications, used to render the apply flow. Empty list when the project has none.
+		 */
+		get: operations["project.whitelist.config"];
 		put?: never;
 		post?: never;
 		delete?: never;
@@ -4385,6 +4425,8 @@ export interface components {
 		};
 		/** AdminProject */
 		AdminProject: {
+			/** Format: date-time */
+			created_at: string;
 			creator_user_id?: components["schemas"]["Snowflake"] | null;
 			display_server_id?: components["schemas"]["Snowflake"] | null;
 			id: components["schemas"]["Snowflake"];
@@ -4399,6 +4441,8 @@ export interface components {
 			/** @default 0 */
 			server_count: number;
 			slug?: string | null;
+			/** Format: date-time */
+			updated_at: string;
 			verified_plugin_rollout_mode?: components["schemas"]["RolloutMode"];
 			verified_plugin_rollout_state?:
 				| components["schemas"]["RolloutState"]
@@ -4451,6 +4495,8 @@ export interface components {
 		};
 		/** AdminServerSummary */
 		AdminServerSummary: {
+			/** Format: date-time */
+			created_at: string;
 			creator_user_id?: string | null;
 			id: string;
 			ip_or_domain: string;
@@ -4463,6 +4509,8 @@ export interface components {
 			parent_id?: string | null;
 			project_id?: string | null;
 			server_role: components["schemas"]["ServerRole"];
+			/** Format: date-time */
+			updated_at: string;
 			verified_plugin_compatibility?: string | null;
 			verified_plugin_last_seen_at?: string | null;
 			verified_plugin_platform?: string | null;
@@ -4738,7 +4786,7 @@ export interface components {
 			content: string;
 			created_at: string;
 			edited_at?: string | null;
-			id: string;
+			id: components["schemas"]["Snowflake"];
 			/** @default 0 */
 			likes: number;
 			replies?: components["schemas"]["CommentReply"][];
@@ -4746,7 +4794,10 @@ export interface components {
 		};
 		/** CommentAuthor */
 		CommentAuthor: {
-			id: string;
+			avatar_url?: string | null;
+			id: components["schemas"]["Snowflake"];
+			slug?: string | null;
+			username?: string | null;
 		};
 		/** CommentCreateRequest */
 		CommentCreateRequest: {
@@ -4754,7 +4805,7 @@ export interface components {
 		};
 		/** CommentLikeResult */
 		CommentLikeResult: {
-			comment_id: string;
+			comment_id: components["schemas"]["Snowflake"];
 			liked: boolean;
 			likes: number;
 		};
@@ -4771,7 +4822,7 @@ export interface components {
 			content: string;
 			created_at: string;
 			edited_at?: string | null;
-			id: string;
+			id: components["schemas"]["Snowflake"];
 			translation?: components["schemas"]["TextTranslation"] | null;
 		};
 		/** CompleteLinkRequest */
@@ -4834,7 +4885,7 @@ export interface components {
 		};
 		/** DeleteCommentResult */
 		DeleteCommentResult: {
-			comment_id: string;
+			comment_id: components["schemas"]["Snowflake"];
 		};
 		/** DeleteStatusOverrideResponse */
 		DeleteStatusOverrideResponse: {
@@ -5195,7 +5246,7 @@ export interface components {
 		LifecycleState: "draft" | "active" | "unknown";
 		/** LikedCommentIds */
 		LikedCommentIds: {
-			comment_ids: string[];
+			comment_ids: components["schemas"]["Snowflake"][];
 		};
 		/** LinkCompletionRequest */
 		LinkCompletionRequest: {
@@ -5755,6 +5806,8 @@ export interface components {
 		/** Project */
 		Project: {
 			catalog_mode: string;
+			/** Format: date-time */
+			created_at: string;
 			display_server: components["schemas"]["ServerSummary"];
 			display_server_id: components["schemas"]["Snowflake"];
 			freshness_state?: components["schemas"]["FreshnessState"];
@@ -5785,6 +5838,8 @@ export interface components {
 			server_count: number;
 			slug?: string | null;
 			trust_state?: components["schemas"]["TrustState"];
+			/** Format: date-time */
+			updated_at: string;
 			uptime_24h_percentage?: number | null;
 			uptime_7d_percentage?: number | null;
 			/** @default 0 */
@@ -5814,13 +5869,13 @@ export interface components {
 		ProjectEngagement: {
 			comments: number;
 			hearts: number;
-			project_id: string;
+			project_id: components["schemas"]["Snowflake"];
 			thumbs: number;
 		};
 		/** ProjectEngagementStatus */
 		ProjectEngagementStatus: {
 			hearted: boolean;
-			project_id: string;
+			project_id: components["schemas"]["Snowflake"];
 			thumbed: boolean;
 		};
 		/** ProjectFilterStats */
@@ -5838,7 +5893,7 @@ export interface components {
 		ProjectHeartResult: {
 			hearted: boolean;
 			hearts: number;
-			project_id: string;
+			project_id: components["schemas"]["Snowflake"];
 		};
 		/** ProjectListResponse */
 		ProjectListResponse: {
@@ -5846,6 +5901,19 @@ export interface components {
 			page: number;
 			per_page: number;
 			total: number;
+		};
+		/** ProjectLiveStatus */
+		ProjectLiveStatus: {
+			collected_at?: string | null;
+			freshness_state: components["schemas"]["FreshnessState"];
+			items?: components["schemas"]["LiveStatus"][];
+			max_players?: number | null;
+			online?: number | null;
+			online_reason?: string | null;
+			online_server_id?: components["schemas"]["Snowflake"] | null;
+			online_source?: string | null;
+			online_state: components["schemas"]["OnlineState"];
+			project_id: components["schemas"]["Snowflake"];
 		};
 		/** ProjectResolveResponse */
 		ProjectResolveResponse: {
@@ -5875,7 +5943,7 @@ export interface components {
 		};
 		/** ProjectThumbResult */
 		ProjectThumbResult: {
-			project_id: string;
+			project_id: components["schemas"]["Snowflake"];
 			thumbed: boolean;
 			thumbs: number;
 		};
@@ -5933,12 +6001,12 @@ export interface components {
 		RecentActivityItem: {
 			created_at: string;
 			preview?: string | null;
-			project_id: string;
+			project_id: components["schemas"]["Snowflake"];
 			type: components["schemas"]["ActivityType"];
 		};
 		/** RecentVotes */
 		RecentVotes: {
-			project_id: string;
+			project_id: components["schemas"]["Snowflake"];
 			votes: components["schemas"]["VoteItem"][];
 		};
 		/** ReportUserRequest */
@@ -5948,7 +6016,7 @@ export interface components {
 		};
 		/** ReportUserResult */
 		ReportUserResult: {
-			id: string;
+			id: components["schemas"]["Snowflake"];
 			status: string;
 		};
 		/** RevokeOtherSessionsResult */
@@ -6021,6 +6089,8 @@ export interface components {
 		};
 		/** ServerCard */
 		ServerCard: {
+			/** Format: date-time */
+			created_at: string;
 			favicon_url?: string | null;
 			game_edition?: components["schemas"]["GameEdition"] | null;
 			icon_url?: string | null;
@@ -6039,6 +6109,8 @@ export interface components {
 			/** @default true */
 			show_in_public: boolean;
 			slug?: string | null;
+			/** Format: date-time */
+			updated_at: string;
 		};
 		/** ServerChangeAddressRequest */
 		ServerChangeAddressRequest: {
@@ -6051,6 +6123,8 @@ export interface components {
 		/** ServerDetail */
 		ServerDetail: {
 			bedrock_port?: number | null;
+			/** Format: date-time */
+			created_at: string;
 			game_edition?: components["schemas"]["GameEdition"] | null;
 			id: components["schemas"]["Snowflake"];
 			ip_or_domain: string;
@@ -6063,6 +6137,8 @@ export interface components {
 			project_online_strategy?: components["schemas"]["OnlineStrategy"] | null;
 			proxy_type?: string | null;
 			role: components["schemas"]["ServerRole"];
+			/** Format: date-time */
+			updated_at: string;
 			verification_source?: components["schemas"]["TrustState"] | null;
 		};
 		/** ServerEventPoint */
@@ -6229,6 +6305,8 @@ export interface components {
 		};
 		/** ServerSummary */
 		ServerSummary: {
+			/** Format: date-time */
+			created_at: string;
 			favicon_url?: string | null;
 			game_edition?: components["schemas"]["GameEdition"] | null;
 			icon_url?: string | null;
@@ -6239,6 +6317,8 @@ export interface components {
 			parent_id?: components["schemas"]["Snowflake"] | null;
 			project_id?: components["schemas"]["Snowflake"] | null;
 			role: components["schemas"]["ServerRole"];
+			/** Format: date-time */
+			updated_at: string;
 		};
 		/** ServerTeamManage */
 		ServerTeamManage: {
@@ -6281,6 +6361,7 @@ export interface components {
 		};
 		/** ServerTranslation */
 		ServerTranslation: {
+			created_at?: string | null;
 			/** @default  */
 			engine: string;
 			field: string;
@@ -6445,6 +6526,8 @@ export interface components {
 		};
 		/** TeamMemberItem */
 		TeamMemberItem: {
+			/** Format: date-time */
+			created_at: string;
 			id: components["schemas"]["Snowflake"];
 			is_owner: boolean;
 			is_public: boolean;
@@ -6452,6 +6535,8 @@ export interface components {
 			role_assignments?: components["schemas"]["TeamMemberRoleAssignment"][];
 			role_ids?: string[];
 			sort_order: number;
+			/** Format: date-time */
+			updated_at: string;
 			user_id: components["schemas"]["Snowflake"];
 		};
 		/** TeamMemberRoleAssignment */
@@ -6496,6 +6581,8 @@ export interface components {
 		/** TeamRoleItem */
 		TeamRoleItem: {
 			color?: string | null;
+			/** Format: date-time */
+			created_at: string;
 			discord_role_id?: string | null;
 			icon?: string | null;
 			id: components["schemas"]["Snowflake"];
@@ -6513,6 +6600,8 @@ export interface components {
 			position: number;
 			/** @default 0 */
 			sort_order: number;
+			/** Format: date-time */
+			updated_at: string;
 		};
 		/** TeamRoleUpdateRequest */
 		TeamRoleUpdateRequest: {
@@ -6529,10 +6618,14 @@ export interface components {
 		};
 		/** TeamScopeServer */
 		TeamScopeServer: {
+			/** Format: date-time */
+			created_at: string;
 			id: components["schemas"]["Snowflake"];
 			name: string;
 			server_role: components["schemas"]["ServerRole"];
 			slug?: string | null;
+			/** Format: date-time */
+			updated_at: string;
 		};
 		/**
 		 * TeamScopeType
@@ -6563,13 +6656,13 @@ export interface components {
 			minecraft_username?: string | null;
 			minecraft_uuid?: string | null;
 			priority?: components["schemas"]["TicketPriority"];
-			server_id: string;
+			server_id: components["schemas"]["Snowflake"];
 			source?: components["schemas"]["TicketSource"];
 			subject: string;
 		};
 		/** TicketDetail */
 		TicketDetail: {
-			creator_id: string;
+			creator_id: components["schemas"]["Snowflake"];
 			messages?: components["schemas"]["TicketMessage"][];
 			summary: components["schemas"]["TicketSummary"];
 		};
@@ -6582,11 +6675,11 @@ export interface components {
 		};
 		/** TicketMessage */
 		TicketMessage: {
-			author_id: string;
+			author_id: components["schemas"]["Snowflake"];
 			author_type: components["schemas"]["TicketAuthorType"];
 			content: string;
 			created_at: string;
-			id: string;
+			id: components["schemas"]["Snowflake"];
 			source: components["schemas"]["TicketSource"];
 		};
 		/** TicketMessageCreateRequest */
@@ -6624,9 +6717,9 @@ export interface components {
 		/** TicketSummary */
 		TicketSummary: {
 			created_at: string;
-			id: string;
+			id: components["schemas"]["Snowflake"];
 			priority: components["schemas"]["TicketPriority"];
-			server_id: string;
+			server_id: components["schemas"]["Snowflake"];
 			status: components["schemas"]["TicketStatus"];
 			subject: string;
 			updated_at: string;
@@ -6738,7 +6831,7 @@ export interface components {
 		};
 		/** UserEngagementTopProject */
 		UserEngagementTopProject: {
-			project_id: string;
+			project_id: components["schemas"]["Snowflake"];
 			votes: number;
 		};
 		/** UserProfile */
@@ -6809,7 +6902,10 @@ export interface components {
 			| "unknown";
 		/** VoteItem */
 		VoteItem: {
-			user_id: string;
+			avatar_url?: string | null;
+			slug?: string | null;
+			user_id: components["schemas"]["Snowflake"];
+			username?: string | null;
 			voted_at: string;
 		};
 		/** VotingLinks */
@@ -6839,6 +6935,7 @@ export interface components {
 			application_url?: string | null;
 			/** @default false */
 			auto_approved: boolean;
+			/** Format: date-time */
 			created_at: string;
 			discord_name?: string | null;
 			form_id?: components["schemas"]["Snowflake"] | null;
@@ -6859,6 +6956,8 @@ export interface components {
 			server_id: components["schemas"]["Snowflake"];
 			status: components["schemas"]["WhitelistApplicationStatus"];
 			status_alias?: string | null;
+			/** Format: date-time */
+			updated_at: string;
 			user_id: components["schemas"]["Snowflake"];
 		};
 		/** WhitelistApplicationList */
@@ -6896,6 +6995,8 @@ export interface components {
 		};
 		/** WhitelistBindingDetail */
 		WhitelistBindingDetail: {
+			/** Format: date-time */
+			created_at: string;
 			discord_membership_mode?: components["schemas"]["DiscordMembershipMode"];
 			/** @default true */
 			enabled: boolean;
@@ -6911,6 +7012,8 @@ export interface components {
 			scope_type: components["schemas"]["TeamScopeType"];
 			server_id: string;
 			target_server_ids?: string[];
+			/** Format: date-time */
+			updated_at: string;
 		};
 		/**
 		 * WhitelistBindingMode
@@ -6965,6 +7068,7 @@ export interface components {
 		/** WhitelistDirectEntry */
 		WhitelistDirectEntry: {
 			added_by_user_id?: components["schemas"]["Snowflake"] | null;
+			/** Format: date-time */
 			created_at: string;
 			id: components["schemas"]["Snowflake"];
 			minecraft_account_type?:
@@ -6973,6 +7077,8 @@ export interface components {
 			minecraft_nick?: string | null;
 			minecraft_uuid?: string | null;
 			server_id: components["schemas"]["Snowflake"];
+			/** Format: date-time */
+			updated_at: string;
 		};
 		/** WhitelistDirectEntryPage */
 		WhitelistDirectEntryPage: {
@@ -6986,12 +7092,14 @@ export interface components {
 		};
 		/** WhitelistEntry */
 		WhitelistEntry: {
+			created_at?: string | null;
 			discord_name?: string | null;
 			minecraft_account_type?:
 				| components["schemas"]["MinecraftAccountType"]
 				| null;
 			minecraft_nick?: string | null;
 			minecraft_uuid?: string | null;
+			updated_at?: string | null;
 			user_id?: components["schemas"]["Snowflake"] | null;
 		};
 		/**
@@ -7003,12 +7111,16 @@ export interface components {
 		/** WhitelistFormCard */
 		WhitelistFormCard: {
 			auto_approve_enabled: boolean;
+			/** Format: date-time */
+			created_at: string;
 			description?: string | null;
 			id: components["schemas"]["Snowflake"];
 			name: string;
 			project_id?: components["schemas"]["Snowflake"] | null;
 			require_discord: boolean;
 			require_minecraft_nick: boolean;
+			/** Format: date-time */
+			updated_at: string;
 		};
 		/** WhitelistFormCreateRequest */
 		WhitelistFormCreateRequest: {
@@ -7068,6 +7180,7 @@ export interface components {
 			conflict_policy: string;
 			/** @default 0 */
 			conflicts: number;
+			/** Format: date-time */
 			created_at: string;
 			/** @default 0 */
 			entries_added: number;
@@ -7083,6 +7196,8 @@ export interface components {
 			started_at?: string | null;
 			status: string;
 			token: string;
+			/** Format: date-time */
+			updated_at: string;
 		};
 		/** WhitelistImportJobPage */
 		WhitelistImportJobPage: {
@@ -7168,6 +7283,8 @@ export interface components {
 			/** @default false */
 			can_verify: boolean;
 			catalog_mode: string;
+			/** Format: date-time */
+			created_at: string;
 			creator_user_id?: components["schemas"]["Snowflake"] | null;
 			display_server?: components["schemas"]["ServerSummary"] | null;
 			display_server_id?: components["schemas"]["Snowflake"] | null;
@@ -7198,6 +7315,8 @@ export interface components {
 			server_count: number;
 			slug?: string | null;
 			trust_state?: components["schemas"]["TrustState"];
+			/** Format: date-time */
+			updated_at: string;
 			user_permissions?: string[];
 			verified_plugin_rollout_mode?: components["schemas"]["RolloutMode"];
 			verified_plugin_rollout_state?:
@@ -12652,6 +12771,46 @@ export interface operations {
 			};
 		};
 	};
+	"project.live": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path: {
+				project_id: components["schemas"]["Snowflake"];
+			};
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description Request fulfilled, document follows */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ProjectLiveStatus"];
+				};
+			};
+			/** @description Bad request syntax or unsupported method */
+			400: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": {
+						detail: string;
+						extra?:
+							| null
+							| {
+									[key: string]: unknown;
+							  }
+							| unknown[];
+						status_code: number;
+					};
+				};
+			};
+		};
+	};
 	"server.player_stats": {
 		parameters: {
 			query?: {
@@ -13104,6 +13263,46 @@ export interface operations {
 				};
 				content: {
 					"application/json": components["schemas"]["DiscordRoleTargets"];
+				};
+			};
+			/** @description Bad request syntax or unsupported method */
+			400: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": {
+						detail: string;
+						extra?:
+							| null
+							| {
+									[key: string]: unknown;
+							  }
+							| unknown[];
+						status_code: number;
+					};
+				};
+			};
+		};
+	};
+	"project.whitelist.config": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path: {
+				project_id: components["schemas"]["Snowflake"];
+			};
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description Request fulfilled, document follows */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": unknown[];
 				};
 			};
 			/** @description Bad request syntax or unsupported method */
