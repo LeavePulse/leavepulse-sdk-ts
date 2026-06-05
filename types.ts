@@ -7058,13 +7058,19 @@ export interface components {
 		};
 		/** VerificationServerSummary */
 		VerificationServerSummary: {
+			favicon_url?: string | null;
 			game_edition?: components["schemas"]["GameEdition"] | null;
+			icon_url?: string | null;
 			id: components["schemas"]["Snowflake"];
 			ip_or_domain: string;
 			is_verified: boolean;
+			name: string;
 			owner_id?: components["schemas"]["Snowflake"] | null;
 			project_id?: components["schemas"]["Snowflake"] | null;
+			proxy_type: string;
 			role: components["schemas"]["ServerRole"];
+			server_role: components["schemas"]["ServerRole"];
+			slug?: string | null;
 			/** @default 0 */
 			verification_level: number;
 			verification_source?: components["schemas"]["VerificationSource"] | null;
