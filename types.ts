@@ -623,6 +623,41 @@ export interface paths {
 		patch: operations["admin.users.set_discord"];
 		trace?: never;
 	};
+	"/v1/admin/users/{user_id}/minecraft-accounts/offline": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
+		/** Create offline Minecraft account (admin) */
+		post: operations["admin.users.create_offline_minecraft"];
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	"/v1/admin/users/{user_id}/minecraft-accounts/{account_id}": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
+		post?: never;
+		/** Delete linked Minecraft account (admin) */
+		delete: operations["admin.users.delete_minecraft"];
+		options?: never;
+		head?: never;
+		/** Update linked Minecraft account (admin) */
+		patch: operations["admin.users.update_minecraft"];
+		trace?: never;
+	};
 	"/v1/admin/users/{user_id}/roles": {
 		parameters: {
 			query?: never;
@@ -4462,6 +4497,16 @@ export interface components {
 			uuid_type?: components["schemas"]["MinecraftUuidType"] | null;
 			verification_status: components["schemas"]["MinecraftVerificationStatus"];
 			verified_at?: string | null;
+		};
+		/** AdminMinecraftAccountDeleteResult */
+		AdminMinecraftAccountDeleteResult: {
+			account_id: string;
+			status: string;
+		};
+		/** AdminMinecraftAccountWriteRequest */
+		AdminMinecraftAccountWriteRequest: {
+			minecraft_nick: string;
+			minecraft_uuid?: string | null;
 		};
 		/** AdminProject */
 		AdminProject: {
@@ -9137,6 +9182,136 @@ export interface operations {
 				};
 				content: {
 					"application/json": components["schemas"]["AdminUserDetail"];
+				};
+			};
+			/** @description Bad request syntax or unsupported method */
+			400: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": {
+						detail: string;
+						extra?:
+							| null
+							| {
+									[key: string]: unknown;
+							  }
+							| unknown[];
+						status_code: number;
+					};
+				};
+			};
+		};
+	};
+	"admin.users.create_offline_minecraft": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path: {
+				user_id: components["schemas"]["Snowflake"];
+			};
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				"application/json": components["schemas"]["AdminMinecraftAccountWriteRequest"];
+			};
+		};
+		responses: {
+			/** @description Document created, URL follows */
+			201: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["AdminMinecraftAccount"];
+				};
+			};
+			/** @description Bad request syntax or unsupported method */
+			400: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": {
+						detail: string;
+						extra?:
+							| null
+							| {
+									[key: string]: unknown;
+							  }
+							| unknown[];
+						status_code: number;
+					};
+				};
+			};
+		};
+	};
+	"admin.users.delete_minecraft": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path: {
+				user_id: components["schemas"]["Snowflake"];
+				account_id: components["schemas"]["Snowflake"];
+			};
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description Request fulfilled, document follows */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["AdminMinecraftAccountDeleteResult"];
+				};
+			};
+			/** @description Bad request syntax or unsupported method */
+			400: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": {
+						detail: string;
+						extra?:
+							| null
+							| {
+									[key: string]: unknown;
+							  }
+							| unknown[];
+						status_code: number;
+					};
+				};
+			};
+		};
+	};
+	"admin.users.update_minecraft": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path: {
+				user_id: components["schemas"]["Snowflake"];
+				account_id: components["schemas"]["Snowflake"];
+			};
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				"application/json": components["schemas"]["AdminMinecraftAccountWriteRequest"];
+			};
+		};
+		responses: {
+			/** @description Request fulfilled, document follows */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["AdminMinecraftAccount"];
 				};
 			};
 			/** @description Bad request syntax or unsupported method */

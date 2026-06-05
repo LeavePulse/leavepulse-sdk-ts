@@ -17,6 +17,10 @@ export type AdminForceCreateRequest =
 	components["schemas"]["AdminForceCreateRequest"];
 export type AdminMinecraftAccount =
 	components["schemas"]["AdminMinecraftAccount"];
+export type AdminMinecraftAccountDeleteResult =
+	components["schemas"]["AdminMinecraftAccountDeleteResult"];
+export type AdminMinecraftAccountWriteRequest =
+	components["schemas"]["AdminMinecraftAccountWriteRequest"];
 export type AdminProject = components["schemas"]["AdminProject"];
 export type AdminProjectDeleteResponse =
 	components["schemas"]["AdminProjectDeleteResponse"];

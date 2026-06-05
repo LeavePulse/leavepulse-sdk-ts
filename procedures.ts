@@ -486,6 +486,44 @@ export class AdminUsersNs {
 		});
 	}
 
+	/** admin.users.create_offline_minecraft */
+	async createOfflineMinecraft(
+		userId: Snowflake,
+		body: models.AdminMinecraftAccountWriteRequest,
+	): Promise<models.AdminMinecraftAccount> {
+		return this.ctx.transport.request<models.AdminMinecraftAccount>({
+			method: "POST",
+			path: `/v1/admin/users/${userId}/minecraft-accounts/offline`,
+			body,
+		});
+	}
+
+	/** admin.users.delete_minecraft */
+	async deleteMinecraft(
+		userId: Snowflake,
+		accountId: Snowflake,
+	): Promise<models.AdminMinecraftAccountDeleteResult> {
+		return this.ctx.transport.request<models.AdminMinecraftAccountDeleteResult>(
+			{
+				method: "DELETE",
+				path: `/v1/admin/users/${userId}/minecraft-accounts/${accountId}`,
+			},
+		);
+	}
+
+	/** admin.users.update_minecraft */
+	async updateMinecraft(
+		userId: Snowflake,
+		accountId: Snowflake,
+		body: models.AdminMinecraftAccountWriteRequest,
+	): Promise<models.AdminMinecraftAccount> {
+		return this.ctx.transport.request<models.AdminMinecraftAccount>({
+			method: "PATCH",
+			path: `/v1/admin/users/${userId}/minecraft-accounts/${accountId}`,
+			body,
+		});
+	}
+
 	/** admin.users.roles */
 	async roles(userId: Snowflake): Promise<models.UserRolesResponse> {
 		return fetchCachedOrThrow<models.UserRolesResponse>(
