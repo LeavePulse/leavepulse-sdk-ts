@@ -3289,6 +3289,26 @@ export interface paths {
 		patch?: never;
 		trace?: never;
 	};
+	"/v1/servers/{server_id}/host-risk/evidence": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		/**
+		 * Download host risk evidence
+		 * @description Return the host-risk evidence JSON payload for one server. The response includes the suggested filename and the parsed JSON object.
+		 */
+		get: operations["server.host_risk_evidence"];
+		put?: never;
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
 	"/v1/servers/{server_id}/icon": {
 		parameters: {
 			query?: never;
@@ -3856,6 +3876,26 @@ export interface paths {
 		 * @description Set the manual translation for one field/locale pair.
 		 */
 		patch: operations["server.translations.set"];
+		trace?: never;
+	};
+	"/v1/servers/{server_id}/whitelist": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		/**
+		 * Get public whitelist config
+		 * @description Return the public whitelist configuration for a server: binding, form, the caller's own application, grant targets, enforcement servers, and proof entry.
+		 */
+		get: operations["server.whitelist.public"];
+		put?: never;
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
 		trace?: never;
 	};
 	"/v1/servers/{server_id}/whitelist/applications": {
@@ -6366,6 +6406,13 @@ export interface components {
 			period: string;
 			total: number;
 		};
+		/** ServerHostRiskEvidence */
+		ServerHostRiskEvidence: {
+			filename: string;
+			payload?: {
+				[key: string]: unknown;
+			} | null;
+		};
 		/** ServerIssuesItem */
 		ServerIssuesItem: {
 			ip_or_domain: string;
@@ -6593,6 +6640,15 @@ export interface components {
 		/** ServerTranslations */
 		ServerTranslations: {
 			items?: components["schemas"]["ServerTranslation"][];
+		};
+		/** ServerWhitelistPublicConfig */
+		ServerWhitelistPublicConfig: {
+			application?: components["schemas"]["WhitelistApplication"] | null;
+			binding?: components["schemas"]["WhitelistBindingDetail"] | null;
+			enforcement_servers?: components["schemas"]["WhitelistTargetServerRef"][];
+			form?: components["schemas"]["WhitelistFormDetail"] | null;
+			grant_target_servers?: components["schemas"]["WhitelistTargetServerRef"][];
+			proof_entry?: components["schemas"]["WhitelistProofEntry"] | null;
 		};
 		/**
 		 * ServiceHealth
@@ -15368,6 +15424,46 @@ export interface operations {
 			};
 		};
 	};
+	"server.host_risk_evidence": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path: {
+				server_id: components["schemas"]["Snowflake"];
+			};
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description Request fulfilled, document follows */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ServerHostRiskEvidence"];
+				};
+			};
+			/** @description Bad request syntax or unsupported method */
+			400: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": {
+						detail: string;
+						extra?:
+							| null
+							| {
+									[key: string]: unknown;
+							  }
+							| unknown[];
+						status_code: number;
+					};
+				};
+			};
+		};
+	};
 	"server.icons.upload": {
 		parameters: {
 			query?: never;
@@ -16819,6 +16915,49 @@ export interface operations {
 				};
 				content: {
 					"application/json": components["schemas"]["ServerTranslation"];
+				};
+			};
+			/** @description Bad request syntax or unsupported method */
+			400: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": {
+						detail: string;
+						extra?:
+							| null
+							| {
+									[key: string]: unknown;
+							  }
+							| unknown[];
+						status_code: number;
+					};
+				};
+			};
+		};
+	};
+	"server.whitelist.public": {
+		parameters: {
+			query?: {
+				binding_id?: number | null;
+				locale?: string | null;
+			};
+			header?: never;
+			path: {
+				server_id: components["schemas"]["Snowflake"];
+			};
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description Request fulfilled, document follows */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ServerWhitelistPublicConfig"];
 				};
 			};
 			/** @description Bad request syntax or unsupported method */

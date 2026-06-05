@@ -333,6 +333,8 @@ export type ServerChangeSlugRequest =
 export type ServerDetail = components["schemas"]["ServerDetail"];
 export type ServerEventPoint = components["schemas"]["ServerEventPoint"];
 export type ServerEvents = components["schemas"]["ServerEvents"];
+export type ServerHostRiskEvidence =
+	components["schemas"]["ServerHostRiskEvidence"];
 export type ServerIssuesItem = components["schemas"]["ServerIssuesItem"];
 export type ServerLaunchManifest =
 	components["schemas"]["ServerLaunchManifest"];
@@ -380,6 +382,8 @@ export type ServerTranslation = components["schemas"]["ServerTranslation"];
 export type ServerTranslationUpsertRequest =
 	components["schemas"]["ServerTranslationUpsertRequest"];
 export type ServerTranslations = components["schemas"]["ServerTranslations"];
+export type ServerWhitelistPublicConfig =
+	components["schemas"]["ServerWhitelistPublicConfig"];
 export type ServiceHealth = components["schemas"]["ServiceHealth"];
 export type ServiceHealthEntry = components["schemas"]["ServiceHealthEntry"];
 export type ServicesHealthResponse =

@@ -249,6 +249,15 @@ export class Server extends Resource<Data> {
 		);
 	}
 
+	/** server.host_risk_evidence */
+	async hostRiskEvidence(): Promise<models.ServerHostRiskEvidence> {
+		return fetchCachedOrThrow<models.ServerHostRiskEvidence>(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{ method: "GET", path: `/v1/servers/${this.id}/host-risk/evidence` },
+		);
+	}
+
 	/** server.icons.list */
 	async iconsList(): Promise<models.IconHistory> {
 		return fetchCachedOrThrow<models.IconHistory>(
@@ -407,6 +416,22 @@ export class Server extends Resource<Data> {
 			this.ctx.transport,
 			this.ctx.etagStore,
 			{ method: "GET", path: `/v1/servers/${this.id}/translations` },
+		);
+	}
+
+	/** server.whitelist.public */
+	async whitelistPublic(params?: {
+		bindingId?: number;
+		locale?: string;
+	}): Promise<models.ServerWhitelistPublicConfig> {
+		return fetchCachedOrThrow<models.ServerWhitelistPublicConfig>(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{
+				method: "GET",
+				path: `/v1/servers/${this.id}/whitelist`,
+				query: { binding_id: params?.bindingId, locale: params?.locale },
+			},
 		);
 	}
 
