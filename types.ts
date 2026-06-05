@@ -6770,7 +6770,13 @@ export interface components {
 		 * @default project
 		 * @enum {string}
 		 */
-		TeamScopeType: "project" | "server" | "whitelist_policy" | "unknown";
+		TeamScopeType:
+			| "project"
+			| "server"
+			| "network_all"
+			| "network_selected"
+			| "whitelist_policy"
+			| "unknown";
 		/** TextTranslation */
 		TextTranslation: {
 			engine: string;
