@@ -116,12 +116,44 @@ export class LeavePulse {
 		this.whitelist = new WhitelistNs(this.ctx);
 	}
 
+	application(serverId: Snowflake, applicationId: Snowflake): Application {
+		return this.ctx.cache.ensure(
+			"Application",
+			applicationId,
+			() =>
+				new Application(
+					{ server_id: serverId, application_id: applicationId } as never,
+					this.ctx,
+				),
+		) as Application;
+	}
+
+	binding(id: Snowflake): Binding {
+		return this.ctx.cache.ensure(
+			"Binding",
+			id,
+			() => new Binding({ id } as never, this.ctx),
+		) as Binding;
+	}
+
 	build(id: string): Build {
 		return this.ctx.cache.ensure(
 			"Build",
 			id,
 			() => new Build({ id } as never, this.ctx),
 		) as Build;
+	}
+
+	comment(projectId: Snowflake, commentId: Snowflake): Comment {
+		return this.ctx.cache.ensure(
+			"Comment",
+			commentId,
+			() =>
+				new Comment(
+					{ project_id: projectId, comment_id: commentId } as never,
+					this.ctx,
+				),
+		) as Comment;
 	}
 
 	form(id: Snowflake): Form {
@@ -159,6 +191,30 @@ export class LeavePulse {
 			id,
 			() => new Server({ id } as never, this.ctx),
 		) as Server;
+	}
+
+	session(id: Snowflake): Session {
+		return this.ctx.cache.ensure(
+			"Session",
+			id,
+			() => new Session({ id } as never, this.ctx),
+		) as Session;
+	}
+
+	subscription(id: string): Subscription {
+		return this.ctx.cache.ensure(
+			"Subscription",
+			id,
+			() => new Subscription({ id } as never, this.ctx),
+		) as Subscription;
+	}
+
+	ticket(id: Snowflake): Ticket {
+		return this.ctx.cache.ensure(
+			"Ticket",
+			id,
+			() => new Ticket({ id } as never, this.ctx),
+		) as Ticket;
 	}
 
 	user(id: string): User {

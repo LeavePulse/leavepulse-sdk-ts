@@ -7,7 +7,7 @@ import type { ClientContext } from "../client";
 import type { Snowflake } from "../runtime/snowflake";
 
 type Data = components["schemas"]["WhitelistBindingDetail"] & {
-	binding_id?: string | number;
+	entry_id?: string | number;
 };
 
 export class Binding extends Resource<Data> {
@@ -34,39 +34,36 @@ export class Binding extends Resource<Data> {
 	}
 
 	/** binding.entries.list */
-	async entriesList(
-		bindingId: Snowflake,
-		params?: { page?: number; perPage?: number },
-	): Promise<models.WhitelistDirectEntryPage> {
+	async entriesList(params?: {
+		page?: number;
+		perPage?: number;
+	}): Promise<models.WhitelistDirectEntryPage> {
 		return fetchCachedOrThrow<models.WhitelistDirectEntryPage>(
 			this.ctx.transport,
 			this.ctx.etagStore,
 			{
 				method: "GET",
-				path: `/v1/whitelist/bindings/${bindingId}/direct/entries`,
+				path: `/v1/whitelist/bindings/${this.id}/direct/entries`,
 				query: { page: params?.page, per_page: params?.perPage },
 			},
 		);
 	}
 
 	/** binding.delete */
-	async delete(bindingId: Snowflake): Promise<this> {
+	async delete(): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "DELETE",
-			path: `/v1/whitelist/bindings/${bindingId}`,
+			path: `/v1/whitelist/bindings/${this.id}`,
 		});
 		this.ctx.hydrate("Binding", data);
 		return this;
 	}
 
 	/** binding.update */
-	async update(
-		bindingId: Snowflake,
-		body: models.WhitelistBindingWriteRequest,
-	): Promise<this> {
+	async update(body: models.WhitelistBindingWriteRequest): Promise<this> {
 		const data = await this.ctx.transport.request({
 			method: "PATCH",
-			path: `/v1/whitelist/bindings/${bindingId}`,
+			path: `/v1/whitelist/bindings/${this.id}`,
 			body,
 		});
 		this.ctx.hydrate("Binding", data);
@@ -74,36 +71,34 @@ export class Binding extends Resource<Data> {
 	}
 
 	/** binding.test */
-	async test(
-		bindingId: Snowflake,
-		params?: { audience?: string },
-	): Promise<models.WhitelistBindingTestResult> {
+	async test(params?: {
+		audience?: string;
+	}): Promise<models.WhitelistBindingTestResult> {
 		return this.ctx.transport.request<models.WhitelistBindingTestResult>({
 			method: "POST",
-			path: `/v1/whitelist/bindings/${bindingId}/actions/test-notifications`,
+			path: `/v1/whitelist/bindings/${this.id}/actions/test-notifications`,
 			query: { audience: params?.audience },
 		});
 	}
 
 	/** binding.entries.add */
 	async entriesAdd(
-		bindingId: Snowflake,
 		body: models.WhitelistDirectAddRequest,
 	): Promise<models.WhitelistDirectEntry> {
 		return this.ctx.transport.request<models.WhitelistDirectEntry>({
 			method: "POST",
-			path: `/v1/whitelist/bindings/${bindingId}/direct/entries`,
+			path: `/v1/whitelist/bindings/${this.id}/direct/entries`,
 			body,
 		});
 	}
 
 	/** binding.entries.remove */
 	async entriesRemove(
-		bindingId: Snowflake,
+		entryId: Snowflake,
 	): Promise<models.WhitelistDirectRemoval> {
 		return this.ctx.transport.request<models.WhitelistDirectRemoval>({
 			method: "DELETE",
-			path: `/v1/whitelist/bindings/${bindingId}/direct/entries/${this.id}`,
+			path: `/v1/whitelist/bindings/${this.id}/direct/entries/${entryId}`,
 		});
 	}
 }
