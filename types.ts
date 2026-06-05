@@ -6514,7 +6514,7 @@ export interface components {
 			avg: number;
 			cadence_hint_seconds: number;
 			key: string;
-			kind: string;
+			kind: components["schemas"]["TelemetryMetricKind"];
 			last: number;
 			max: number;
 			min: number;
@@ -6800,6 +6800,19 @@ export interface components {
 			| "network_all"
 			| "network_selected"
 			| "whitelist_policy"
+			| "unknown";
+		/**
+		 * TelemetryMetricKind
+		 * @description Update profile for a verified-plugin telemetry metric.
+		 * @enum {string}
+		 */
+		TelemetryMetricKind:
+			| "hot"
+			| "warm"
+			| "cold"
+			| "static"
+			| "event"
+			| "other"
 			| "unknown";
 		/** TextTranslation */
 		TextTranslation: {
