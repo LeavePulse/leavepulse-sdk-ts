@@ -149,6 +149,7 @@ export type MinecraftVerificationState =
 	components["schemas"]["MinecraftVerificationState"];
 export type MotdVerification = components["schemas"]["MotdVerification"];
 export type MyComment = components["schemas"]["MyComment"];
+export type MyDashboardStats = components["schemas"]["MyDashboardStats"];
 export type MyPlayerStats = components["schemas"]["MyPlayerStats"];
 export type MyServerIssuesPage = components["schemas"]["MyServerIssuesPage"];
 export type MyServersPage = components["schemas"]["MyServersPage"];
@@ -204,6 +205,8 @@ export type ProjectResolveResponse =
 	components["schemas"]["ProjectResolveResponse"];
 export type ProjectStats = components["schemas"]["ProjectStats"];
 export type ProjectThumbResult = components["schemas"]["ProjectThumbResult"];
+export type ProjectWhitelistConfigItem =
+	components["schemas"]["ProjectWhitelistConfigItem"];
 export type PublicProfile = components["schemas"]["PublicProfile"];
 export type RecentVotes = components["schemas"]["RecentVotes"];
 export type ReportUserRequest = components["schemas"]["ReportUserRequest"];

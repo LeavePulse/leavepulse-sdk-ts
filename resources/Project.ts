@@ -251,11 +251,12 @@ export class Project extends Resource<Data> {
 	}
 
 	/** project.whitelist.config */
-	async whitelistConfig(): Promise<unknown> {
-		return fetchCachedOrThrow<unknown>(this.ctx.transport, this.ctx.etagStore, {
-			method: "GET",
-			path: `/v1/projects/${this.id}/whitelist/config`,
-		});
+	async whitelistConfig(): Promise<models.ProjectWhitelistConfigItem[]> {
+		return fetchCachedOrThrow<models.ProjectWhitelistConfigItem[]>(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{ method: "GET", path: `/v1/projects/${this.id}/whitelist/config` },
+		);
 	}
 
 	/** project.whitelist.forms */

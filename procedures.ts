@@ -125,8 +125,8 @@ export class AdminOverridesNs {
 	async list(
 		serverId: Snowflake,
 		params?: { start?: string; end?: string },
-	): Promise<models.StatusOverrideItem> {
-		return fetchCachedOrThrow<models.StatusOverrideItem>(
+	): Promise<models.StatusOverrideItem[]> {
+		return fetchCachedOrThrow<models.StatusOverrideItem[]>(
 			this.ctx.transport,
 			this.ctx.etagStore,
 			{
@@ -877,9 +877,42 @@ export class DiscordNs {
 	}
 }
 
+/** monitoring.me procedures. */
+export class MonitoringMeNs {
+	constructor(private readonly ctx: ClientContext) {}
+
+	/** monitoring.me.stats */
+	async stats(): Promise<models.MyDashboardStats> {
+		return fetchCachedOrThrow<models.MyDashboardStats>(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{ method: "GET", path: `/v1/monitoring/me/stats` },
+		);
+	}
+}
+
+/** monitoring.me.stats procedures. */
+export class MonitoringMeStatsNs {
+	constructor(private readonly ctx: ClientContext) {}
+
+	/** monitoring.me.stats.unverified */
+	async unverified(): Promise<models.MyDashboardStats> {
+		return fetchCachedOrThrow<models.MyDashboardStats>(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{ method: "GET", path: `/v1/monitoring/me/stats/unverified` },
+		);
+	}
+}
+
 /** monitoring.* procedures. */
 export class MonitoringNs {
-	constructor(private readonly ctx: ClientContext) {}
+	readonly me: MonitoringMeNs;
+	readonly meStats: MonitoringMeStatsNs;
+	constructor(private readonly ctx: ClientContext) {
+		this.me = new MonitoringMeNs(ctx);
+		this.meStats = new MonitoringMeStatsNs(ctx);
+	}
 
 	/** monitoring.landing */
 	async landing(): Promise<models.LandingStats> {

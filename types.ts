@@ -6020,6 +6020,68 @@ export interface components {
 			thumbed: boolean;
 			thumbs: number;
 		};
+		/** ProjectWhitelistApplicationPreview */
+		ProjectWhitelistApplicationPreview: {
+			application_url?: string | null;
+			/** @default false */
+			auto_approved: boolean;
+			binding_id?: string | null;
+			created_at?: string | null;
+			discord_name?: string | null;
+			form_id?: string | null;
+			id: string;
+			minecraft_account_type?: string | null;
+			minecraft_identity_state?: string | null;
+			minecraft_nick?: string | null;
+			minecraft_uuid?: string | null;
+			payload?: {
+				[key: string]: unknown;
+			};
+			review_reason?: string | null;
+			reviewed_at?: string | null;
+			server_id?: string | null;
+			status: string;
+			status_alias?: string | null;
+			updated_at?: string | null;
+			user_id?: string | null;
+		};
+		/** ProjectWhitelistBindingPreview */
+		ProjectWhitelistBindingPreview: {
+			created_at?: string | null;
+			/** @default disabled */
+			discord_membership_mode: string;
+			/** @default true */
+			enabled: boolean;
+			enforcement_mode: string;
+			form_id?: string | null;
+			granted_role_ids?: string[];
+			id: string;
+			/** @default form */
+			mode: string;
+			notification_settings?: {
+				[key: string]: unknown;
+			} | null;
+			project_id?: string | null;
+			/** @default true */
+			restrict_chat: boolean;
+			scope_type: string;
+			server_id: string;
+			target_server_ids?: string[];
+			updated_at?: string | null;
+		};
+		/** ProjectWhitelistConfigItem */
+		ProjectWhitelistConfigItem: {
+			application?:
+				| components["schemas"]["ProjectWhitelistApplicationPreview"]
+				| null;
+			apply_server_id: string;
+			binding: components["schemas"]["ProjectWhitelistBindingPreview"];
+			enforcement_servers?: components["schemas"]["WhitelistTargetServerRef"][];
+			form?: components["schemas"]["WhitelistFormCard"] | null;
+			grant_target_servers?: components["schemas"]["WhitelistTargetServerRef"][];
+			project_id: string;
+			proof_entry?: components["schemas"]["WhitelistProofEntry"] | null;
+		};
 		/**
 		 * PublicEntrypointState
 		 * @description How many public entrypoints a project exposes.
@@ -7183,12 +7245,32 @@ export interface components {
 			updated_at?: string | null;
 			user_id?: components["schemas"]["Snowflake"] | null;
 		};
+		/** WhitelistFieldConfig */
+		WhitelistFieldConfig: {
+			field_type: string;
+			help_text?: string | null;
+			key: string;
+			label: string;
+			/** @default 0 */
+			order: number;
+			/** @default false */
+			required: boolean;
+			rules?: {
+				[key: string]: string | number | boolean | string[] | null;
+			} | null;
+		};
 		/**
 		 * WhitelistFieldType
 		 * @description Input type of a whitelist form field.
 		 * @enum {string}
 		 */
-		WhitelistFieldType: "text" | "number" | "boolean" | "select" | "unknown";
+		WhitelistFieldType:
+			| "text"
+			| "textarea"
+			| "number"
+			| "boolean"
+			| "select"
+			| "unknown";
 		/** WhitelistFormCard */
 		WhitelistFormCard: {
 			auto_approve_enabled: boolean;
@@ -7207,10 +7289,14 @@ export interface components {
 		WhitelistFormCreateRequest: {
 			/** @default false */
 			auto_approve_enabled: boolean;
-			auto_approve_rules?: unknown;
+			auto_approve_rules?: {
+				[key: string]: string | number | boolean | string[] | null;
+			} | null;
 			description?: string | null;
-			fields?: unknown;
-			import_mapping?: unknown;
+			fields?: components["schemas"]["WhitelistFieldConfig"][];
+			import_mapping?: {
+				[key: string]: unknown;
+			} | null;
 			name: string;
 			project_id?: components["schemas"]["Snowflake"] | null;
 			/** @default false */
@@ -7220,9 +7306,13 @@ export interface components {
 		};
 		/** WhitelistFormDetail */
 		WhitelistFormDetail: {
-			auto_approve_rules: unknown;
-			fields: unknown;
-			import_mapping: unknown;
+			auto_approve_rules?: {
+				[key: string]: string | number | boolean | string[] | null;
+			} | null;
+			fields?: components["schemas"]["WhitelistFieldConfig"][];
+			import_mapping?: {
+				[key: string]: unknown;
+			} | null;
 			summary: components["schemas"]["WhitelistFormCard"];
 		};
 		/** WhitelistFormField */
@@ -7235,7 +7325,9 @@ export interface components {
 		};
 		/** WhitelistFormImportMappingRequest */
 		WhitelistFormImportMappingRequest: {
-			import_mapping: unknown;
+			import_mapping?: {
+				[key: string]: unknown;
+			} | null;
 		};
 		/** WhitelistFormPage */
 		WhitelistFormPage: {
@@ -7244,9 +7336,25 @@ export interface components {
 			per_page: number;
 			total: number;
 		};
+		/** WhitelistFormPatch */
+		WhitelistFormPatch: {
+			auto_approve_enabled?: boolean | null;
+			auto_approve_rules?: {
+				[key: string]: string | number | boolean | string[] | null;
+			} | null;
+			description?: string | null;
+			fields?: components["schemas"]["WhitelistFieldConfig"][] | null;
+			import_mapping?: {
+				[key: string]: unknown;
+			} | null;
+			name?: string | null;
+			project_id?: components["schemas"]["Snowflake"] | null;
+			require_discord?: boolean | null;
+			require_minecraft_nick?: boolean | null;
+		};
 		/** WhitelistFormUpdateRequest */
 		WhitelistFormUpdateRequest: {
-			patch: unknown;
+			patch: components["schemas"]["WhitelistFormPatch"];
 		};
 		/** WhitelistImportJob */
 		WhitelistImportJob: {
@@ -7290,6 +7398,31 @@ export interface components {
 			/** @default 0 */
 			total: number;
 		};
+		/** WhitelistImportOptions */
+		WhitelistImportOptions: {
+			entries?:
+				| {
+						[key: string]: unknown;
+				  }[]
+				| null;
+			field_priority?: {
+				[key: string]: string[];
+			} | null;
+			manual_overrides?: {
+				[key: string]: {
+					[key: string]: string;
+				};
+			} | null;
+			payload?: {
+				[key: string]: unknown;
+			} | null;
+			source_priority?: string[];
+			sources?:
+				| {
+						[key: string]: unknown;
+				  }[]
+				| null;
+		};
 		/** WhitelistImportRequest */
 		WhitelistImportRequest: {
 			binding_id: components["schemas"]["Snowflake"];
@@ -7303,7 +7436,7 @@ export interface components {
 			import_account_mode: string;
 			/** @default false */
 			include_history: boolean;
-			options?: unknown;
+			options?: components["schemas"]["WhitelistImportOptions"];
 			/** @default vanilla */
 			source: string;
 		};
@@ -7341,6 +7474,16 @@ export interface components {
 			/** @default 1 */
 			version: number;
 		};
+		/** WhitelistProofEntry */
+		WhitelistProofEntry: {
+			/** @default project_any_server */
+			entry_hint_kind: string;
+			entry_server_id?: string | null;
+			/** @default leavepulse */
+			preferred_command_root: string;
+			/** @default project */
+			scope: string;
+		};
 		/** WhitelistStaffNotificationSettings */
 		WhitelistStaffNotificationSettings: {
 			discord_channel?: components["schemas"]["WhitelistNotificationChannelSettings"];
@@ -7354,6 +7497,11 @@ export interface components {
 			/** @default  */
 			reason: string;
 			status: string;
+		};
+		/** WhitelistTargetServerRef */
+		WhitelistTargetServerRef: {
+			entry_server_id?: string | null;
+			server_id: string;
 		};
 		/** Workspace */
 		Workspace: {
@@ -13423,7 +13571,7 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
-					"application/json": unknown[];
+					"application/json": components["schemas"]["ProjectWhitelistConfigItem"][];
 				};
 			};
 			/** @description Bad request syntax or unsupported method */
