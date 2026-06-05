@@ -1,6 +1,6 @@
 {
 	"name": "@leavepulse/sdk",
-	"version": "0.3.27",
+	"version": "0.3.28",
 	"description": "Generated resource SDK for the LeavePulse platform contract.",
 	"type": "module",
 	"module": "index.ts",

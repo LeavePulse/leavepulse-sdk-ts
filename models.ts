@@ -568,6 +568,8 @@ export type UserPublic = authComponents["schemas"]["UserPublic"];
 export type UserRegister = authComponents["schemas"]["UserRegister"];
 export type UserTimeFormatPreference =
 	authComponents["schemas"]["UserTimeFormatPreference"];
+export type ApplicationData = components["schemas"]["WhitelistApplicationList"];
+export type BindingData = components["schemas"]["WhitelistBindingDetail"];
 export type BuildData = components["schemas"]["Build"];
 export type CommentData = components["schemas"]["Comment"];
 export type FormData = components["schemas"]["WhitelistFormDetail"];
@@ -575,5 +577,7 @@ export type MeData = components["schemas"]["MeResponse"];
 export type OrderData = components["schemas"]["Order"];
 export type ProjectData = components["schemas"]["ProjectDetail"];
 export type ServerData = components["schemas"]["ServerDetail"];
+export type SessionData = components["schemas"]["SessionList"];
 export type SubscriptionData = components["schemas"]["Subscription"];
+export type TicketData = components["schemas"]["TicketList"];
 export type UserData = components["schemas"]["PublicProfile"];

@@ -2,11 +2,12 @@
 import { Resource } from "../runtime/resource";
 import { TopicSubscription } from "../runtime/realtime";
 import { fetchCachedOrThrow } from "../runtime/etag-store";
+import type { components } from "../types";
 import type * as models from "../models";
 import type { ClientContext } from "../client";
 import type { Snowflake } from "../runtime/snowflake";
 
-type Data = { id: string | number } & Record<string, unknown>;
+type Data = components["schemas"]["TicketList"];
 
 export class Ticket extends Resource<Data> {
 	constructor(
