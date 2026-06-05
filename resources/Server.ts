@@ -494,381 +494,352 @@ export class Server extends Resource<Data> {
 	}
 
 	/** server.change_address */
-	async changeAddress(body: models.ServerChangeAddressRequest): Promise<this> {
-		const data = await this.ctx.transport.request({
+	async changeAddress(
+		body: models.ServerChangeAddressRequest,
+	): Promise<models.ServerCard> {
+		return this.ctx.transport.request<models.ServerCard>({
 			method: "POST",
 			path: `/v1/servers/${this.id}/actions/change-address`,
 			body,
 		});
-		this.ctx.hydrate("Server", data);
-		return this;
 	}
 
 	/** server.change_slug */
-	async changeSlug(body: models.ServerChangeSlugRequest): Promise<this> {
-		const data = await this.ctx.transport.request({
+	async changeSlug(
+		body: models.ServerChangeSlugRequest,
+	): Promise<models.ServerCard> {
+		return this.ctx.transport.request<models.ServerCard>({
 			method: "POST",
 			path: `/v1/servers/${this.id}/actions/change-slug`,
 			body,
 		});
-		this.ctx.hydrate("Server", data);
-		return this;
 	}
 
 	/** server.force_ping */
-	async forcePing(): Promise<this> {
-		const data = await this.ctx.transport.request({
+	async forcePing(): Promise<models.ForcePingResult> {
+		return this.ctx.transport.request<models.ForcePingResult>({
 			method: "POST",
 			path: `/v1/servers/${this.id}/actions/force-ping`,
 		});
-		this.ctx.hydrate("Server", data);
-		return this;
 	}
 
 	/** server.rename */
-	async rename(body: models.ServerRenameRequest): Promise<this> {
-		const data = await this.ctx.transport.request({
+	async rename(body: models.ServerRenameRequest): Promise<models.ServerCard> {
+		return this.ctx.transport.request<models.ServerCard>({
 			method: "POST",
 			path: `/v1/servers/${this.id}/actions/rename`,
 			body,
 		});
-		this.ctx.hydrate("Server", data);
-		return this;
 	}
 
 	/** server.set_bedrock_port */
 	async setBedrockPort(
 		body: models.ServerSetBedrockPortRequest,
-	): Promise<this> {
-		const data = await this.ctx.transport.request({
+	): Promise<models.ServerCard> {
+		return this.ctx.transport.request<models.ServerCard>({
 			method: "POST",
 			path: `/v1/servers/${this.id}/actions/set-bedrock-port`,
 			body,
 		});
-		this.ctx.hydrate("Server", data);
-		return this;
 	}
 
 	/** server.set_description */
 	async setDescription(
 		body: models.ServerSetDescriptionRequest,
-	): Promise<this> {
-		const data = await this.ctx.transport.request({
+	): Promise<models.ServerCard> {
+		return this.ctx.transport.request<models.ServerCard>({
 			method: "POST",
 			path: `/v1/servers/${this.id}/actions/set-description`,
 			body,
 		});
-		this.ctx.hydrate("Server", data);
-		return this;
 	}
 
 	/** server.set_parent */
-	async setParent(body: models.ServerSetParentRequest): Promise<this> {
-		const data = await this.ctx.transport.request({
+	async setParent(
+		body: models.ServerSetParentRequest,
+	): Promise<models.ServerCard> {
+		return this.ctx.transport.request<models.ServerCard>({
 			method: "POST",
 			path: `/v1/servers/${this.id}/actions/set-parent`,
 			body,
 		});
-		this.ctx.hydrate("Server", data);
-		return this;
 	}
 
 	/** server.set_ping_port */
-	async setPingPort(body: models.ServerSetPingPortRequest): Promise<this> {
-		const data = await this.ctx.transport.request({
+	async setPingPort(
+		body: models.ServerSetPingPortRequest,
+	): Promise<models.ServerCard> {
+		return this.ctx.transport.request<models.ServerCard>({
 			method: "POST",
 			path: `/v1/servers/${this.id}/actions/set-ping-port`,
 			body,
 		});
-		this.ctx.hydrate("Server", data);
-		return this;
 	}
 
 	/** server.set_regions */
-	async setRegions(body: models.ServerSetRegionsRequest): Promise<this> {
-		const data = await this.ctx.transport.request({
+	async setRegions(
+		body: models.ServerSetRegionsRequest,
+	): Promise<models.ServerCard> {
+		return this.ctx.transport.request<models.ServerCard>({
 			method: "POST",
 			path: `/v1/servers/${this.id}/actions/set-regions`,
 			body,
 		});
-		this.ctx.hydrate("Server", data);
-		return this;
 	}
 
 	/** server.set_role */
-	async setRole(body: models.ServerSetRoleRequest): Promise<this> {
-		const data = await this.ctx.transport.request({
+	async setRole(body: models.ServerSetRoleRequest): Promise<models.ServerCard> {
+		return this.ctx.transport.request<models.ServerCard>({
 			method: "POST",
 			path: `/v1/servers/${this.id}/actions/set-role`,
 			body,
 		});
-		this.ctx.hydrate("Server", data);
-		return this;
 	}
 
 	/** server.set_show_description */
 	async setShowDescription(
 		body: models.ServerSetShowDescriptionRequest,
-	): Promise<this> {
-		const data = await this.ctx.transport.request({
+	): Promise<models.ServerCard> {
+		return this.ctx.transport.request<models.ServerCard>({
 			method: "POST",
 			path: `/v1/servers/${this.id}/actions/set-show-description`,
 			body,
 		});
-		this.ctx.hydrate("Server", data);
-		return this;
 	}
 
 	/** server.set_show_in_public */
 	async setShowInPublic(
 		body: models.ServerSetShowInPublicRequest,
-	): Promise<this> {
-		const data = await this.ctx.transport.request({
+	): Promise<models.ServerCard> {
+		return this.ctx.transport.request<models.ServerCard>({
 			method: "POST",
 			path: `/v1/servers/${this.id}/actions/set-show-in-public`,
 			body,
 		});
-		this.ctx.hydrate("Server", data);
-		return this;
 	}
 
 	/** server.set_team_enabled */
 	async setTeamEnabled(
 		body: models.ServerSetTeamEnabledRequest,
-	): Promise<this> {
-		const data = await this.ctx.transport.request({
+	): Promise<models.ServerCard> {
+		return this.ctx.transport.request<models.ServerCard>({
 			method: "POST",
 			path: `/v1/servers/${this.id}/actions/set-team-enabled`,
 			body,
 		});
-		this.ctx.hydrate("Server", data);
-		return this;
 	}
 
 	/** server.set_version_override */
 	async setVersionOverride(
 		body: models.ServerSetVersionOverrideRequest,
-	): Promise<this> {
-		const data = await this.ctx.transport.request({
+	): Promise<models.ServerCard> {
+		return this.ctx.transport.request<models.ServerCard>({
 			method: "POST",
 			path: `/v1/servers/${this.id}/actions/set-version-override`,
 			body,
 		});
-		this.ctx.hydrate("Server", data);
-		return this;
 	}
 
 	/** server.bot.update */
-	async botUpdate(body: models.ServerBotUpdateRequest): Promise<this> {
-		const data = await this.ctx.transport.request({
+	async botUpdate(
+		body: models.ServerBotUpdateRequest,
+	): Promise<models.ServerBot> {
+		return this.ctx.transport.request<models.ServerBot>({
 			method: "PATCH",
 			path: `/v1/servers/${this.id}/bot`,
 			body,
 		});
-		this.ctx.hydrate("Server", data);
-		return this;
 	}
 
 	/** server.issue_gateway_token */
-	async issueGatewayToken(body: models.GatewayTokenRequest): Promise<this> {
-		const data = await this.ctx.transport.request({
+	async issueGatewayToken(
+		body: models.GatewayTokenRequest,
+	): Promise<models.GatewayToken> {
+		return this.ctx.transport.request<models.GatewayToken>({
 			method: "POST",
 			path: `/v1/servers/${this.id}/gateway-token`,
 			body,
 		});
-		this.ctx.hydrate("Server", data);
-		return this;
 	}
 
 	/** server.icons.upload */
-	async iconsUpload(file: LeavePulseFile, sync?: string): Promise<this> {
-		const data = await this.ctx.transport.request({
+	async iconsUpload(
+		file: LeavePulseFile,
+		sync?: string,
+	): Promise<models.ServerMediaSummary> {
+		return this.ctx.transport.request<models.ServerMediaSummary>({
 			method: "POST",
 			path: `/v1/servers/${this.id}/icon`,
 			multipart: { fileField: "file", file, fields: { sync: sync } },
 		});
-		this.ctx.hydrate("Server", data);
-		return this;
 	}
 
 	/** server.icons.select */
-	async iconsSelect(body: models.IconSelectRequest): Promise<this> {
-		const data = await this.ctx.transport.request({
+	async iconsSelect(
+		body: models.IconSelectRequest,
+	): Promise<models.ServerMediaSummary> {
+		return this.ctx.transport.request<models.ServerMediaSummary>({
 			method: "POST",
 			path: `/v1/servers/${this.id}/icon/select`,
 			body,
 		});
-		this.ctx.hydrate("Server", data);
-		return this;
 	}
 
 	/** server.voting.update */
-	async votingUpdate(body: models.VotingLinksUpdateRequest): Promise<this> {
-		const data = await this.ctx.transport.request({
+	async votingUpdate(
+		body: models.VotingLinksUpdateRequest,
+	): Promise<models.VotingLinks> {
+		return this.ctx.transport.request<models.VotingLinks>({
 			method: "PATCH",
 			path: `/v1/servers/${this.id}/integrations/voting`,
 			body,
 		});
-		this.ctx.hydrate("Server", data);
-		return this;
 	}
 
 	/** server.maintenance.update */
 	async maintenanceUpdate(
 		body: models.ServerMaintenanceUpdateRequest,
-	): Promise<this> {
-		const data = await this.ctx.transport.request({
+	): Promise<models.ServerMaintenance> {
+		return this.ctx.transport.request<models.ServerMaintenance>({
 			method: "PATCH",
 			path: `/v1/servers/${this.id}/maintenance`,
 			body,
 		});
-		this.ctx.hydrate("Server", data);
-		return this;
 	}
 
 	/** server.motd.update */
-	async motdUpdate(body: models.ServerMotdUpdateRequest): Promise<this> {
-		const data = await this.ctx.transport.request({
+	async motdUpdate(
+		body: models.ServerMotdUpdateRequest,
+	): Promise<models.ServerMotdSummary> {
+		return this.ctx.transport.request<models.ServerMotdSummary>({
 			method: "PATCH",
 			path: `/v1/servers/${this.id}/motd`,
 			body,
 		});
-		this.ctx.hydrate("Server", data);
-		return this;
 	}
 
 	/** server.discord.unlink */
-	async discordUnlink(): Promise<this> {
-		const data = await this.ctx.transport.request({
+	async discordUnlink(): Promise<models.DiscordLink> {
+		return this.ctx.transport.request<models.DiscordLink>({
 			method: "DELETE",
 			path: `/v1/servers/${this.id}/social/discord`,
 		});
-		this.ctx.hydrate("Server", data);
-		return this;
 	}
 
 	/** server.discord.update */
-	async discordUpdate(body: models.DiscordLinkUpdateRequest): Promise<this> {
-		const data = await this.ctx.transport.request({
+	async discordUpdate(
+		body: models.DiscordLinkUpdateRequest,
+	): Promise<models.DiscordLink> {
+		return this.ctx.transport.request<models.DiscordLink>({
 			method: "PATCH",
 			path: `/v1/servers/${this.id}/social/discord`,
 			body,
 		});
-		this.ctx.hydrate("Server", data);
-		return this;
 	}
 
 	/** server.discord.verify */
-	async discordVerify(body: models.DiscordVerifyRequest): Promise<this> {
-		const data = await this.ctx.transport.request({
+	async discordVerify(
+		body: models.DiscordVerifyRequest,
+	): Promise<models.DiscordLink> {
+		return this.ctx.transport.request<models.DiscordLink>({
 			method: "POST",
 			path: `/v1/servers/${this.id}/social/discord/verify`,
 			body,
 		});
-		this.ctx.hydrate("Server", data);
-		return this;
 	}
 
 	/** server.social.update */
-	async socialUpdate(body: models.SocialLinksUpdateRequest): Promise<this> {
-		const data = await this.ctx.transport.request({
+	async socialUpdate(
+		body: models.SocialLinksUpdateRequest,
+	): Promise<models.SocialLinks> {
+		return this.ctx.transport.request<models.SocialLinks>({
 			method: "PATCH",
 			path: `/v1/servers/${this.id}/social/links`,
 			body,
 		});
-		this.ctx.hydrate("Server", data);
-		return this;
 	}
 
 	/** server.social.verify */
-	async socialVerify(body: models.SocialLinkVerifyRequest): Promise<this> {
-		const data = await this.ctx.transport.request({
+	async socialVerify(
+		body: models.SocialLinkVerifyRequest,
+	): Promise<models.SocialLinkVerification> {
+		return this.ctx.transport.request<models.SocialLinkVerification>({
 			method: "POST",
 			path: `/v1/servers/${this.id}/social/verify`,
 			body,
 		});
-		this.ctx.hydrate("Server", data);
-		return this;
 	}
 
 	/** server.subservers.issue_link_code */
-	async subserversIssueLinkCode(): Promise<this> {
-		const data = await this.ctx.transport.request({
+	async subserversIssueLinkCode(): Promise<models.PluginVerification> {
+		return this.ctx.transport.request<models.PluginVerification>({
 			method: "POST",
 			path: `/v1/servers/${this.id}/subservers/auto-link-code`,
 		});
-		this.ctx.hydrate("Server", data);
-		return this;
 	}
 
 	/** server.members.create */
-	async membersCreate(body: models.TeamMemberCreateRequest): Promise<this> {
-		const data = await this.ctx.transport.request({
+	async membersCreate(
+		body: models.TeamMemberCreateRequest,
+	): Promise<models.TeamMemberItem> {
+		return this.ctx.transport.request<models.TeamMemberItem>({
 			method: "POST",
 			path: `/v1/servers/${this.id}/team/members`,
 			body,
 		});
-		this.ctx.hydrate("Server", data);
-		return this;
 	}
 
 	/** server.members.delete */
-	async membersDelete(memberId: Snowflake): Promise<this> {
-		const data = await this.ctx.transport.request({
+	async membersDelete(
+		memberId: Snowflake,
+	): Promise<models.TeamMemberDeleteResponse> {
+		return this.ctx.transport.request<models.TeamMemberDeleteResponse>({
 			method: "DELETE",
 			path: `/v1/servers/${this.id}/team/members/${memberId}`,
 		});
-		this.ctx.hydrate("Server", data);
-		return this;
 	}
 
 	/** server.members.update */
 	async membersUpdate(
 		memberId: Snowflake,
 		body: models.TeamMemberUpdateRequest,
-	): Promise<this> {
-		const data = await this.ctx.transport.request({
+	): Promise<models.TeamMemberItem> {
+		return this.ctx.transport.request<models.TeamMemberItem>({
 			method: "PATCH",
 			path: `/v1/servers/${this.id}/team/members/${memberId}`,
 			body,
 		});
-		this.ctx.hydrate("Server", data);
-		return this;
 	}
 
 	/** server.roles.create */
-	async rolesCreate(body: models.TeamRoleCreateRequest): Promise<this> {
-		const data = await this.ctx.transport.request({
+	async rolesCreate(
+		body: models.TeamRoleCreateRequest,
+	): Promise<models.TeamRoleItem> {
+		return this.ctx.transport.request<models.TeamRoleItem>({
 			method: "POST",
 			path: `/v1/servers/${this.id}/team/roles`,
 			body,
 		});
-		this.ctx.hydrate("Server", data);
-		return this;
 	}
 
 	/** server.roles.delete */
-	async rolesDelete(roleId: Snowflake): Promise<this> {
-		const data = await this.ctx.transport.request({
+	async rolesDelete(roleId: Snowflake): Promise<models.TeamRoleDeleteResponse> {
+		return this.ctx.transport.request<models.TeamRoleDeleteResponse>({
 			method: "DELETE",
 			path: `/v1/servers/${this.id}/team/roles/${roleId}`,
 		});
-		this.ctx.hydrate("Server", data);
-		return this;
 	}
 
 	/** server.roles.update */
 	async rolesUpdate(
 		roleId: Snowflake,
 		body: models.TeamRoleUpdateRequest,
-	): Promise<this> {
-		const data = await this.ctx.transport.request({
+	): Promise<models.TeamRoleItem> {
+		return this.ctx.transport.request<models.TeamRoleItem>({
 			method: "PATCH",
 			path: `/v1/servers/${this.id}/team/roles/${roleId}`,
 			body,
 		});
-		this.ctx.hydrate("Server", data);
-		return this;
 	}
 
 	/** server.translations.delete */
@@ -886,63 +857,55 @@ export class Server extends Resource<Data> {
 		field: string,
 		locale: string,
 		body: models.ServerTranslationUpsertRequest,
-	): Promise<this> {
-		const data = await this.ctx.transport.request({
+	): Promise<models.ServerTranslation> {
+		return this.ctx.transport.request<models.ServerTranslation>({
 			method: "PATCH",
 			path: `/v1/servers/${this.id}/translations/${field}/${locale}`,
 			body,
 		});
-		this.ctx.hydrate("Server", data);
-		return this;
 	}
 
 	/** server.whitelist.add_direct */
 	async whitelistAddDirect(
 		body: models.WhitelistDirectAddRequest,
-	): Promise<this> {
-		const data = await this.ctx.transport.request({
+	): Promise<models.WhitelistDirectEntry> {
+		return this.ctx.transport.request<models.WhitelistDirectEntry>({
 			method: "POST",
 			path: `/v1/servers/${this.id}/whitelist/direct`,
 			body,
 		});
-		this.ctx.hydrate("Server", data);
-		return this;
 	}
 
 	/** server.whitelist.remove_direct */
-	async whitelistRemoveDirect(entryId: Snowflake): Promise<this> {
-		const data = await this.ctx.transport.request({
+	async whitelistRemoveDirect(
+		entryId: Snowflake,
+	): Promise<models.WhitelistDirectRemoval> {
+		return this.ctx.transport.request<models.WhitelistDirectRemoval>({
 			method: "DELETE",
 			path: `/v1/servers/${this.id}/whitelist/direct/${entryId}`,
 		});
-		this.ctx.hydrate("Server", data);
-		return this;
 	}
 
 	/** server.whitelist.create_import */
 	async whitelistCreateImport(
 		body: models.WhitelistImportRequest,
-	): Promise<this> {
-		const data = await this.ctx.transport.request({
+	): Promise<models.WhitelistImportJob> {
+		return this.ctx.transport.request<models.WhitelistImportJob>({
 			method: "POST",
 			path: `/v1/servers/${this.id}/whitelist/imports`,
 			body,
 		});
-		this.ctx.hydrate("Server", data);
-		return this;
 	}
 
 	/** server.whitelist.pull_minecraft_import */
 	async whitelistPullMinecraftImport(
 		body: models.WhitelistMinecraftPullRequest,
-	): Promise<this> {
-		const data = await this.ctx.transport.request({
+	): Promise<models.WhitelistImportJob> {
+		return this.ctx.transport.request<models.WhitelistImportJob>({
 			method: "POST",
 			path: `/v1/servers/${this.id}/whitelist/imports/pull-minecraft`,
 			body,
 		});
-		this.ctx.hydrate("Server", data);
-		return this;
 	}
 
 	/** Subscribe to `monitoring.live_status` (public realtime). */

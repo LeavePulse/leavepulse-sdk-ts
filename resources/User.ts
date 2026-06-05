@@ -74,13 +74,11 @@ export class User extends Resource<Data> {
 	async report(
 		userId: Snowflake,
 		body: models.ReportUserRequest,
-	): Promise<this> {
-		const data = await this.ctx.transport.request({
+	): Promise<models.ReportUserResult> {
+		return this.ctx.transport.request<models.ReportUserResult>({
 			method: "POST",
 			path: `/v1/community/users/${userId}/report`,
 			body,
 		});
-		this.ctx.hydrate("User", data);
-		return this;
 	}
 }

@@ -37,25 +37,25 @@ export class Ticket extends Resource<Data> {
 	}
 
 	/** ticket.set_status */
-	async setStatus(body: models.TicketStatusUpdateRequest): Promise<this> {
-		const data = await this.ctx.transport.request({
+	async setStatus(
+		body: models.TicketStatusUpdateRequest,
+	): Promise<models.TicketSummary> {
+		return this.ctx.transport.request<models.TicketSummary>({
 			method: "PATCH",
 			path: `/v1/community/tickets/${this.id}`,
 			body,
 		});
-		this.ctx.hydrate("Ticket", data);
-		return this;
 	}
 
 	/** ticket.reply */
-	async reply(body: models.TicketMessageCreateRequest): Promise<this> {
-		const data = await this.ctx.transport.request({
+	async reply(
+		body: models.TicketMessageCreateRequest,
+	): Promise<models.TicketMessage> {
+		return this.ctx.transport.request<models.TicketMessage>({
 			method: "POST",
 			path: `/v1/community/tickets/${this.id}/messages`,
 			body,
 		});
-		this.ctx.hydrate("Ticket", data);
-		return this;
 	}
 
 	/** Subscribe to `ticket.thread.{ticket_id}` (private realtime). */

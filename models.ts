@@ -415,6 +415,7 @@ export type TeamRoleUpdateRequest =
 	components["schemas"]["TeamRoleUpdateRequest"];
 export type TeamScopeServer = components["schemas"]["TeamScopeServer"];
 export type TeamScopeType = components["schemas"]["TeamScopeType"];
+export type TelemetryMetricKind = components["schemas"]["TelemetryMetricKind"];
 export type TextTranslation = components["schemas"]["TextTranslation"];
 export type TicketAuthorType = components["schemas"]["TicketAuthorType"];
 export type TicketCreateRequest = components["schemas"]["TicketCreateRequest"];

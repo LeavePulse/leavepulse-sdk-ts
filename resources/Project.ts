@@ -300,23 +300,19 @@ export class Project extends Resource<Data> {
 	}
 
 	/** project.heart */
-	async heart(): Promise<this> {
-		const data = await this.ctx.transport.request({
+	async heart(): Promise<models.ProjectHeartResult> {
+		return this.ctx.transport.request<models.ProjectHeartResult>({
 			method: "POST",
 			path: `/v1/community/projects/${this.id}/heart`,
 		});
-		this.ctx.hydrate("Project", data);
-		return this;
 	}
 
 	/** project.thumb */
-	async thumb(): Promise<this> {
-		const data = await this.ctx.transport.request({
+	async thumb(): Promise<models.ProjectThumbResult> {
+		return this.ctx.transport.request<models.ProjectThumbResult>({
 			method: "POST",
 			path: `/v1/community/projects/${this.id}/thumb`,
 		});
-		this.ctx.hydrate("Project", data);
-		return this;
 	}
 
 	/** project.change_slug */
@@ -406,14 +402,12 @@ export class Project extends Resource<Data> {
 	async policiesTest(
 		policyId: Snowflake,
 		params?: { audience?: string },
-	): Promise<this> {
-		const data = await this.ctx.transport.request({
+	): Promise<models.WhitelistBindingTestResult> {
+		return this.ctx.transport.request<models.WhitelistBindingTestResult>({
 			method: "POST",
 			path: `/v1/projects/${this.id}/whitelist/policies/${policyId}/actions/test-notifications`,
 			query: { audience: params?.audience },
 		});
-		this.ctx.hydrate("Project", data);
-		return this;
 	}
 
 	/** Subscribe to `projects.live.{project_id}` (public realtime). */

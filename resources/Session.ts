@@ -20,12 +20,10 @@ export class Session extends Resource<Data> {
 	}
 
 	/** session.revoke */
-	async revoke(): Promise<this> {
-		const data = await this.ctx.transport.request({
+	async revoke(): Promise<models.SessionRevokeResult> {
+		return this.ctx.transport.request<models.SessionRevokeResult>({
 			method: "POST",
 			path: `/v1/me/sessions/${this.id}/actions/revoke`,
 		});
-		this.ctx.hydrate("Session", data);
-		return this;
 	}
 }

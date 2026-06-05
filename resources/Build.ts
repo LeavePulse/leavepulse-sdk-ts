@@ -94,13 +94,11 @@ export class Build extends Resource<Data> {
 	}
 
 	/** build.delete */
-	async delete(): Promise<this> {
-		const data = await this.ctx.transport.request({
+	async delete(): Promise<models.DeleteBuildResult> {
+		return this.ctx.transport.request<models.DeleteBuildResult>({
 			method: "DELETE",
 			path: `/v1/builds/${this.id}`,
 		});
-		this.ctx.hydrate("Build", data);
-		return this;
 	}
 
 	/** build.update */
@@ -115,24 +113,24 @@ export class Build extends Resource<Data> {
 	}
 
 	/** build.collaborators.add */
-	async collaboratorsAdd(body: models.CollaboratorAddRequest): Promise<this> {
-		const data = await this.ctx.transport.request({
+	async collaboratorsAdd(
+		body: models.CollaboratorAddRequest,
+	): Promise<models.Collaborator> {
+		return this.ctx.transport.request<models.Collaborator>({
 			method: "POST",
 			path: `/v1/builds/${this.id}/collaborators`,
 			body,
 		});
-		this.ctx.hydrate("Build", data);
-		return this;
 	}
 
 	/** build.collaborators.remove */
-	async collaboratorsRemove(userId: Snowflake): Promise<this> {
-		const data = await this.ctx.transport.request({
+	async collaboratorsRemove(
+		userId: Snowflake,
+	): Promise<models.DeleteBuildResult> {
+		return this.ctx.transport.request<models.DeleteBuildResult>({
 			method: "DELETE",
 			path: `/v1/builds/${this.id}/collaborators/${userId}`,
 		});
-		this.ctx.hydrate("Build", data);
-		return this;
 	}
 
 	/** build.config.confirm */
@@ -147,33 +145,29 @@ export class Build extends Resource<Data> {
 	}
 
 	/** build.config.upload */
-	async configUpload(body: models.ConfigBlobUploadRequest): Promise<this> {
-		const data = await this.ctx.transport.request({
+	async configUpload(
+		body: models.ConfigBlobUploadRequest,
+	): Promise<models.ConfigBlobUpload> {
+		return this.ctx.transport.request<models.ConfigBlobUpload>({
 			method: "POST",
 			path: `/v1/builds/${this.id}/config/upload`,
 			body,
 		});
-		this.ctx.hydrate("Build", data);
-		return this;
 	}
 
 	/** build.unshare */
-	async unshare(): Promise<this> {
-		const data = await this.ctx.transport.request({
+	async unshare(): Promise<models.DeleteBuildResult> {
+		return this.ctx.transport.request<models.DeleteBuildResult>({
 			method: "DELETE",
 			path: `/v1/builds/${this.id}/share`,
 		});
-		this.ctx.hydrate("Build", data);
-		return this;
 	}
 
 	/** build.share */
-	async share(): Promise<this> {
-		const data = await this.ctx.transport.request({
+	async share(): Promise<models.ShareLink> {
+		return this.ctx.transport.request<models.ShareLink>({
 			method: "POST",
 			path: `/v1/builds/${this.id}/share`,
 		});
-		this.ctx.hydrate("Build", data);
-		return this;
 	}
 }

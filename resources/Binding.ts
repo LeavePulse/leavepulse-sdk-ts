@@ -77,37 +77,33 @@ export class Binding extends Resource<Data> {
 	async test(
 		bindingId: Snowflake,
 		params?: { audience?: string },
-	): Promise<this> {
-		const data = await this.ctx.transport.request({
+	): Promise<models.WhitelistBindingTestResult> {
+		return this.ctx.transport.request<models.WhitelistBindingTestResult>({
 			method: "POST",
 			path: `/v1/whitelist/bindings/${bindingId}/actions/test-notifications`,
 			query: { audience: params?.audience },
 		});
-		this.ctx.hydrate("Binding", data);
-		return this;
 	}
 
 	/** binding.entries.add */
 	async entriesAdd(
 		bindingId: Snowflake,
 		body: models.WhitelistDirectAddRequest,
-	): Promise<this> {
-		const data = await this.ctx.transport.request({
+	): Promise<models.WhitelistDirectEntry> {
+		return this.ctx.transport.request<models.WhitelistDirectEntry>({
 			method: "POST",
 			path: `/v1/whitelist/bindings/${bindingId}/direct/entries`,
 			body,
 		});
-		this.ctx.hydrate("Binding", data);
-		return this;
 	}
 
 	/** binding.entries.remove */
-	async entriesRemove(bindingId: Snowflake): Promise<this> {
-		const data = await this.ctx.transport.request({
+	async entriesRemove(
+		bindingId: Snowflake,
+	): Promise<models.WhitelistDirectRemoval> {
+		return this.ctx.transport.request<models.WhitelistDirectRemoval>({
 			method: "DELETE",
 			path: `/v1/whitelist/bindings/${bindingId}/direct/entries/${this.id}`,
 		});
-		this.ctx.hydrate("Binding", data);
-		return this;
 	}
 }

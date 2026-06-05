@@ -26,23 +26,19 @@ export class Comment extends Resource<Data> {
 	}
 
 	/** comment.delete */
-	async delete(projectId: Snowflake): Promise<this> {
-		const data = await this.ctx.transport.request({
+	async delete(projectId: Snowflake): Promise<models.DeleteCommentResult> {
+		return this.ctx.transport.request<models.DeleteCommentResult>({
 			method: "DELETE",
 			path: `/v1/community/projects/${projectId}/comments/${this.id}`,
 		});
-		this.ctx.hydrate("Comment", data);
-		return this;
 	}
 
 	/** comment.like */
-	async like(projectId: Snowflake): Promise<this> {
-		const data = await this.ctx.transport.request({
+	async like(projectId: Snowflake): Promise<models.CommentLikeResult> {
+		return this.ctx.transport.request<models.CommentLikeResult>({
 			method: "POST",
 			path: `/v1/community/projects/${projectId}/comments/${this.id}/like`,
 		});
-		this.ctx.hydrate("Comment", data);
-		return this;
 	}
 
 	/** comment.reply */

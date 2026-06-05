@@ -46,69 +46,59 @@ export class Application extends Resource<Data> {
 	async whitelistApply(
 		serverId: Snowflake,
 		body: models.WhitelistApplyRequest,
-	): Promise<this> {
-		const data = await this.ctx.transport.request({
+	): Promise<models.WhitelistApplication> {
+		return this.ctx.transport.request<models.WhitelistApplication>({
 			method: "POST",
 			path: `/v1/servers/${serverId}/whitelist/applications`,
 			body,
 		});
-		this.ctx.hydrate("Application", data);
-		return this;
 	}
 
 	/** application.set_status */
 	async setStatus(
 		serverId: Snowflake,
 		body: models.WhitelistStatusRequest,
-	): Promise<this> {
-		const data = await this.ctx.transport.request({
+	): Promise<models.WhitelistApplication> {
+		return this.ctx.transport.request<models.WhitelistApplication>({
 			method: "PATCH",
 			path: `/v1/servers/${serverId}/whitelist/applications/${this.id}`,
 			body,
 		});
-		this.ctx.hydrate("Application", data);
-		return this;
 	}
 
 	/** application.approve */
 	async approve(
 		serverId: Snowflake,
 		body: models.WhitelistDecisionRequest,
-	): Promise<this> {
-		const data = await this.ctx.transport.request({
+	): Promise<models.WhitelistApplication> {
+		return this.ctx.transport.request<models.WhitelistApplication>({
 			method: "POST",
 			path: `/v1/servers/${serverId}/whitelist/applications/${this.id}/approve`,
 			body,
 		});
-		this.ctx.hydrate("Application", data);
-		return this;
 	}
 
 	/** application.deny */
 	async deny(
 		serverId: Snowflake,
 		body: models.WhitelistDecisionRequest,
-	): Promise<this> {
-		const data = await this.ctx.transport.request({
+	): Promise<models.WhitelistApplication> {
+		return this.ctx.transport.request<models.WhitelistApplication>({
 			method: "POST",
 			path: `/v1/servers/${serverId}/whitelist/applications/${this.id}/deny`,
 			body,
 		});
-		this.ctx.hydrate("Application", data);
-		return this;
 	}
 
 	/** application.resubmit */
 	async resubmit(
 		serverId: Snowflake,
 		body: models.WhitelistApplyRequest,
-	): Promise<this> {
-		const data = await this.ctx.transport.request({
+	): Promise<models.WhitelistApplication> {
+		return this.ctx.transport.request<models.WhitelistApplication>({
 			method: "PATCH",
 			path: `/v1/servers/${serverId}/whitelist/applications/${this.id}/resubmit`,
 			body,
 		});
-		this.ctx.hydrate("Application", data);
-		return this;
 	}
 }
