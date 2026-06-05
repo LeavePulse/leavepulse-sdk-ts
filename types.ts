@@ -6474,6 +6474,8 @@ export interface components {
 			/** @default false */
 			is_verified: boolean;
 			motd?: string | null;
+			/** @default  */
+			name: string;
 			parent_id?: components["schemas"]["Snowflake"] | null;
 			project_id?: components["schemas"]["Snowflake"] | null;
 			role: components["schemas"]["ServerRole"];
