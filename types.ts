@@ -6477,6 +6477,7 @@ export interface components {
 			parent_id?: components["schemas"]["Snowflake"] | null;
 			project_id?: components["schemas"]["Snowflake"] | null;
 			role: components["schemas"]["ServerRole"];
+			slug?: string | null;
 			/** Format: date-time */
 			updated_at: string;
 			verification_source?: components["schemas"]["VerificationSource"] | null;
