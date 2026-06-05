@@ -7639,13 +7639,23 @@ export interface components {
 		/** ProfilePrivacy */
 		users_ProfilePrivacy: {
 			/** @default false */
-			hide_discord: boolean;
+			show_activity_stats: boolean;
+			/** @default true */
+			show_bio: boolean;
+			/** @default true */
+			show_join_date: boolean;
 			/** @default false */
-			hide_email: boolean;
+			show_linked_accounts: boolean;
 			/** @default false */
-			hide_minecraft_accounts: boolean;
+			show_ownership: boolean;
 			/** @default false */
-			hide_ownership: boolean;
+			show_status: boolean;
+			/** @default false */
+			show_streak: boolean;
+			/** @default false */
+			show_top_server: boolean;
+			/** @default false */
+			show_user_id: boolean;
 		};
 	};
 	responses: never;
