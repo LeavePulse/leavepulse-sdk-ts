@@ -7,7 +7,6 @@ import type * as models from "../models";
 import type { LeavePulseFile } from "../runtime/transport";
 import type { ClientContext } from "../client";
 import type { Snowflake } from "../runtime/snowflake";
-import type { Application } from "./Application";
 import type { Ticket } from "./Ticket";
 
 type Data = components["schemas"]["ServerDetail"] & {
@@ -440,8 +439,8 @@ export class Server extends Resource<Data> {
 		status?: string;
 		page?: number;
 		perPage?: number;
-	}): Promise<Application[]> {
-		const data = await fetchCachedOrThrow<unknown>(
+	}): Promise<models.WhitelistApplicationList> {
+		return fetchCachedOrThrow<models.WhitelistApplicationList>(
 			this.ctx.transport,
 			this.ctx.etagStore,
 			{
@@ -454,10 +453,6 @@ export class Server extends Resource<Data> {
 				},
 			},
 		);
-		const items = Array.isArray(data)
-			? data
-			: ((data as Record<string, unknown[]>)["items"] ?? []);
-		return this.ctx.hydrateMany("Application", items) as Application[];
 	}
 
 	/** server.whitelist */
