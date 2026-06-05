@@ -5555,7 +5555,7 @@ export interface components {
 		 * @description Provenance of a Minecraft UUID.
 		 * @enum {string}
 		 */
-		MinecraftUuidType: "mojang" | "offline" | "unknown";
+		MinecraftUuidType: "mojang" | "offline" | "xuid" | "floodgate" | "unknown";
 		/** MinecraftVerificationAccount */
 		MinecraftVerificationAccount: {
 			account_type: components["schemas"]["MinecraftAccountType"];
