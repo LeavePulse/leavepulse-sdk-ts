@@ -5843,18 +5843,42 @@ export interface components {
 			playtime_seconds: number;
 			server_id: string;
 		};
+		/** ProfileOwnedProject */
+		ProfileOwnedProject: {
+			display_server?:
+				| components["schemas"]["ProfileOwnedProjectDisplayServer"]
+				| null;
+			id: components["schemas"]["Snowflake"];
+			name: string;
+			public_entrypoint?: string | null;
+			slug?: string | null;
+		};
+		/** ProfileOwnedProjectDisplayServer */
+		ProfileOwnedProjectDisplayServer: {
+			favicon_url?: string | null;
+			icon_url?: string | null;
+			ip_or_domain?: string | null;
+		};
+		/** ProfileOwnedServer */
+		ProfileOwnedServer: {
+			canonical_project_id?: components["schemas"]["Snowflake"] | null;
+			canonical_project_slug?: string | null;
+			favicon_url?: string | null;
+			icon_url?: string | null;
+			id: components["schemas"]["Snowflake"];
+			ip_or_domain?: string | null;
+			name: string;
+			public_profile_kind?: string | null;
+			slug?: string | null;
+		};
 		/** ProfileOwnershipSummary */
 		ProfileOwnershipSummary: {
 			/** @default 0 */
 			project_count: number;
-			projects?: {
-				[key: string]: unknown;
-			}[];
+			projects?: components["schemas"]["ProfileOwnedProject"][];
 			/** @default 0 */
 			server_count: number;
-			servers?: {
-				[key: string]: unknown;
-			}[];
+			servers?: components["schemas"]["ProfileOwnedServer"][];
 		};
 		/** ProfilePrivacyUpdate */
 		ProfilePrivacyUpdate: {

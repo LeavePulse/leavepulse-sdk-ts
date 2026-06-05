@@ -266,6 +266,10 @@ export type ProfileLinkedMinecraftAccount =
 	components["schemas"]["ProfileLinkedMinecraftAccount"];
 export type ProfileMostPlayedServer =
 	components["schemas"]["ProfileMostPlayedServer"];
+export type ProfileOwnedProject = components["schemas"]["ProfileOwnedProject"];
+export type ProfileOwnedProjectDisplayServer =
+	components["schemas"]["ProfileOwnedProjectDisplayServer"];
+export type ProfileOwnedServer = components["schemas"]["ProfileOwnedServer"];
 export type ProfileOwnershipSummary =
 	components["schemas"]["ProfileOwnershipSummary"];
 export type ProfilePrivacyUpdate =
