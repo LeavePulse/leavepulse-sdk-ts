@@ -6620,6 +6620,9 @@ export interface components {
 			tiktok_url?: string | null;
 			twitch_url?: string | null;
 			twitter_url?: string | null;
+			verified_data?: {
+				[key: string]: components["schemas"]["SocialLinkVerification"];
+			};
 			website_url?: string | null;
 			youtube_url?: string | null;
 		};
