@@ -5,7 +5,7 @@ import type * as models from "../models";
 import type { ClientContext } from "../client";
 import type { Snowflake } from "../runtime/snowflake";
 
-type Data = components["schemas"]["SessionList"];
+type Data = components["schemas"]["SessionInfo"];
 
 export class Session extends Resource<Data> {
 	constructor(

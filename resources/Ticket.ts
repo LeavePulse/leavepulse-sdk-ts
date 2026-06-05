@@ -7,7 +7,7 @@ import type * as models from "../models";
 import type { ClientContext } from "../client";
 import type { Snowflake } from "../runtime/snowflake";
 
-type Data = components["schemas"]["TicketList"];
+type Data = components["schemas"]["TicketSummary"];
 
 export class Ticket extends Resource<Data> {
 	constructor(
@@ -37,14 +37,14 @@ export class Ticket extends Resource<Data> {
 	}
 
 	/** ticket.set_status */
-	async setStatus(
-		body: models.TicketStatusUpdateRequest,
-	): Promise<models.TicketSummary> {
-		return this.ctx.transport.request<models.TicketSummary>({
+	async setStatus(body: models.TicketStatusUpdateRequest): Promise<this> {
+		const data = await this.ctx.transport.request({
 			method: "PATCH",
 			path: `/v1/community/tickets/${this.id}`,
 			body,
 		});
+		this.ctx.hydrate("Ticket", data);
+		return this;
 	}
 
 	/** ticket.reply */

@@ -173,7 +173,7 @@ export class Server extends Resource<Data> {
 		);
 		const items = Array.isArray(data)
 			? data
-			: ((data as { items?: unknown[] }).items ?? []);
+			: ((data as Record<string, unknown[]>)["items"] ?? []);
 		return this.ctx.hydrateMany("Ticket", items) as Ticket[];
 	}
 
@@ -431,7 +431,7 @@ export class Server extends Resource<Data> {
 		);
 		const items = Array.isArray(data)
 			? data
-			: ((data as { items?: unknown[] }).items ?? []);
+			: ((data as Record<string, unknown[]>)["items"] ?? []);
 		return this.ctx.hydrateMany("Application", items) as Application[];
 	}
 

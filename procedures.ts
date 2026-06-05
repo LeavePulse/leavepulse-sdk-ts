@@ -722,7 +722,7 @@ export class BillingOrdersNs {
 		)) as unknown;
 		const items = Array.isArray(data)
 			? data
-			: ((data as { items?: unknown[] }).items ?? []);
+			: ((data as Record<string, unknown[]>)["items"] ?? []);
 		return this.ctx.hydrateMany("Order", items) as Order[];
 	}
 }
@@ -740,7 +740,7 @@ export class BillingProductsNs {
 		)) as unknown;
 		const items = Array.isArray(data)
 			? data
-			: ((data as { items?: unknown[] }).items ?? []);
+			: ((data as Record<string, unknown[]>)["items"] ?? []);
 		return items as models.Product[];
 	}
 }
@@ -765,7 +765,7 @@ export class BillingSubscriptionsNs {
 		)) as unknown;
 		const items = Array.isArray(data)
 			? data
-			: ((data as { items?: unknown[] }).items ?? []);
+			: ((data as Record<string, unknown[]>)["items"] ?? []);
 		return this.ctx.hydrateMany("Subscription", items) as Subscription[];
 	}
 }
@@ -824,7 +824,7 @@ export class BuildsNs {
 		)) as unknown;
 		const items = Array.isArray(data)
 			? data
-			: ((data as { items?: unknown[] }).items ?? []);
+			: ((data as Record<string, unknown[]>)["items"] ?? []);
 		return this.ctx.hydrateMany("Build", items) as Build[];
 	}
 }
@@ -1212,7 +1212,7 @@ export class TicketsNs {
 		)) as unknown;
 		const items = Array.isArray(data)
 			? data
-			: ((data as { items?: unknown[] }).items ?? []);
+			: ((data as Record<string, unknown[]>)["items"] ?? []);
 		return this.ctx.hydrateMany("Ticket", items) as Ticket[];
 	}
 }
@@ -1291,7 +1291,7 @@ export class UsersNs {
 		})) as unknown;
 		const items = Array.isArray(data)
 			? data
-			: ((data as { items?: unknown[] }).items ?? []);
+			: ((data as Record<string, unknown[]>)["items"] ?? []);
 		return this.ctx.hydrateMany("User", items) as User[];
 	}
 
@@ -1308,7 +1308,7 @@ export class UsersNs {
 		)) as unknown;
 		const items = Array.isArray(data)
 			? data
-			: ((data as { items?: unknown[] }).items ?? []);
+			: ((data as Record<string, unknown[]>)["items"] ?? []);
 		return this.ctx.hydrateMany("User", items) as User[];
 	}
 
@@ -1449,7 +1449,7 @@ export class WhitelistFormsNs {
 		)) as unknown;
 		const items = Array.isArray(data)
 			? data
-			: ((data as { items?: unknown[] }).items ?? []);
+			: ((data as Record<string, unknown[]>)["items"] ?? []);
 		return this.ctx.hydrateMany("Form", items) as Form[];
 	}
 

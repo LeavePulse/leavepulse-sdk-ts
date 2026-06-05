@@ -112,7 +112,7 @@ export class Project extends Resource<Data> {
 		);
 		const items = Array.isArray(data)
 			? data
-			: ((data as { items?: unknown[] }).items ?? []);
+			: ((data as Record<string, unknown[]>)["items"] ?? []);
 		return this.ctx.hydrateMany("Comment", items) as Comment[];
 	}
 
@@ -268,7 +268,7 @@ export class Project extends Resource<Data> {
 		);
 		const items = Array.isArray(data)
 			? data
-			: ((data as { items?: unknown[] }).items ?? []);
+			: ((data as Record<string, unknown[]>)["items"] ?? []);
 		return this.ctx.hydrateMany("Form", items) as Form[];
 	}
 
@@ -281,7 +281,7 @@ export class Project extends Resource<Data> {
 		);
 		const items = Array.isArray(data)
 			? data
-			: ((data as { items?: unknown[] }).items ?? []);
+			: ((data as Record<string, unknown[]>)["items"] ?? []);
 		return this.ctx.hydrateMany("Binding", items) as Binding[];
 	}
 
