@@ -45,6 +45,46 @@ export class IdentityMap {
 	}
 
 	/**
+	 * Hydrate a resource that may have been addressed by an alias, e.g. a public
+	 * user profile loaded by slug whose canonical identity is `user_id`.
+	 */
+	upsertAlias<T extends Identified>(
+		type: string,
+		aliasId: string | number,
+		canonicalId: string | number,
+		data: unknown,
+		factory: () => T,
+	): T {
+		const aliasKey = String(aliasId);
+		const canonicalKey = String(canonicalId);
+		let bucket = this.byType.get(type);
+		if (!bucket) {
+			bucket = new Map();
+			this.byType.set(type, bucket);
+		}
+
+		const canonical = bucket.get(canonicalKey);
+		const alias = bucket.get(aliasKey);
+		if (canonical) {
+			canonical._hydrate(data);
+			if (aliasKey !== canonicalKey) bucket.set(aliasKey, canonical);
+			if (alias && alias !== canonical) alias._hydrate(data);
+			return canonical as T;
+		}
+		if (alias) {
+			alias._hydrate(data);
+			bucket.set(canonicalKey, alias);
+			return alias as T;
+		}
+
+		const created = factory();
+		created._hydrate(data);
+		bucket.set(canonicalKey, created);
+		if (aliasKey !== canonicalKey) bucket.set(aliasKey, created);
+		return created;
+	}
+
+	/**
 	 * Return the canonical instance for (type, id) WITHOUT touching its data:
 	 * the existing one as-is, or a freshly constructed one (typically seeded
 	 * with just `{ id }`) on first sight. Used by sync id-accessors

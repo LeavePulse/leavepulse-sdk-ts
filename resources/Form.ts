@@ -27,8 +27,15 @@ export class Form extends Resource<Data> {
 			this.ctx.etagStore,
 			{ method: "GET", path: `/v1/whitelist/forms/${this.id}` },
 		);
-		this.ctx.hydrate("Form", data);
-		return this;
+		let hydrated = data as Record<string, unknown>;
+		const id = extractId(hydrated);
+		return this.ctx.cache.upsertAlias(
+			"Form",
+			this.id,
+			id,
+			hydrated,
+			() => this,
+		) as this;
 	}
 
 	/** Load this Form's data (alias of refresh). */

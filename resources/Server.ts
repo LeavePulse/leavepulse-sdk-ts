@@ -1,5 +1,5 @@
 // Generated from the LeavePulse contract. Do not edit.
-import { Resource } from "../runtime/resource";
+import { Resource, extractId } from "../runtime/resource";
 import { TopicSubscription } from "../runtime/realtime";
 import { fetchCachedOrThrow } from "../runtime/etag-store";
 import type { components } from "../types";
@@ -33,8 +33,15 @@ export class Server extends Resource<Data> {
 			this.ctx.etagStore,
 			{ method: "GET", path: `/v1/servers/${this.id}` },
 		);
-		this.ctx.hydrate("Server", data);
-		return this;
+		let hydrated = data as Record<string, unknown>;
+		const id = extractId(hydrated);
+		return this.ctx.cache.upsertAlias(
+			"Server",
+			this.id,
+			id,
+			hydrated,
+			() => this,
+		) as this;
 	}
 
 	/** Load this Server's data (alias of refresh). */

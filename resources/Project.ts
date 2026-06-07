@@ -1,5 +1,5 @@
 // Generated from the LeavePulse contract. Do not edit.
-import { Resource } from "../runtime/resource";
+import { Resource, extractId } from "../runtime/resource";
 import { TopicSubscription } from "../runtime/realtime";
 import { fetchCachedOrThrow } from "../runtime/etag-store";
 import type { components } from "../types";
@@ -31,8 +31,22 @@ export class Project extends Resource<Data> {
 			this.ctx.etagStore,
 			{ method: "GET", path: `/v1/projects/${this.id}` },
 		);
-		this.ctx.hydrate("Project", data, "project");
-		return this;
+		let hydrated = data as Record<string, unknown>;
+		if (data && typeof data === "object") {
+			const { ["project"]: core, ...siblings } = data as Record<
+				string,
+				unknown
+			>;
+			hydrated = { ...(core as Record<string, unknown>), ...siblings };
+		}
+		const id = extractId(hydrated);
+		return this.ctx.cache.upsertAlias(
+			"Project",
+			this.id,
+			id,
+			hydrated,
+			() => this,
+		) as this;
 	}
 
 	/** Load this Project's data (alias of refresh). */
