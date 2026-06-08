@@ -5137,7 +5137,9 @@ export interface components {
 		};
 		/** DiscoveryCandidateEditRequest */
 		DiscoveryCandidateEditRequest: {
-			edits: unknown;
+			edits: {
+				[key: string]: unknown;
+			};
 		};
 		/** DiscoveryIgnoreResult */
 		DiscoveryIgnoreResult: {
@@ -5720,6 +5722,12 @@ export interface components {
 			status: string;
 		};
 		/**
+		 * OnlineSource
+		 * @description Where the online player count was sourced from.
+		 * @enum {string}
+		 */
+		OnlineSource: "proxy" | "aggregate" | "unknown";
+		/**
 		 * OnlineState
 		 * @description Live availability of a server/project.
 		 * @default unknown
@@ -6002,7 +6010,7 @@ export interface components {
 			online_players?: number | null;
 			online_reason?: string | null;
 			online_server_id?: components["schemas"]["Snowflake"] | null;
-			online_source?: components["schemas"]["TrustState"] | null;
+			online_source?: components["schemas"]["OnlineSource"] | null;
 			online_state?: components["schemas"]["OnlineState"];
 			online_strategy: components["schemas"]["OnlineStrategy"];
 			owner_id?: components["schemas"]["Snowflake"] | null;
@@ -6134,11 +6142,11 @@ export interface components {
 			application_url?: string | null;
 			/** @default false */
 			auto_approved: boolean;
-			binding_id?: string | null;
+			binding_id?: components["schemas"]["Snowflake"] | null;
 			created_at?: string | null;
 			discord_name?: string | null;
-			form_id?: string | null;
-			id: string;
+			form_id?: components["schemas"]["Snowflake"] | null;
+			id: components["schemas"]["Snowflake"];
 			minecraft_account_type?: string | null;
 			minecraft_identity_state?: string | null;
 			minecraft_nick?: string | null;
@@ -6148,11 +6156,11 @@ export interface components {
 			};
 			review_reason?: string | null;
 			reviewed_at?: string | null;
-			server_id?: string | null;
+			server_id?: components["schemas"]["Snowflake"] | null;
 			status: string;
 			status_alias?: string | null;
 			updated_at?: string | null;
-			user_id?: string | null;
+			user_id?: components["schemas"]["Snowflake"] | null;
 		};
 		/** ProjectWhitelistBindingPreview */
 		ProjectWhitelistBindingPreview: {
@@ -6162,20 +6170,20 @@ export interface components {
 			/** @default true */
 			enabled: boolean;
 			enforcement_mode: string;
-			form_id?: string | null;
-			granted_role_ids?: string[];
-			id: string;
+			form_id?: components["schemas"]["Snowflake"] | null;
+			granted_role_ids?: components["schemas"]["Snowflake"][];
+			id: components["schemas"]["Snowflake"];
 			/** @default form */
 			mode: string;
 			notification_settings?: {
 				[key: string]: unknown;
 			} | null;
-			project_id?: string | null;
+			project_id?: components["schemas"]["Snowflake"] | null;
 			/** @default true */
 			restrict_chat: boolean;
 			scope_type: string;
-			server_id: string;
-			target_server_ids?: string[];
+			server_id: components["schemas"]["Snowflake"];
+			target_server_ids?: components["schemas"]["Snowflake"][];
 			updated_at?: string | null;
 		};
 		/** ProjectWhitelistConfigItem */
@@ -6183,12 +6191,12 @@ export interface components {
 			application?:
 				| components["schemas"]["ProjectWhitelistApplicationPreview"]
 				| null;
-			apply_server_id: string;
+			apply_server_id: components["schemas"]["Snowflake"];
 			binding: components["schemas"]["ProjectWhitelistBindingPreview"];
 			enforcement_servers?: components["schemas"]["WhitelistTargetServerRef"][];
 			form?: components["schemas"]["WhitelistFormCard"] | null;
 			grant_target_servers?: components["schemas"]["WhitelistTargetServerRef"][];
-			project_id: string;
+			project_id: components["schemas"]["Snowflake"];
 			proof_entry?: components["schemas"]["WhitelistProofEntry"] | null;
 		};
 		/**
@@ -6355,6 +6363,12 @@ export interface components {
 			slug?: string | null;
 			/** Format: date-time */
 			updated_at: string;
+		};
+		/** ServerCardTranslations */
+		ServerCardTranslations: {
+			description?: components["schemas"]["TextTranslation"] | null;
+			maintenance_message?: components["schemas"]["TextTranslation"] | null;
+			motd?: components["schemas"]["TextTranslation"] | null;
 		};
 		/** ServerChangeAddressRequest */
 		ServerChangeAddressRequest: {
@@ -6558,6 +6572,7 @@ export interface components {
 		ServerSummary: {
 			/** Format: date-time */
 			created_at: string;
+			description?: string | null;
 			favicon_url?: string | null;
 			game_edition?: components["schemas"]["GameEdition"] | null;
 			icon_url?: string | null;
@@ -6571,7 +6586,10 @@ export interface components {
 			parent_id?: components["schemas"]["Snowflake"] | null;
 			project_id?: components["schemas"]["Snowflake"] | null;
 			role: components["schemas"]["ServerRole"];
+			/** @default false */
+			show_description: boolean;
 			slug?: string | null;
+			translations?: components["schemas"]["ServerCardTranslations"] | null;
 			/** Format: date-time */
 			updated_at: string;
 			verification_source?: components["schemas"]["VerificationSource"] | null;
@@ -7286,7 +7304,9 @@ export interface components {
 			| "unknown";
 		/** WhitelistApplyRequest */
 		WhitelistApplyRequest: {
-			answers?: unknown;
+			answers?: {
+				[key: string]: unknown;
+			};
 			binding_id?: components["schemas"]["Snowflake"] | null;
 			minecraft_account_type: string;
 			minecraft_nick?: string | null;
@@ -7300,17 +7320,17 @@ export interface components {
 			/** @default true */
 			enabled: boolean;
 			enforcement_mode: components["schemas"]["EnforcementMode"];
-			form_id?: string | null;
-			granted_role_ids?: string[];
-			id: string;
+			form_id?: components["schemas"]["Snowflake"] | null;
+			granted_role_ids?: components["schemas"]["Snowflake"][];
+			id: components["schemas"]["Snowflake"];
 			mode?: components["schemas"]["WhitelistBindingMode"];
 			notification_settings?: components["schemas"]["WhitelistNotificationSettings"];
-			project_id?: string | null;
+			project_id?: components["schemas"]["Snowflake"] | null;
 			/** @default true */
 			restrict_chat: boolean;
 			scope_type: components["schemas"]["TeamScopeType"];
-			server_id: string;
-			target_server_ids?: string[];
+			server_id: components["schemas"]["Snowflake"];
+			target_server_ids?: components["schemas"]["Snowflake"][];
 			/** Format: date-time */
 			updated_at: string;
 		};
@@ -7634,7 +7654,7 @@ export interface components {
 		WhitelistProofEntry: {
 			/** @default project_any_server */
 			entry_hint_kind: string;
-			entry_server_id?: string | null;
+			entry_server_id?: components["schemas"]["Snowflake"] | null;
 			/** @default leavepulse */
 			preferred_command_root: string;
 			/** @default project */
@@ -7656,8 +7676,8 @@ export interface components {
 		};
 		/** WhitelistTargetServerRef */
 		WhitelistTargetServerRef: {
-			entry_server_id?: string | null;
-			server_id: string;
+			entry_server_id?: components["schemas"]["Snowflake"] | null;
+			server_id: components["schemas"]["Snowflake"];
 		};
 		/** Workspace */
 		Workspace: {
@@ -7684,7 +7704,7 @@ export interface components {
 			online_players?: number | null;
 			online_reason?: string | null;
 			online_server_id?: components["schemas"]["Snowflake"] | null;
-			online_source?: components["schemas"]["TrustState"] | null;
+			online_source?: components["schemas"]["OnlineSource"] | null;
 			online_state?: components["schemas"]["OnlineState"];
 			online_strategy: components["schemas"]["OnlineStrategy"];
 			owner_id?: components["schemas"]["Snowflake"] | null;

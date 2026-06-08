@@ -236,6 +236,7 @@ export type OAuthProviderStatus = components["schemas"]["OAuthProviderStatus"];
 export type OAuthProvidersResponse =
 	components["schemas"]["OAuthProvidersResponse"];
 export type OAuthUnlinkResult = components["schemas"]["OAuthUnlinkResult"];
+export type OnlineSource = components["schemas"]["OnlineSource"];
 export type OnlineState = components["schemas"]["OnlineState"];
 export type OnlineStrategy = components["schemas"]["OnlineStrategy"];
 export type Order = components["schemas"]["Order"];
@@ -326,6 +327,8 @@ export type ServerBotLinkedGuild =
 export type ServerBotUpdateRequest =
 	components["schemas"]["ServerBotUpdateRequest"];
 export type ServerCard = components["schemas"]["ServerCard"];
+export type ServerCardTranslations =
+	components["schemas"]["ServerCardTranslations"];
 export type ServerChangeAddressRequest =
 	components["schemas"]["ServerChangeAddressRequest"];
 export type ServerChangeSlugRequest =

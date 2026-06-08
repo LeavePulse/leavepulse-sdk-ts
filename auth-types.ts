@@ -884,6 +884,26 @@ export interface paths {
 		patch?: never;
 		trace?: never;
 	};
+	"/auth/session": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
+		/**
+		 * Resolve current session (non-rotating)
+		 * @description Resolve the current user, roles and scope from the refresh-token cookie and mint a short-lived access token WITHOUT rotating the refresh token. Used by SSR to render authenticated content without racing the client's rotating refresh. Issues no Set-Cookie.
+		 */
+		post: operations["auth.session"];
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
 	"/auth/sessions": {
 		parameters: {
 			query?: never;
@@ -4801,6 +4821,26 @@ export interface operations {
 					} & {
 						[key: string]: unknown;
 					};
+				};
+			};
+		};
+	};
+	"auth.session": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description Document created, URL follows */
+			201: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["LoginResponse"];
 				};
 			};
 		};

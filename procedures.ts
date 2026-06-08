@@ -741,6 +741,15 @@ export class AuthNs {
 			channel: "auth",
 		});
 	}
+
+	/** auth.session */
+	async session(): Promise<models.LoginResponse> {
+		return this.ctx.transport.request<models.LoginResponse>({
+			method: "POST",
+			path: `/auth/session`,
+			channel: "auth",
+		});
+	}
 }
 
 /** billing.orders procedures. */
