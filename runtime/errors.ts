@@ -10,7 +10,7 @@ import type { TransportRequest } from "./transport";
 
 /** RFC 7807 problem details as emitted by the LeavePulse backend. */
 export interface ProblemDetails {
-	/** URI identifying the problem type. */
+	/** URI identifying the problem type (`urn:<service>:error:<code>`). */
 	type?: string;
 	/** Short human-readable summary. */
 	title?: string;
@@ -20,7 +20,7 @@ export interface ProblemDetails {
 	detail?: string;
 	/** URI identifying this specific occurrence. */
 	instance?: string;
-	/** Stable machine-readable error code (e.g. `whitelist.not_found`). */
+	/** Stable machine-readable error code, UPPER_SNAKE (e.g. `RESOURCE_NOT_FOUND`). */
 	code?: string;
 	/** ISO-8601 timestamp. */
 	timestamp?: string;
@@ -28,8 +28,53 @@ export interface ProblemDetails {
 	requestId?: string;
 	/** Originating service name. */
 	service?: string;
-	/** Extra structured context, including per-field validation errors. */
+	/** Extra structured context. For validation failures it holds
+	 * `{ errors: [{ key, message, source }], path }`. */
 	details?: Record<string, unknown>;
+}
+
+/** A single per-field validation failure, normalized from the backend's
+ * `details.errors` array (Litestar's `{ key, message, source }` shape). */
+export interface FieldError {
+	/** The offending field path (e.g. `email`, `body.address.city`). */
+	field: string;
+	/** Human-readable validation message. */
+	message: string;
+	/** Where it came from: `body` | `query` | `path` | `cookie` | … */
+	source?: string;
+}
+
+/** Extract normalized per-field validation errors from a problem's `details`.
+ * The backend (awesome_errors + Litestar) reports them as
+ * `details.errors = [{ key, message, source }]`; older/other shapes
+ * (`details.fields` object, `{ loc, msg }` pydantic-style) are tolerated. */
+export function fieldErrorsOf(problem: ProblemDetails | null): FieldError[] {
+	const details = problem?.details;
+	if (!details || typeof details !== "object") return [];
+	const raw = (details as { errors?: unknown; fields?: unknown }).errors;
+
+	const fromEntry = (entry: unknown): FieldError | null => {
+		if (!entry || typeof entry !== "object") return null;
+		const e = entry as Record<string, unknown>;
+		const loc = e.key ?? e.field ?? e.path ?? e.loc;
+		const field = Array.isArray(loc) ? loc.join(".") : String(loc ?? "");
+		const message = String(e.message ?? e.msg ?? e.detail ?? "");
+		const source = e.source != null ? String(e.source) : undefined;
+		if (!field && !message) return null;
+		return { field, message, source };
+	};
+
+	if (Array.isArray(raw)) {
+		return raw.map(fromEntry).filter((x): x is FieldError => x !== null);
+	}
+	// Legacy `details.fields = { email: "msg" }` object shape.
+	const fields = (details as { fields?: unknown }).fields;
+	if (fields && typeof fields === "object" && !Array.isArray(fields)) {
+		return Object.entries(fields as Record<string, unknown>).map(
+			([field, message]) => ({ field, message: String(message) }),
+		);
+	}
+	return [];
 }
 
 /** Base class for every error the SDK raises. */
@@ -77,32 +122,37 @@ export class HTTPException extends LeavePulseError {
 		this.raw = raw;
 	}
 
-	/** Machine-readable error code, when the server supplied one. */
+	/** Machine-readable error code, when the server supplied one
+	 * (UPPER_SNAKE, e.g. `RESOURCE_NOT_FOUND`). */
 	get code(): string | undefined {
 		return this.problem?.code;
+	}
+
+	/** Whether the server's stable error code matches `code` — a transport-
+	 * agnostic check that survives status-code remapping (`err.is("SESSION_EXPIRED")`). */
+	is(code: string): boolean {
+		return this.problem?.code === code;
 	}
 
 	/** Correlation id for support, when present. */
 	get requestId(): string | undefined {
 		return this.problem?.requestId;
 	}
-}
 
-/** 400 — malformed request / failed validation. `fields` holds per-field
- * validation messages when the backend supplied them. */
-export class BadRequest extends HTTPException {
-	/** Per-field validation errors, when the backend reported them. */
-	get fields(): Record<string, unknown> | undefined {
-		const d = this.problem?.details;
-		if (d && typeof d === "object") {
-			const f =
-				(d as { fields?: unknown; errors?: unknown }).fields ??
-				(d as { errors?: unknown }).errors;
-			if (f && typeof f === "object") return f as Record<string, unknown>;
-		}
-		return undefined;
+	/** Normalized per-field validation errors, when the backend reported them
+	 * (populated for 400/422 validation failures). */
+	get fieldErrors(): FieldError[] {
+		return fieldErrorsOf(this.problem);
 	}
 }
+
+/** 400 — malformed request / failed validation. */
+export class BadRequest extends HTTPException {}
+
+/** 422 — semantic validation failure (the backend's primary validation status,
+ * carrying `details.errors`). Separate class so callers can target it, but it
+ * shares `fieldErrors` with `BadRequest`. */
+export class UnprocessableEntity extends HTTPException {}
 
 /** 401 — authentication required or failed. */
 export class Unauthorized extends HTTPException {}
@@ -164,6 +214,8 @@ export function httpErrorFor(
 			return new NotFound(status, request, problem, raw);
 		case 409:
 			return new Conflict(status, request, problem, raw);
+		case 422:
+			return new UnprocessableEntity(status, request, problem, raw);
 		case 429:
 			return new RateLimited(status, request, problem, raw, retryAfter);
 		default:

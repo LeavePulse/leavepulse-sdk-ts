@@ -36,6 +36,7 @@ export {
 	LeavePulseError,
 	HTTPException,
 	BadRequest,
+	UnprocessableEntity,
 	Unauthorized,
 	Forbidden,
 	NotFound,
@@ -45,8 +46,9 @@ export {
 	MalformedResponse,
 	parseProblem,
 	httpErrorFor,
+	fieldErrorsOf,
 } from "./runtime/errors";
-export type { ProblemDetails } from "./runtime/errors";
+export type { ProblemDetails, FieldError } from "./runtime/errors";
 export { pollDeviceToken, DeviceFlowError } from "./runtime/device";
 export type {
 	DevicePollStatus,
@@ -76,11 +78,16 @@ export type {
 export { Page } from "./runtime/page";
 export { IdentityMap } from "./runtime/cache";
 export type { Identified } from "./runtime/cache";
-export { RealtimeTransport, TopicSubscription } from "./runtime/realtime";
+export {
+	RealtimeTransport,
+	TopicSubscription,
+	toRealtimeError,
+} from "./runtime/realtime";
 export type {
 	RealtimeEvent,
 	RealtimeMessage,
 	RealtimeHandler,
+	RealtimeError,
 	WebSocketLike,
 	RealtimeTransportOptions,
 } from "./runtime/realtime";

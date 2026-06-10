@@ -11,6 +11,50 @@
 
 export type RealtimeEvent = "initial" | "update" | "error";
 
+/** A normalized realtime error, shaped like an HTTP `ProblemDetails` so error
+ * handling is consistent across channels. The gateway may send the error as a
+ * JSON-RPC object (`{code, message, data: {error_code, request_id, …}}`), a
+ * flat `{code, message, request_id}`, or an RFC 7807 body — all collapse here. */
+export interface RealtimeError {
+	/** Stable machine-readable error code (e.g. `SESSION_EXPIRED`). */
+	code?: string;
+	/** Human-readable message. */
+	message: string;
+	/** Correlation id for support, when present. */
+	requestId?: string;
+	/** Extra structured context. */
+	details?: Record<string, unknown>;
+	/** The raw error payload as received, for escape-hatch inspection. */
+	raw: unknown;
+}
+
+/** Normalize any realtime error payload into a {@link RealtimeError}. */
+export function toRealtimeError(raw: unknown): RealtimeError {
+	if (raw == null || typeof raw !== "object") {
+		return { message: String(raw ?? "realtime error"), raw };
+	}
+	const obj = raw as Record<string, unknown>;
+	// JSON-RPC error object: { code, message, data: {...} }
+	const data = (obj.data ?? {}) as Record<string, unknown>;
+	const code =
+		(obj.error_code as string) ??
+		(data.error_code as string) ??
+		(typeof obj.code === "string" ? (obj.code as string) : undefined);
+	const message = String(
+		obj.message ?? obj.detail ?? obj.title ?? "realtime error",
+	);
+	const requestId =
+		(obj.request_id as string) ??
+		(obj.requestId as string) ??
+		(data.request_id as string) ??
+		(data.requestId as string);
+	const details =
+		(data.details as Record<string, unknown>) ??
+		(obj.details as Record<string, unknown>) ??
+		undefined;
+	return { code, message, requestId, details, raw };
+}
+
 export interface RealtimeMessage<T = unknown> {
 	topic: string;
 	data: T;
@@ -167,8 +211,11 @@ export class RealtimeTransport {
 		if (typeof topic !== "string") return;
 		const sub = this.subscriptions.get(topic);
 		if (!sub) return;
+		// Normalize the wire error so handlers get a consistent RealtimeError
+		// instead of a raw, per-gateway-shape `unknown`.
+		const normalized = toRealtimeError(error);
 		for (const h of sub.handlers) {
-			if (h.event === "error") h.fn({ topic, data: error });
+			if (h.event === "error") h.fn({ topic, data: normalized });
 		}
 	}
 
