@@ -939,16 +939,13 @@ export class BuildsNs {
 	}
 
 	/** builds.preview */
-	async preview(shareToken: string): Promise<Build[]> {
-		const data = (await fetchCachedOrThrow(
+	async preview(shareToken: string): Promise<Build> {
+		const data = await fetchCachedOrThrow(
 			this.ctx.transport,
 			this.ctx.etagStore,
 			{ method: "GET", path: `/v1/builds/preview/${shareToken}` },
-		)) as unknown;
-		const items = Array.isArray(data)
-			? data
-			: ((data as Record<string, unknown[]>)["items"] ?? []);
-		return this.ctx.hydrateMany("Build", items) as Build[];
+		);
+		return this.ctx.hydrate("Build", data) as Build;
 	}
 
 	/** builds.shared_with_me */

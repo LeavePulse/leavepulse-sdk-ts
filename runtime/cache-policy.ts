@@ -345,7 +345,9 @@ export class CachePolicy<
 		fetcher: () => Promise<TData | null>,
 		opts: EnsureOptions<TLevel> = {},
 	): Promise<TData | null> {
-		const minLevel = opts.minLevel ?? this.levelKeys[0];
+		// levelKeys is derived from the required `config.levels` map, so it is
+		// always non-empty — the `[0]` fallback exists.
+		const minLevel: TLevel = opts.minLevel ?? (this.levelKeys[0] as TLevel);
 		const stampLevel = opts.level ?? minLevel;
 		const force = Boolean(opts.force);
 
