@@ -288,13 +288,16 @@ export class Me extends Resource<Data> {
 	}
 
 	/** me.sessions.list */
-	async sessionsList(): Promise<Session> {
-		const data = await fetchCachedOrThrow(
+	async sessionsList(): Promise<Session[]> {
+		const data = await fetchCachedOrThrow<unknown>(
 			this.ctx.transport,
 			this.ctx.etagStore,
 			{ method: "GET", path: `/v1/me/sessions` },
 		);
-		return this.ctx.hydrate("Session", data, "sessions") as Session;
+		const items = Array.isArray(data)
+			? data
+			: ((data as Record<string, unknown[]>)["sessions"] ?? []);
+		return this.ctx.hydrateMany("Session", items) as Session[];
 	}
 
 	/** me.sessions.revoke_others */
