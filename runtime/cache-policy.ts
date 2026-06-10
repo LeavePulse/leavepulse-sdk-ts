@@ -34,6 +34,21 @@ export interface PolicyConfig<TData, TLevel extends string> {
 	merge?: (base: TData, incoming: Partial<TData>) => TData;
 	/** Default TTL for query/page entries when `setQuery` gets no override. */
 	queryTtlMs?: number;
+	/**
+	 * Optional readiness gate BEYOND level+TTL: whether a cached entry's payload
+	 * is rich enough to satisfy `level`. Lets a consumer demand specific fields
+	 * (e.g. a "profile" entry without `display_server` is incomplete, so re-fetch
+	 * even though its level/TTL pass). Returns `true` when ready. Default: always
+	 * ready (level+TTL alone decide).
+	 */
+	ready?: (data: TData, level: TLevel) => boolean;
+	/**
+	 * Fields to PRESERVE when a lower-level upsert lands on a higher-level entry,
+	 * keyed by the level that owns them. When merging e.g. a "list" payload onto
+	 * an entry already at "manage", the manage-owned fields are not clobbered by
+	 * the thinner payload. Returns the protected field names for a given level.
+	 */
+	protectedFields?: (level: TLevel) => readonly string[];
 }
 
 export interface PolicyEntry<TData, TLevel extends string> {
@@ -191,7 +206,10 @@ export class CachePolicy<
 	hasLevel(ref: string, level: TLevel): boolean {
 		const entry = this.entryForRef(ref);
 		if (!entry) return false;
-		return this.levelAtLeast(entry.level, level);
+		if (!this.levelAtLeast(entry.level, level)) return false;
+		// A higher-or-equal level still fails the readiness gate if the payload
+		// lacks the fields that level requires.
+		return this.config.ready?.(entry.data, level) ?? true;
 	}
 
 	isFresh(ref: string, level: TLevel): boolean {
@@ -222,6 +240,20 @@ export class CachePolicy<
 		const nextLevel = existing ? this.maxLevel(existing.level, level) : level;
 		const baseData = existing?.data ?? ({} as TData);
 		const mergedData = this.merge(baseData, data);
+		// When a thinner (lower-level) payload lands on a richer entry, keep the
+		// higher level's owned fields from being clobbered by absent/blank values.
+		if (
+			existing &&
+			this.config.protectedFields &&
+			this.levelAtLeast(existing.level, level) &&
+			existing.level !== level
+		) {
+			for (const field of this.config.protectedFields(existing.level)) {
+				if (baseData[field] !== undefined) {
+					(mergedData as Record<string, unknown>)[field] = baseData[field];
+				}
+			}
+		}
 		const mergedFreshness = this.touchFreshness(
 			existing?.freshness ?? this.emptyFreshness(),
 			level,
@@ -318,12 +350,14 @@ export class CachePolicy<
 		const force = Boolean(opts.force);
 
 		const cached = this.entryForRef(ref);
-		const normalized = this.normalizeRef(ref);
+		// A hit must clear all three gates: level reached, readiness payload
+		// present (config.ready), and TTL still fresh. `hasLevel` covers the
+		// first two; `isFresh` the third.
 		if (
 			cached &&
 			!force &&
-			this.levelAtLeast(cached.level, minLevel) &&
-			(normalized ? this.isFresh(normalized, minLevel) : false)
+			this.hasLevel(ref, minLevel) &&
+			this.isFresh(ref, minLevel)
 		) {
 			return cached.data;
 		}
