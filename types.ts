@@ -930,6 +930,26 @@ export interface paths {
 		patch?: never;
 		trace?: never;
 	};
+	"/v1/builds/preview/{share_token}": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		/**
+		 * Public preview of a shared build
+		 * @description Anonymous preview of a publicly shared build by its share token.
+		 */
+		get: operations["builds.preview"];
+		put?: never;
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
 	"/v1/builds/shared-with-me": {
 		parameters: {
 			query?: never;
@@ -5479,6 +5499,12 @@ export interface components {
 			path: string;
 			sha256: string;
 		};
+		/** ManifestDelta */
+		ManifestDelta: {
+			patch_path: string;
+			patch_sha256: string;
+			result_sha256: string;
+		};
 		/** MeResponse */
 		MeResponse: {
 			email?: string | null;
@@ -7083,6 +7109,11 @@ export interface components {
 			components?: {
 				[key: string]: components["schemas"]["ManifestComponent"];
 			};
+			deltas?: {
+				[key: string]: {
+					[key: string]: components["schemas"]["ManifestDelta"];
+				};
+			};
 			download_url?: string | null;
 			download_urls?: string[];
 			file_name: string;
@@ -7099,6 +7130,11 @@ export interface components {
 			artifact_id?: string | null;
 			components?: {
 				[key: string]: components["schemas"]["ManifestComponent"];
+			};
+			deltas?: {
+				[key: string]: {
+					[key: string]: components["schemas"]["ManifestDelta"];
+				};
 			};
 			download_url?: string | null;
 			download_urls?: string[];
@@ -10068,6 +10104,46 @@ export interface operations {
 			};
 		};
 	};
+	"builds.preview": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path: {
+				share_token: string;
+			};
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description Request fulfilled, document follows */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["Build"];
+				};
+			};
+			/** @description Bad request syntax or unsupported method */
+			400: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": {
+						detail: string;
+						extra?:
+							| null
+							| {
+									[key: string]: unknown;
+							  }
+							| unknown[];
+						status_code: number;
+					};
+				};
+			};
+		};
+	};
 	"builds.shared_with_me": {
 		parameters: {
 			query?: never;
@@ -10171,7 +10247,9 @@ export interface operations {
 	"build.update": {
 		parameters: {
 			query?: never;
-			header?: never;
+			header?: {
+				"If-Match"?: string | null;
+			};
 			path: {
 				build_id: string;
 			};
@@ -13535,6 +13613,7 @@ export interface operations {
 				region?: string | null;
 				hosting?: string | null;
 				verified?: boolean | null;
+				has_build?: boolean | null;
 				page?: number;
 				per_page?: number;
 				sort?: string | null;

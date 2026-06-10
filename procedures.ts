@@ -862,6 +862,19 @@ export class BuildsNs {
 		return this.ctx.hydrate("Build", data) as Build;
 	}
 
+	/** builds.preview */
+	async preview(shareToken: string): Promise<Build[]> {
+		const data = (await fetchCachedOrThrow(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{ method: "GET", path: `/v1/builds/preview/${shareToken}` },
+		)) as unknown;
+		const items = Array.isArray(data)
+			? data
+			: ((data as Record<string, unknown[]>)["items"] ?? []);
+		return this.ctx.hydrateMany("Build", items) as Build[];
+	}
+
 	/** builds.shared_with_me */
 	async sharedWithMe(): Promise<Build[]> {
 		const data = (await fetchCachedOrThrow(
@@ -1109,6 +1122,7 @@ export class ProjectsNs {
 		region?: string;
 		hosting?: string;
 		verified?: boolean;
+		hasBuild?: boolean;
 		page?: number;
 		perPage?: number;
 		sort?: string;
@@ -1127,6 +1141,7 @@ export class ProjectsNs {
 					region: params?.region,
 					hosting: params?.hosting,
 					verified: params?.verified,
+					has_build: params?.hasBuild,
 					page: params?.page,
 					per_page: params?.perPage,
 					sort: params?.sort,

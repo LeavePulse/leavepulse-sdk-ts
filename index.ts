@@ -65,6 +65,14 @@ export type {
 	EtagEntry,
 	FetchCachedOptions,
 } from "./runtime/etag-store";
+export { CachePolicy } from "./runtime/cache-policy";
+export type {
+	PolicyConfig,
+	PolicyEntry,
+	PolicyState,
+	QueryEntry,
+	EnsureOptions,
+} from "./runtime/cache-policy";
 export { Page } from "./runtime/page";
 export { IdentityMap } from "./runtime/cache";
 export type { Identified } from "./runtime/cache";

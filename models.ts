@@ -183,6 +183,7 @@ export type LinkedMinecraftAccount =
 export type LiveDashboardStats = components["schemas"]["LiveDashboardStats"];
 export type LiveStatus = components["schemas"]["LiveStatus"];
 export type ManifestComponent = components["schemas"]["ManifestComponent"];
+export type ManifestDelta = components["schemas"]["ManifestDelta"];
 export type MeResponse = components["schemas"]["MeResponse"];
 export type MemberState = components["schemas"]["MemberState"];
 export type MinecraftAccount = components["schemas"]["MinecraftAccount"];
