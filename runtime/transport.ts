@@ -6,7 +6,9 @@
 //   - BearerTransport:  Authorization: Bearer for external consumers.
 //   - MockTransport:    canned responses for tests.
 
-import { httpErrorFor, RateLimited, ServerError } from "./errors";
+import type { CredentialProvider } from "./credentials";
+import { StaticCredential } from "./credentials";
+import { httpErrorFor, RateLimited, ServerError, Unauthorized } from "./errors";
 import { parseJson } from "./json";
 
 export type HttpMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
@@ -76,6 +78,12 @@ export interface TransportRequest {
 	body?: unknown;
 	/** Multipart upload body; mutually exclusive with `body`. */
 	multipart?: MultipartBody;
+	/**
+	 * `application/x-www-form-urlencoded` body; mutually exclusive with `body`
+	 * and `multipart`. Required by the OAuth2 `/auth/oauth2/token` endpoint,
+	 * which consumes form-encoded (not JSON) grant requests.
+	 */
+	form?: Record<string, string>;
 	/**
 	 * Send `If-None-Match` with this ETag so the server can answer `304 Not
 	 * Modified` and skip resending an unchanged body. Only meaningful through
@@ -162,25 +170,54 @@ function parseRetryAfter(value: string | null): number | undefined {
 	return undefined;
 }
 
+/** Build the request body + headers for one HTTP attempt from a transport
+ * request. Mutually exclusive body kinds: `multipart` (FormData, no explicit
+ * Content-Type — the runtime adds the boundary), `form` (URL-encoded), or
+ * `body` (JSON). */
+function buildBody(req: TransportRequest): {
+	body: BodyInit | undefined;
+	contentType?: string;
+} {
+	if (req.multipart) {
+		// Do NOT set Content-Type: the runtime adds the multipart boundary.
+		return { body: buildFormData(req.multipart) };
+	}
+	if (req.form) {
+		const params = new URLSearchParams();
+		for (const [key, value] of Object.entries(req.form)) params.set(key, value);
+		return { body: params, contentType: "application/x-www-form-urlencoded" };
+	}
+	if (req.body !== undefined) {
+		return { body: JSON.stringify(req.body), contentType: "application/json" };
+	}
+	return { body: undefined };
+}
+
 /**
- * Bearer-token transport for external consumers (no cookies). Uses the global
- * `fetch`; pass a custom `fetchImpl` to override (Node, tests). Automatically
- * retries 429 (honouring `Retry-After`) and 5xx (exponential backoff) up to
- * `retry.maxRetries`, then raises a typed `HTTPException`.
+ * Bearer transport driven by a {@link CredentialProvider} rather than a fixed
+ * token. Before every request it asks `provider.token()` for the current
+ * bearer; on a `401`, if `provider.refresh` exists it refreshes **once** and
+ * retries the request **once** — covering device-flow / OAuth2 / launcher
+ * tokens that rotate. Uses the global `fetch`; pass `fetchImpl` to override
+ * (Node, tests). Automatically retries 429 (honouring `Retry-After`) and 5xx
+ * (exponential backoff) up to `retry.maxRetries`, then raises a typed
+ * `HTTPException`. `BrowserTransport` (cookie) stays separate — the browser
+ * owns that session.
  */
-export class BearerTransport implements Transport {
-	private readonly retry: Required<RetryOptions>;
+export class AuthenticatedTransport implements Transport {
+	protected readonly retry: Required<RetryOptions>;
 
 	/**
 	 * @param baseUrl     platform (`/v1`) base URL.
-	 * @param token       bearer token sent on every request.
+	 * @param provider    supplies (and optionally refreshes) the bearer token.
+	 * @param fetchImpl   `fetch` override (Node, tests).
 	 * @param authBaseUrl optional auth-service base URL for the `auth` channel;
 	 *                    defaults to `baseUrl` when the auth core is co-hosted.
 	 * @param retry       automatic-retry tuning (429 / 5xx).
 	 */
 	constructor(
 		private readonly baseUrl: string,
-		private readonly token: string,
+		private readonly provider: CredentialProvider,
 		private readonly fetchImpl: typeof fetch = fetch,
 		private readonly authBaseUrl?: string,
 		retry: RetryOptions = {},
@@ -188,12 +225,31 @@ export class BearerTransport implements Transport {
 		this.retry = { ...DEFAULT_RETRY, ...retry };
 	}
 
+	/** One HTTP attempt with the freshly-fetched bearer applied. */
+	private async fetchOnce(
+		req: TransportRequest,
+		url: string,
+	): Promise<Response> {
+		const token = await this.provider.token();
+		const { body, contentType } = buildBody(req);
+		return this.fetchImpl(url, {
+			method: req.method,
+			headers: {
+				Authorization: `Bearer ${token}`,
+				...(contentType ? { "Content-Type": contentType } : {}),
+				...(req.ifNoneMatch ? { "If-None-Match": req.ifNoneMatch } : {}),
+			},
+			body,
+		});
+	}
+
 	/**
 	 * Dispatch the request with the retry budget applied. Returns the raw
 	 * `Response` for any status `passThrough` accepts (so callers can handle
 	 * 304/404 themselves); every other non-2xx becomes a typed `HTTPException`.
+	 * A `401` triggers a single `provider.refresh()` + retry when available.
 	 */
-	private async send(
+	protected async send(
 		req: TransportRequest,
 		passThrough: (status: number) => boolean = () => false,
 	): Promise<Response> {
@@ -203,29 +259,10 @@ export class BearerTransport implements Transport {
 				: this.baseUrl;
 		const url = base.replace(/\/$/, "") + buildPath(req);
 
-		// A multipart upload sends FormData; the runtime must NOT set Content-Type
-		// (the browser adds the multipart boundary). JSON bodies set it explicitly.
-		const multipartBody = req.multipart
-			? buildFormData(req.multipart)
-			: undefined;
-
 		let attempt = 0;
+		let refreshed = false;
 		for (;;) {
-			const response = await this.fetchImpl(url, {
-				method: req.method,
-				headers: {
-					Authorization: `Bearer ${this.token}`,
-					...(req.body !== undefined && !multipartBody
-						? { "Content-Type": "application/json" }
-						: {}),
-					...(req.ifNoneMatch ? { "If-None-Match": req.ifNoneMatch } : {}),
-				},
-				body: multipartBody
-					? multipartBody
-					: req.body !== undefined
-						? JSON.stringify(req.body)
-						: undefined,
-			});
+			const response = await this.fetchOnce(req, url);
 
 			if (response.ok || passThrough(response.status)) return response;
 
@@ -236,6 +273,17 @@ export class BearerTransport implements Transport {
 				await safeText(response),
 				retryAfter,
 			);
+
+			// On 401, refresh the credential once and retry once before surfacing.
+			if (
+				error instanceof Unauthorized &&
+				!refreshed &&
+				this.provider.refresh
+			) {
+				refreshed = true;
+				await this.provider.refresh();
+				continue;
+			}
 
 			// Retry on rate-limit / transient server errors while budget remains.
 			const retriable =
@@ -273,6 +321,26 @@ export class BearerTransport implements Transport {
 		if (response.status === 304) return { status: "not_modified", etag };
 		const data = parseJson(await response.text()) as T;
 		return { status: "modified", data, etag };
+	}
+}
+
+/**
+ * Bearer-token transport for external consumers (no cookies) holding a single
+ * pre-acquired token. A thin specialization of {@link AuthenticatedTransport}
+ * over a {@link StaticCredential}, kept for back-compat: the constructor
+ * signature `(baseUrl, token, fetchImpl?, authBaseUrl?, retry?)` is unchanged.
+ * For tokens that rotate (device flow, OAuth2, launcher) use
+ * `AuthenticatedTransport` with a refreshing credential instead.
+ */
+export class BearerTransport extends AuthenticatedTransport {
+	constructor(
+		baseUrl: string,
+		token: string,
+		fetchImpl: typeof fetch = fetch,
+		authBaseUrl?: string,
+		retry: RetryOptions = {},
+	) {
+		super(baseUrl, StaticCredential(token), fetchImpl, authBaseUrl, retry);
 	}
 }
 

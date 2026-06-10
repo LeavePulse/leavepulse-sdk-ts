@@ -692,13 +692,89 @@ export class AuthOauthNs {
 	}
 }
 
+/** auth.oauth2 procedures. */
+export class AuthOauth2Ns {
+	constructor(private readonly ctx: ClientContext) {}
+
+	/** auth.oauth2.authorize */
+	async authorize(params?: {
+		responseType?: string;
+		clientId?: string;
+		codeChallenge?: string;
+		redirectUri?: string;
+		scope?: string;
+		state?: string;
+		codeChallengeMethod?: string;
+	}): Promise<unknown> {
+		return fetchCachedOrThrow<unknown>(this.ctx.transport, this.ctx.etagStore, {
+			method: "GET",
+			path: `/auth/oauth/authorize`,
+			query: {
+				response_type: params?.responseType,
+				client_id: params?.clientId,
+				code_challenge: params?.codeChallenge,
+				redirect_uri: params?.redirectUri,
+				scope: params?.scope,
+				state: params?.state,
+				code_challenge_method: params?.codeChallengeMethod,
+			},
+			channel: "auth",
+		});
+	}
+
+	/** auth.oauth2.token */
+	async token(): Promise<models.OAuthAuthorizationTokenResponse> {
+		return this.ctx.transport.request<models.OAuthAuthorizationTokenResponse>({
+			method: "POST",
+			path: `/auth/oauth/token`,
+			channel: "auth",
+		});
+	}
+}
+
+/** auth.tokens procedures. */
+export class AuthTokensNs {
+	constructor(private readonly ctx: ClientContext) {}
+
+	/** auth.tokens.list */
+	async list(): Promise<models.PersonalAccessTokenListResponse> {
+		return fetchCachedOrThrow<models.PersonalAccessTokenListResponse>(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{ method: "GET", path: `/auth/pat-tokens`, channel: "auth" },
+		);
+	}
+
+	/** auth.tokens.create */
+	async create(
+		body: models.PersonalAccessTokenCreateRequest,
+	): Promise<models.PersonalAccessTokenCreateResponse> {
+		return this.ctx.transport.request<models.PersonalAccessTokenCreateResponse>(
+			{ method: "POST", path: `/auth/pat-tokens`, body, channel: "auth" },
+		);
+	}
+
+	/** auth.tokens.revoke */
+	async revoke(tokenId: number): Promise<models.StatusResponse> {
+		return this.ctx.transport.request<models.StatusResponse>({
+			method: "DELETE",
+			path: `/auth/pat-tokens/${tokenId}`,
+			channel: "auth",
+		});
+	}
+}
+
 /** auth.* procedures. */
 export class AuthNs {
 	readonly device: AuthDeviceNs;
 	readonly oauth: AuthOauthNs;
+	readonly oauth2: AuthOauth2Ns;
+	readonly tokens: AuthTokensNs;
 	constructor(private readonly ctx: ClientContext) {
 		this.device = new AuthDeviceNs(ctx);
 		this.oauth = new AuthOauthNs(ctx);
+		this.oauth2 = new AuthOauth2Ns(ctx);
+		this.tokens = new AuthTokensNs(ctx);
 	}
 
 	/** auth.login */

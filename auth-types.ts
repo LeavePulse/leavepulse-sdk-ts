@@ -631,7 +631,7 @@ export interface paths {
 		 * Authorize OAuth client
 		 * @description Issue an Authorization Code bound to a registered public client, redirect URI, current user, and S256 PKCE challenge.
 		 */
-		get: operations["AuthOauthAuthorizeOauthAuthorize"];
+		get: operations["auth.oauth2.authorize"];
 		put?: never;
 		post?: never;
 		delete?: never;
@@ -693,7 +693,7 @@ export interface paths {
 		 * Exchange OAuth authorization code
 		 * @description Exchange a one-time Authorization Code for LeavePulse access and refresh tokens after validating the registered client, redirect URI, and PKCE code verifier.
 		 */
-		post: operations["AuthOauthTokenOauthToken"];
+		post: operations["auth.oauth2.token"];
 		delete?: never;
 		options?: never;
 		head?: never;
@@ -811,13 +811,13 @@ export interface paths {
 		 * List personal access tokens
 		 * @description Return developer tokens owned by the current user.
 		 */
-		get: operations["AuthPatTokensListPersonalAccessTokens"];
+		get: operations["auth.tokens.list"];
 		put?: never;
 		/**
 		 * Create personal access token
 		 * @description Issue a long-lived developer token for the current user.
 		 */
-		post: operations["AuthPatTokensCreatePersonalAccessToken"];
+		post: operations["auth.tokens.create"];
 		delete?: never;
 		options?: never;
 		head?: never;
@@ -838,7 +838,7 @@ export interface paths {
 		 * Revoke personal access token
 		 * @description Revoke a developer token owned by the current user.
 		 */
-		delete: operations["AuthPatTokensTokenIdRevokePersonalAccessToken"];
+		delete: operations["auth.tokens.revoke"];
 		options?: never;
 		head?: never;
 		patch?: never;
@@ -3976,7 +3976,7 @@ export interface operations {
 			};
 		};
 	};
-	AuthOauthAuthorizeOauthAuthorize: {
+	"auth.oauth2.authorize": {
 		parameters: {
 			query: {
 				response_type: string;
@@ -4136,7 +4136,7 @@ export interface operations {
 			};
 		};
 	};
-	AuthOauthTokenOauthToken: {
+	"auth.oauth2.token": {
 		parameters: {
 			query?: never;
 			header?: never;
@@ -4539,7 +4539,7 @@ export interface operations {
 			};
 		};
 	};
-	AuthPatTokensListPersonalAccessTokens: {
+	"auth.tokens.list": {
 		parameters: {
 			query?: never;
 			header?: never;
@@ -4559,7 +4559,7 @@ export interface operations {
 			};
 		};
 	};
-	AuthPatTokensCreatePersonalAccessToken: {
+	"auth.tokens.create": {
 		parameters: {
 			query?: never;
 			header?: never;
@@ -4626,7 +4626,7 @@ export interface operations {
 			};
 		};
 	};
-	AuthPatTokensTokenIdRevokePersonalAccessToken: {
+	"auth.tokens.revoke": {
 		parameters: {
 			query?: never;
 			header?: never;

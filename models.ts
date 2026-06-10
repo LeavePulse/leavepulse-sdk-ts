@@ -563,6 +563,8 @@ export type MinecraftAccountLinkResponse =
 	authComponents["schemas"]["MinecraftAccountLinkResponse"];
 export type MinecraftAccountResponse =
 	authComponents["schemas"]["MinecraftAccountResponse"];
+export type OAuthAuthorizationTokenResponse =
+	authComponents["schemas"]["OAuthAuthorizationTokenResponse"];
 export type OAuthCallbackRequest =
 	authComponents["schemas"]["OAuthCallbackRequest"];
 export type OAuthCaptchaChallengeResponse =
@@ -575,6 +577,14 @@ export type OAuthTotpChallengeResponse =
 	authComponents["schemas"]["OAuthTotpChallengeResponse"];
 export type OAuthTotpConfirmRequest =
 	authComponents["schemas"]["OAuthTotpConfirmRequest"];
+export type PersonalAccessTokenCreateRequest =
+	authComponents["schemas"]["PersonalAccessTokenCreateRequest"];
+export type PersonalAccessTokenCreateResponse =
+	authComponents["schemas"]["PersonalAccessTokenCreateResponse"];
+export type PersonalAccessTokenItem =
+	authComponents["schemas"]["PersonalAccessTokenItem"];
+export type PersonalAccessTokenListResponse =
+	authComponents["schemas"]["PersonalAccessTokenListResponse"];
 export type RefreshTokenRequest =
 	authComponents["schemas"]["RefreshTokenRequest"];
 export type StatusResponse = authComponents["schemas"]["StatusResponse"];
