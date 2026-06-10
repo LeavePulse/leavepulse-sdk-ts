@@ -6601,14 +6601,18 @@ export interface components {
 			description?: string | null;
 			favicon_url?: string | null;
 			game_edition?: components["schemas"]["GameEdition"] | null;
+			/** @default false */
+			has_build: boolean;
 			icon_url?: string | null;
 			id: components["schemas"]["Snowflake"];
 			ip_or_domain: string;
 			/** @default false */
 			is_verified: boolean;
+			max_players?: number | null;
 			motd?: string | null;
 			/** @default  */
 			name: string;
+			online_players?: number | null;
 			parent_id?: components["schemas"]["Snowflake"] | null;
 			project_id?: components["schemas"]["Snowflake"] | null;
 			role: components["schemas"]["ServerRole"];
