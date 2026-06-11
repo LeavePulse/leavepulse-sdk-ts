@@ -17,6 +17,32 @@ export type PageFetcher<T> = (
 	perPage: number,
 ) => Promise<PageData<T>>;
 
+/** Coerce an arbitrary list-envelope body into `PageData<T>`, hydrating items
+ * via the supplied callback and reading the canonical `{total,page,per_page}`
+ * fields (falling back sensibly when a field is absent). Generated list methods
+ * build the per-endpoint `hydrate` closure; the field plumbing lives here so it
+ * stays identical across every paginated method. */
+export function pageDataFrom<T>(
+	body: unknown,
+	hydrate: (items: unknown[]) => T[],
+	requestedPage: number,
+	requestedPerPage: number,
+): PageData<T> {
+	const obj = (body ?? {}) as Record<string, unknown>;
+	const rawItems = Array.isArray(obj.items) ? (obj.items as unknown[]) : [];
+	const items = hydrate(rawItems);
+	const num = (v: unknown, fallback: number): number => {
+		const n = Number(v);
+		return Number.isFinite(n) ? n : fallback;
+	};
+	return {
+		items,
+		total: num(obj.total, items.length),
+		page: num(obj.page, requestedPage),
+		per_page: num(obj.per_page, requestedPerPage),
+	};
+}
+
 export class Page<T> implements AsyncIterable<T> {
 	readonly items: T[];
 	readonly page: number;

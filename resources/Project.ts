@@ -2,6 +2,7 @@
 import { Resource, extractId } from "../runtime/resource";
 import { TopicSubscription } from "../runtime/realtime";
 import { fetchCachedOrThrow } from "../runtime/etag-store";
+import { Page, type PageData, pageDataFrom } from "../runtime/page";
 import type { components } from "../types";
 import type * as models from "../models";
 import type { ClientContext } from "../client";
@@ -110,24 +111,35 @@ export class Project extends Resource<Data> {
 		page?: number;
 		limit?: number;
 		targetLocale?: string;
-	}): Promise<Comment[]> {
-		const data = await fetchCachedOrThrow<unknown>(
-			this.ctx.transport,
-			this.ctx.etagStore,
-			{
-				method: "GET",
-				path: `/v1/community/projects/${this.id}/comments`,
-				query: {
-					page: params?.page,
-					limit: params?.limit,
-					target_locale: params?.targetLocale,
+	}): Promise<Page<Comment>> {
+		const fetchPage = async (
+			page: number,
+			perPage: number,
+		): Promise<PageData<Comment>> => {
+			const data = await fetchCachedOrThrow<unknown>(
+				this.ctx.transport,
+				this.ctx.etagStore,
+				{
+					method: "GET",
+					path: `/v1/community/projects/${this.id}/comments`,
+					query: {
+						page: page,
+						limit: perPage,
+						target_locale: params?.targetLocale,
+					},
 				},
-			},
+			);
+			return pageDataFrom(
+				data,
+				(raw) => this.ctx.hydrateMany("Comment", raw) as Comment[],
+				page,
+				perPage,
+			);
+		};
+		return new Page(
+			await fetchPage(params?.page ?? 1, params?.limit ?? 20),
+			fetchPage,
 		);
-		const items = Array.isArray(data)
-			? data
-			: ((data as Record<string, unknown[]>)["items"] ?? []);
-		return this.ctx.hydrateMany("Comment", items) as Comment[];
 	}
 
 	/** project.comments.liked */

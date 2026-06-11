@@ -2,6 +2,7 @@
 import { Resource, extractId } from "../runtime/resource";
 import { TopicSubscription } from "../runtime/realtime";
 import { fetchCachedOrThrow } from "../runtime/etag-store";
+import { Page, type PageData, pageDataFrom } from "../runtime/page";
 import type { components } from "../types";
 import type * as models from "../models";
 import type { LeavePulseFile } from "../runtime/transport";
@@ -370,44 +371,62 @@ export class Me extends Resource<Data> {
 		status?: string;
 		page?: number;
 		perPage?: number;
-	}): Promise<Application[]> {
-		const data = await fetchCachedOrThrow<unknown>(
-			this.ctx.transport,
-			this.ctx.etagStore,
-			{
-				method: "GET",
-				path: `/v1/me/whitelist/applications`,
-				query: {
-					status: params?.status,
-					page: params?.page,
-					per_page: params?.perPage,
+	}): Promise<Page<Application>> {
+		const fetchPage = async (
+			page: number,
+			perPage: number,
+		): Promise<PageData<Application>> => {
+			const data = await fetchCachedOrThrow<unknown>(
+				this.ctx.transport,
+				this.ctx.etagStore,
+				{
+					method: "GET",
+					path: `/v1/me/whitelist/applications`,
+					query: { status: params?.status, page: page, per_page: perPage },
 				},
-			},
+			);
+			return pageDataFrom(
+				data,
+				(raw) => this.ctx.hydrateMany("Application", raw) as Application[],
+				page,
+				perPage,
+			);
+		};
+		return new Page(
+			await fetchPage(params?.page ?? 1, params?.perPage ?? 20),
+			fetchPage,
 		);
-		const items = Array.isArray(data)
-			? data
-			: ((data as Record<string, unknown[]>)["items"] ?? []);
-		return this.ctx.hydrateMany("Application", items) as Application[];
 	}
 
 	/** me.servers.list */
 	async serversList(params?: {
 		page?: number;
 		perPage?: number;
-	}): Promise<Server[]> {
-		const data = await fetchCachedOrThrow<unknown>(
-			this.ctx.transport,
-			this.ctx.etagStore,
-			{
-				method: "GET",
-				path: `/v1/servers/mine`,
-				query: { page: params?.page, per_page: params?.perPage },
-			},
+	}): Promise<Page<Server>> {
+		const fetchPage = async (
+			page: number,
+			perPage: number,
+		): Promise<PageData<Server>> => {
+			const data = await fetchCachedOrThrow<unknown>(
+				this.ctx.transport,
+				this.ctx.etagStore,
+				{
+					method: "GET",
+					path: `/v1/servers/mine`,
+					query: { page: page, per_page: perPage },
+				},
+			);
+			return pageDataFrom(
+				data,
+				(raw) => this.ctx.hydrateMany("Server", raw) as Server[],
+				page,
+				perPage,
+			);
+		};
+		return new Page(
+			await fetchPage(params?.page ?? 1, params?.perPage ?? 20),
+			fetchPage,
 		);
-		const items = Array.isArray(data)
-			? data
-			: ((data as Record<string, unknown[]>)["items"] ?? []);
-		return this.ctx.hydrateMany("Server", items) as Server[];
 	}
 
 	/** me.servers.issues */

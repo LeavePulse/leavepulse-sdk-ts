@@ -1,6 +1,7 @@
 // Generated from the LeavePulse contract. Do not edit.
 import { Resource } from "../runtime/resource";
 import { fetchCachedOrThrow } from "../runtime/etag-store";
+import { Page, type PageData, pageDataFrom } from "../runtime/page";
 import type { components } from "../types";
 import type * as models from "../models";
 import type { ClientContext } from "../client";

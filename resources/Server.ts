@@ -2,6 +2,7 @@
 import { Resource, extractId } from "../runtime/resource";
 import { TopicSubscription } from "../runtime/realtime";
 import { fetchCachedOrThrow } from "../runtime/etag-store";
+import { Page, type PageData, pageDataFrom } from "../runtime/page";
 import type { components } from "../types";
 import type * as models from "../models";
 import type { LeavePulseFile } from "../runtime/transport";
@@ -163,24 +164,31 @@ export class Server extends Resource<Data> {
 		page?: number;
 		limit?: number;
 		status?: string;
-	}): Promise<Ticket[]> {
-		const data = await fetchCachedOrThrow<unknown>(
-			this.ctx.transport,
-			this.ctx.etagStore,
-			{
-				method: "GET",
-				path: `/v1/community/tickets/server/${this.id}`,
-				query: {
-					page: params?.page,
-					limit: params?.limit,
-					status: params?.status,
+	}): Promise<Page<Ticket>> {
+		const fetchPage = async (
+			page: number,
+			perPage: number,
+		): Promise<PageData<Ticket>> => {
+			const data = await fetchCachedOrThrow<unknown>(
+				this.ctx.transport,
+				this.ctx.etagStore,
+				{
+					method: "GET",
+					path: `/v1/community/tickets/server/${this.id}`,
+					query: { page: page, limit: perPage, status: params?.status },
 				},
-			},
+			);
+			return pageDataFrom(
+				data,
+				(raw) => this.ctx.hydrateMany("Ticket", raw) as Ticket[],
+				page,
+				perPage,
+			);
+		};
+		return new Page(
+			await fetchPage(params?.page ?? 1, params?.limit ?? 20),
+			fetchPage,
 		);
-		const items = Array.isArray(data)
-			? data
-			: ((data as Record<string, unknown[]>)["items"] ?? []);
-		return this.ctx.hydrateMany("Ticket", items) as Ticket[];
 	}
 
 	/** server.player_stats */

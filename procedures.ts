@@ -1,6 +1,7 @@
 // Generated from the LeavePulse contract. Do not edit.
 import type { ClientContext } from "./client";
 import { fetchCachedOrThrow } from "./runtime/etag-store";
+import { Page, type PageData, pageDataFrom } from "./runtime/page";
 import type * as models from "./models";
 import type { Snowflake } from "./runtime/snowflake";
 import type { Binding } from "./resources/Binding";
@@ -833,20 +834,31 @@ export class BillingOrdersNs {
 	constructor(private readonly ctx: ClientContext) {}
 
 	/** billing.orders.list */
-	async list(params?: { page?: number; limit?: number }): Promise<Order[]> {
-		const data = (await fetchCachedOrThrow(
-			this.ctx.transport,
-			this.ctx.etagStore,
-			{
-				method: "GET",
-				path: `/v1/billing/orders`,
-				query: { page: params?.page, limit: params?.limit },
-			},
-		)) as unknown;
-		const items = Array.isArray(data)
-			? data
-			: ((data as Record<string, unknown[]>)["items"] ?? []);
-		return this.ctx.hydrateMany("Order", items) as Order[];
+	async list(params?: { page?: number; limit?: number }): Promise<Page<Order>> {
+		const fetchPage = async (
+			page: number,
+			perPage: number,
+		): Promise<PageData<Order>> => {
+			const data = await fetchCachedOrThrow<unknown>(
+				this.ctx.transport,
+				this.ctx.etagStore,
+				{
+					method: "GET",
+					path: `/v1/billing/orders`,
+					query: { page: page, limit: perPage },
+				},
+			);
+			return pageDataFrom(
+				data,
+				(raw) => this.ctx.hydrateMany("Order", raw) as Order[],
+				page,
+				perPage,
+			);
+		};
+		return new Page(
+			await fetchPage(params?.page ?? 1, params?.limit ?? 20),
+			fetchPage,
+		);
 	}
 }
 
@@ -876,20 +888,31 @@ export class BillingSubscriptionsNs {
 	async list(params?: {
 		page?: number;
 		limit?: number;
-	}): Promise<Subscription[]> {
-		const data = (await fetchCachedOrThrow(
-			this.ctx.transport,
-			this.ctx.etagStore,
-			{
-				method: "GET",
-				path: `/v1/billing/subscriptions`,
-				query: { page: params?.page, limit: params?.limit },
-			},
-		)) as unknown;
-		const items = Array.isArray(data)
-			? data
-			: ((data as Record<string, unknown[]>)["items"] ?? []);
-		return this.ctx.hydrateMany("Subscription", items) as Subscription[];
+	}): Promise<Page<Subscription>> {
+		const fetchPage = async (
+			page: number,
+			perPage: number,
+		): Promise<PageData<Subscription>> => {
+			const data = await fetchCachedOrThrow<unknown>(
+				this.ctx.transport,
+				this.ctx.etagStore,
+				{
+					method: "GET",
+					path: `/v1/billing/subscriptions`,
+					query: { page: page, limit: perPage },
+				},
+			);
+			return pageDataFrom(
+				data,
+				(raw) => this.ctx.hydrateMany("Subscription", raw) as Subscription[],
+				page,
+				perPage,
+			);
+		};
+		return new Page(
+			await fetchPage(params?.page ?? 1, params?.limit ?? 20),
+			fetchPage,
+		);
 	}
 }
 
@@ -1335,20 +1358,34 @@ export class TicketsNs {
 	}
 
 	/** tickets.mine */
-	async mine(params?: { page?: number; limit?: number }): Promise<Ticket[]> {
-		const data = (await fetchCachedOrThrow(
-			this.ctx.transport,
-			this.ctx.etagStore,
-			{
-				method: "GET",
-				path: `/v1/community/tickets/my`,
-				query: { page: params?.page, limit: params?.limit },
-			},
-		)) as unknown;
-		const items = Array.isArray(data)
-			? data
-			: ((data as Record<string, unknown[]>)["items"] ?? []);
-		return this.ctx.hydrateMany("Ticket", items) as Ticket[];
+	async mine(params?: {
+		page?: number;
+		limit?: number;
+	}): Promise<Page<Ticket>> {
+		const fetchPage = async (
+			page: number,
+			perPage: number,
+		): Promise<PageData<Ticket>> => {
+			const data = await fetchCachedOrThrow<unknown>(
+				this.ctx.transport,
+				this.ctx.etagStore,
+				{
+					method: "GET",
+					path: `/v1/community/tickets/my`,
+					query: { page: page, limit: perPage },
+				},
+			);
+			return pageDataFrom(
+				data,
+				(raw) => this.ctx.hydrateMany("Ticket", raw) as Ticket[],
+				page,
+				perPage,
+			);
+		};
+		return new Page(
+			await fetchPage(params?.page ?? 1, params?.limit ?? 20),
+			fetchPage,
+		);
 	}
 }
 
@@ -1567,25 +1604,36 @@ export class WhitelistFormsNs {
 		search?: string;
 		page?: number;
 		perPage?: number;
-	}): Promise<Form[]> {
-		const data = (await fetchCachedOrThrow(
-			this.ctx.transport,
-			this.ctx.etagStore,
-			{
-				method: "GET",
-				path: `/v1/whitelist/forms`,
-				query: {
-					project_id: params?.projectId,
-					search: params?.search,
-					page: params?.page,
-					per_page: params?.perPage,
+	}): Promise<Page<Form>> {
+		const fetchPage = async (
+			page: number,
+			perPage: number,
+		): Promise<PageData<Form>> => {
+			const data = await fetchCachedOrThrow<unknown>(
+				this.ctx.transport,
+				this.ctx.etagStore,
+				{
+					method: "GET",
+					path: `/v1/whitelist/forms`,
+					query: {
+						project_id: params?.projectId,
+						search: params?.search,
+						page: page,
+						per_page: perPage,
+					},
 				},
-			},
-		)) as unknown;
-		const items = Array.isArray(data)
-			? data
-			: ((data as Record<string, unknown[]>)["items"] ?? []);
-		return this.ctx.hydrateMany("Form", items) as Form[];
+			);
+			return pageDataFrom(
+				data,
+				(raw) => this.ctx.hydrateMany("Form", raw) as Form[],
+				page,
+				perPage,
+			);
+		};
+		return new Page(
+			await fetchPage(params?.page ?? 1, params?.perPage ?? 20),
+			fetchPage,
+		);
 	}
 
 	/** whitelist.forms.create */

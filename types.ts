@@ -4709,6 +4709,10 @@ export interface components {
 		/** AdminUserListResponse */
 		AdminUserListResponse: {
 			items?: components["schemas"]["AdminUserSummary"][];
+			/** @default 1 */
+			page: number;
+			/** @default 50 */
+			per_page: number;
 			total: number;
 		};
 		/** AdminUserSummary */
@@ -4829,6 +4833,10 @@ export interface components {
 		/** BuildList */
 		BuildList: {
 			items: components["schemas"]["BuildSummary"][];
+			/** @default 1 */
+			page: number;
+			/** @default 50 */
+			per_page: number;
 			total: number;
 		};
 		/** BuildManifest */
@@ -4957,8 +4965,8 @@ export interface components {
 		/** CommentList */
 		CommentList: {
 			items: components["schemas"]["Comment"][];
-			limit: number;
 			page: number;
+			per_page: number;
 			total: number;
 		};
 		/** CommentReply */
@@ -5697,7 +5705,15 @@ export interface components {
 		/** MyServerIssuesPage */
 		MyServerIssuesPage: {
 			items?: components["schemas"]["ServerIssuesItem"][];
+			/** @default 1 */
+			page: number;
+			/** @default 20 */
+			per_page: number;
+			/** @default 0 */
+			total: number;
+			/** @default 0 */
 			total_issues: number;
+			/** @default 0 */
 			total_servers: number;
 		};
 		/** MyServersPage */
@@ -5792,8 +5808,8 @@ export interface components {
 		/** OrderList */
 		OrderList: {
 			items: components["schemas"]["Order"][];
-			limit: number;
 			page: number;
+			per_page: number;
 			total: number;
 		};
 		/** PasswordChangeRequest */
@@ -6441,8 +6457,8 @@ export interface components {
 		/** ServerEvents */
 		ServerEvents: {
 			items: components["schemas"]["ServerEventPoint"][];
-			limit: number;
 			page: number;
+			per_page: number;
 			period: string;
 			total: number;
 		};
@@ -6821,8 +6837,8 @@ export interface components {
 		/** SubscriptionList */
 		SubscriptionList: {
 			items: components["schemas"]["Subscription"][];
-			limit: number;
 			page: number;
+			per_page: number;
 			total: number;
 		};
 		/** TeamMemberCreateRequest */
@@ -7004,8 +7020,8 @@ export interface components {
 		/** TicketList */
 		TicketList: {
 			items: components["schemas"]["TicketSummary"][];
-			limit: number;
 			page: number;
+			per_page: number;
 			total: number;
 		};
 		/** TicketMessage */
@@ -7442,6 +7458,10 @@ export interface components {
 		/** WhitelistDirectEntryPage */
 		WhitelistDirectEntryPage: {
 			items?: components["schemas"]["WhitelistDirectEntry"][];
+			/** @default 1 */
+			page: number;
+			/** @default 50 */
+			per_page: number;
 			total: number;
 		};
 		/** WhitelistDirectRemoval */
