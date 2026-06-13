@@ -7564,6 +7564,13 @@ export interface components {
 			} | null;
 			summary: components["schemas"]["WhitelistFormCard"];
 		};
+		/** WhitelistFormDetailPage */
+		WhitelistFormDetailPage: {
+			items?: components["schemas"]["WhitelistFormDetail"][];
+			page: number;
+			per_page: number;
+			total: number;
+		};
 		/** WhitelistFormField */
 		WhitelistFormField: {
 			field_type: components["schemas"]["WhitelistFieldType"];
@@ -7577,13 +7584,6 @@ export interface components {
 			import_mapping?: {
 				[key: string]: unknown;
 			} | null;
-		};
-		/** WhitelistFormPage */
-		WhitelistFormPage: {
-			items?: components["schemas"]["WhitelistFormCard"][];
-			page: number;
-			per_page: number;
-			total: number;
 		};
 		/** WhitelistFormPatch */
 		WhitelistFormPatch: {
@@ -14043,7 +14043,7 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
-					"application/json": components["schemas"]["WhitelistFormPage"];
+					"application/json": components["schemas"]["WhitelistFormDetailPage"];
 				};
 			};
 			/** @description Bad request syntax or unsupported method */
@@ -18351,7 +18351,7 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
-					"application/json": components["schemas"]["WhitelistFormPage"];
+					"application/json": components["schemas"]["WhitelistFormDetailPage"];
 				};
 			};
 			/** @description Bad request syntax or unsupported method */

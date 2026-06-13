@@ -511,10 +511,11 @@ export type WhitelistFormCard = components["schemas"]["WhitelistFormCard"];
 export type WhitelistFormCreateRequest =
 	components["schemas"]["WhitelistFormCreateRequest"];
 export type WhitelistFormDetail = components["schemas"]["WhitelistFormDetail"];
+export type WhitelistFormDetailPage =
+	components["schemas"]["WhitelistFormDetailPage"];
 export type WhitelistFormField = components["schemas"]["WhitelistFormField"];
 export type WhitelistFormImportMappingRequest =
 	components["schemas"]["WhitelistFormImportMappingRequest"];
-export type WhitelistFormPage = components["schemas"]["WhitelistFormPage"];
 export type WhitelistFormPatch = components["schemas"]["WhitelistFormPatch"];
 export type WhitelistFormUpdateRequest =
 	components["schemas"]["WhitelistFormUpdateRequest"];

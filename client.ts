@@ -248,6 +248,9 @@ export class LeavePulse {
 			Ticket: (d) => new Ticket(d as never, this.ctx),
 			User: (d) => new User(d as never, this.ctx),
 		};
+		const idPaths: Record<string, readonly string[]> = {
+			Form: ["summary", "id"],
+		};
 		const factory = factories[type];
 		if (!factory) return payload;
 		let data = payload as Record<string, unknown>;
@@ -259,7 +262,7 @@ export class LeavePulse {
 			data = { ...(core as Record<string, unknown>), ...siblings };
 		}
 		const hydrated = data as Hydrated;
-		const id = extractId(hydrated);
+		const id = extractId(hydrated, idPaths[type]);
 		if (id === "") {
 			throw new MalformedResponse(
 				`${type} payload has no id field to identity-map on`,
