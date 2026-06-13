@@ -109,12 +109,21 @@ export class Build extends Resource<Data> {
 	}
 
 	/** build.update */
-	async update(body: models.BuildUpdateRequest): Promise<this> {
-		const data = await this.ctx.transport.request({
-			method: "PATCH",
-			path: `/v1/builds/${this.id}`,
-			body,
-		});
+	async update(
+		body: models.BuildUpdateRequest,
+		ifMatch?: number,
+	): Promise<this> {
+		const data = await (this.ctx.transport.requestWithIfMatch
+			? this.ctx.transport.requestWithIfMatch(
+					{ method: "PATCH", path: `/v1/builds/${this.id}`, body },
+					ifMatch === undefined ? undefined : String(ifMatch),
+				)
+			: this.ctx.transport.request({
+					method: "PATCH",
+					path: `/v1/builds/${this.id}`,
+					body,
+					ifMatch: ifMatch === undefined ? undefined : String(ifMatch),
+				}));
 		this.ctx.hydrate("Build", data);
 		return this;
 	}

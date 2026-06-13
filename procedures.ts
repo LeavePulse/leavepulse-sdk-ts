@@ -24,12 +24,12 @@ export class AdminDiscoveryNs {
 		status?: string;
 		search?: string;
 		source?: string;
-		edition?: string;
+		edition?: "java" | "bedrock" | "hybrid" | "unknown";
 		region?: string;
 		minSources?: number;
 		minMcOnline?: number;
 		minDiscordMembers?: number;
-		sort?: string;
+		sort?: "sources" | "discord_members" | "mc_online" | "unknown";
 	}): Promise<unknown> {
 		return fetchCachedOrThrow<unknown>(this.ctx.transport, this.ctx.etagStore, {
 			method: "GET",
@@ -1114,7 +1114,7 @@ export class ProjectsNs {
 	/** projects.stats */
 	async stats(params?: {
 		q?: string;
-		edition?: string;
+		edition?: "java" | "bedrock" | "hybrid" | "unknown";
 		access?: string;
 		features?: string;
 		region?: string;
@@ -1212,7 +1212,7 @@ export class ProjectsNs {
 	/** projects.list */
 	async list(params?: {
 		q?: string;
-		edition?: string;
+		edition?: "java" | "bedrock" | "hybrid" | "unknown";
 		access?: string;
 		features?: string;
 		region?: string;
@@ -1221,7 +1221,7 @@ export class ProjectsNs {
 		hasBuild?: boolean;
 		page?: number;
 		perPage?: number;
-		sort?: string;
+		sort?: "players" | "newest" | "verified" | "score" | "unknown";
 	}): Promise<models.ProjectListResponse> {
 		return fetchCachedOrThrow<models.ProjectListResponse>(
 			this.ctx.transport,
@@ -1305,7 +1305,7 @@ export class StatsNs {
 	/** stats.filter */
 	async filter(params?: {
 		q?: string;
-		edition?: string;
+		edition?: "java" | "bedrock" | "hybrid" | "unknown";
 		access?: string;
 		features?: string;
 		region?: string;

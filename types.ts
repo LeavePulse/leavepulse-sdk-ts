@@ -5174,6 +5174,12 @@ export interface components {
 			candidate_id: number;
 			status: string;
 		};
+		/**
+		 * DiscoverySort
+		 * @description Admin discovery-candidate ordering (a different axis from the catalog).
+		 * @enum {string}
+		 */
+		DiscoverySort: "sources" | "discord_members" | "mc_online" | "unknown";
 		/** DnsVerification */
 		DnsVerification: {
 			checked_at?: string | null;
@@ -6152,6 +6158,12 @@ export interface components {
 			project_id: components["schemas"]["Snowflake"];
 			slug?: string | null;
 		};
+		/**
+		 * ProjectSort
+		 * @description Public project-catalog ordering. Absent means the default (score) order.
+		 * @enum {string}
+		 */
+		ProjectSort: "players" | "newest" | "verified" | "score" | "unknown";
 		/** ProjectStats */
 		ProjectStats: {
 			active_servers: number;
@@ -6439,6 +6451,7 @@ export interface components {
 			role: components["schemas"]["ServerRole"];
 			/** Format: date-time */
 			updated_at: string;
+			user_permissions?: string[];
 			verification_source?: components["schemas"]["VerificationSource"] | null;
 		};
 		/** ServerEventPoint */
@@ -7950,12 +7963,12 @@ export interface operations {
 				status?: string | null;
 				search?: string | null;
 				source?: string | null;
-				edition?: string | null;
+				edition?: components["schemas"]["GameEdition"] | null;
 				region?: string | null;
 				min_sources?: number | null;
 				min_mc_online?: number | null;
 				min_discord_members?: number | null;
-				sort?: string | null;
+				sort?: components["schemas"]["DiscoverySort"] | null;
 			};
 			header?: never;
 			path?: never;
@@ -13631,7 +13644,7 @@ export interface operations {
 		parameters: {
 			query?: {
 				q?: string | null;
-				edition?: string | null;
+				edition?: components["schemas"]["GameEdition"] | null;
 				access?: string | null;
 				features?: string | null;
 				region?: string | null;
@@ -13640,7 +13653,7 @@ export interface operations {
 				has_build?: boolean | null;
 				page?: number;
 				per_page?: number;
-				sort?: string | null;
+				sort?: components["schemas"]["ProjectSort"] | null;
 			};
 			header?: never;
 			path?: never;
@@ -13763,7 +13776,7 @@ export interface operations {
 		parameters: {
 			query?: {
 				q?: string | null;
-				edition?: string | null;
+				edition?: components["schemas"]["GameEdition"] | null;
 				access?: string | null;
 				features?: string | null;
 				region?: string | null;
@@ -17716,7 +17729,7 @@ export interface operations {
 		parameters: {
 			query?: {
 				q?: string | null;
-				edition?: string | null;
+				edition?: components["schemas"]["GameEdition"] | null;
 				access?: string | null;
 				features?: string | null;
 				region?: string | null;

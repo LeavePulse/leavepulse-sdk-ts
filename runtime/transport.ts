@@ -90,6 +90,13 @@ export interface TransportRequest {
 	 * `conditional()`.
 	 */
 	ifNoneMatch?: string;
+	/**
+	 * Send `If-Match` with this ETag for an optimistic-concurrency write: the
+	 * server rejects the request (`412 Precondition Failed`) if the resource has
+	 * changed since the validator was read. Only meaningful through
+	 * `requestWithIfMatch()`.
+	 */
+	ifMatch?: string;
 }
 
 /**
@@ -112,6 +119,13 @@ export interface Transport {
 	 * server registries) without refetching unchanged bodies.
 	 */
 	conditional<T>(req: TransportRequest): Promise<ConditionalResult<T>>;
+	/**
+	 * Like `request`, but sends an `If-Match` validator for an optimistic-
+	 * concurrency write. Optional: transports that predate it (or can't carry the
+	 * header) are reached through `request` instead, so the validator is best-
+	 * effort — mirrors the Rust trait's defaulted method.
+	 */
+	requestWithIfMatch?<T>(req: TransportRequest, ifMatch?: string): Promise<T>;
 }
 
 /** Assemble a `FormData` body from a multipart descriptor. */
@@ -221,8 +235,34 @@ export class AuthenticatedTransport implements Transport {
 		private readonly fetchImpl: typeof fetch = fetch,
 		private readonly authBaseUrl?: string,
 		retry: RetryOptions = {},
+		/**
+		 * When set, every request carries `X-On-Behalf-Of: <subject>`. Only a bot
+		 * account may use this: the bot's own credential still authenticates the
+		 * call, and the platform resolves `subject` (`<source>:<id>`, e.g.
+		 * `discord:123` or `leavepulse:42`) to the human the bot acts for. The
+		 * effective permissions are the intersection of the bot's and the human's
+		 * — on-behalf never escalates. Set via {@link onBehalfOf}.
+		 */
+		private readonly onBehalfSubject?: string,
 	) {
 		this.retry = { ...DEFAULT_RETRY, ...retry };
+	}
+
+	/**
+	 * Return a transport that sends every request on behalf of `subject`,
+	 * sharing this transport's credential and config. `subject` is
+	 * `<source>:<id>` — `discord:<id>`, `telegram:<id>`, or `leavepulse:<userId>`.
+	 * Intended for bot accounts; the platform ignores the header for non-bots.
+	 */
+	onBehalfOf(subject: string): AuthenticatedTransport {
+		return new AuthenticatedTransport(
+			this.baseUrl,
+			this.provider,
+			this.fetchImpl,
+			this.authBaseUrl,
+			this.retry,
+			subject,
+		);
 	}
 
 	/** One HTTP attempt with the freshly-fetched bearer applied. */
@@ -238,6 +278,10 @@ export class AuthenticatedTransport implements Transport {
 				Authorization: `Bearer ${token}`,
 				...(contentType ? { "Content-Type": contentType } : {}),
 				...(req.ifNoneMatch ? { "If-None-Match": req.ifNoneMatch } : {}),
+				...(req.ifMatch ? { "If-Match": req.ifMatch } : {}),
+				...(this.onBehalfSubject
+					? { "X-On-Behalf-Of": this.onBehalfSubject }
+					: {}),
 			},
 			body,
 		});
@@ -309,6 +353,13 @@ export class AuthenticatedTransport implements Transport {
 		if (response.status === 204) return undefined as T;
 		// parseJson (not response.json()) keeps 64-bit Snowflake ids precise.
 		return parseJson(await response.text()) as T;
+	}
+
+	async requestWithIfMatch<T>(
+		req: TransportRequest,
+		ifMatch?: string,
+	): Promise<T> {
+		return this.request<T>({ ...req, ifMatch });
 	}
 
 	async conditional<T>(req: TransportRequest): Promise<ConditionalResult<T>> {
