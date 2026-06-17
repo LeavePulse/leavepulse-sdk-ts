@@ -833,6 +833,16 @@ export class AuthNs {
 export class BillingCustomerNs {
 	constructor(private readonly ctx: ClientContext) {}
 
+	/** billing.customer.get */
+	async get(): Promise<models.Customer> {
+		const data = await fetchCachedOrThrow(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{ method: "GET", path: `/v1/billing/customer` },
+		);
+		return data as models.Customer;
+	}
+
 	/** billing.customer.upsert */
 	async upsert(body: models.CustomerUpdateRequest): Promise<models.Customer> {
 		return this.ctx.transport.request<models.Customer>({
