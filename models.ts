@@ -98,6 +98,7 @@ export type CreateProjectServerRequest =
 	components["schemas"]["CreateProjectServerRequest"];
 export type CreateStatusOverrideRequest =
 	components["schemas"]["CreateStatusOverrideRequest"];
+export type Currency = components["schemas"]["Currency"];
 export type Customer = components["schemas"]["Customer"];
 export type CustomerUpdateRequest =
 	components["schemas"]["CustomerUpdateRequest"];
@@ -603,6 +604,7 @@ export type ApplicationData = components["schemas"]["WhitelistApplicationList"];
 export type BindingData = components["schemas"]["WhitelistBindingDetail"];
 export type BuildData = components["schemas"]["Build"];
 export type CommentData = components["schemas"]["Comment"];
+export type CurrencyData = components["schemas"]["Currency"];
 export type FormData = components["schemas"]["WhitelistFormDetail"];
 export type MeData = components["schemas"]["MeResponse"];
 export type OrderData = components["schemas"]["Order"];
@@ -615,6 +617,7 @@ export type TicketData = components["schemas"]["TicketSummary"];
 export type UserData = components["schemas"]["PublicProfile"];
 export type BuildSummaryData = components["schemas"]["Build"];
 export type CommentSummary = components["schemas"]["Comment"];
+export type CurrencySummary = components["schemas"]["Currency"];
 export type CustomerSummary = components["schemas"]["Customer"];
 export type OrderSummary = components["schemas"]["Order"];
 export type ProductSummary = components["schemas"]["Product"];

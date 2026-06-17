@@ -829,6 +829,24 @@ export class AuthNs {
 	}
 }
 
+/** billing.currencies procedures. */
+export class BillingCurrenciesNs {
+	constructor(private readonly ctx: ClientContext) {}
+
+	/** billing.currencies.list */
+	async list(): Promise<models.Currency[]> {
+		const data = (await fetchCachedOrThrow(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{ method: "GET", path: `/v1/billing/currencies` },
+		)) as unknown;
+		const items = Array.isArray(data)
+			? data
+			: ((data as Record<string, unknown[]>)["items"] ?? []);
+		return items as models.Currency[];
+	}
+}
+
 /** billing.customer procedures. */
 export class BillingCustomerNs {
 	constructor(private readonly ctx: ClientContext) {}
@@ -942,11 +960,13 @@ export class BillingSubscriptionsNs {
 
 /** billing.* procedures. */
 export class BillingNs {
+	readonly currencies: BillingCurrenciesNs;
 	readonly customer: BillingCustomerNs;
 	readonly orders: BillingOrdersNs;
 	readonly products: BillingProductsNs;
 	readonly subscriptions: BillingSubscriptionsNs;
 	constructor(private readonly ctx: ClientContext) {
+		this.currencies = new BillingCurrenciesNs(ctx);
 		this.customer = new BillingCustomerNs(ctx);
 		this.orders = new BillingOrdersNs(ctx);
 		this.products = new BillingProductsNs(ctx);
