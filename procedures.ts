@@ -829,6 +829,20 @@ export class AuthNs {
 	}
 }
 
+/** billing.customer procedures. */
+export class BillingCustomerNs {
+	constructor(private readonly ctx: ClientContext) {}
+
+	/** billing.customer.upsert */
+	async upsert(body: models.CustomerUpdateRequest): Promise<models.Customer> {
+		return this.ctx.transport.request<models.Customer>({
+			method: "PUT",
+			path: `/v1/billing/customer`,
+			body,
+		});
+	}
+}
+
 /** billing.orders procedures. */
 export class BillingOrdersNs {
 	constructor(private readonly ctx: ClientContext) {}
@@ -918,10 +932,12 @@ export class BillingSubscriptionsNs {
 
 /** billing.* procedures. */
 export class BillingNs {
+	readonly customer: BillingCustomerNs;
 	readonly orders: BillingOrdersNs;
 	readonly products: BillingProductsNs;
 	readonly subscriptions: BillingSubscriptionsNs;
 	constructor(private readonly ctx: ClientContext) {
+		this.customer = new BillingCustomerNs(ctx);
 		this.orders = new BillingOrdersNs(ctx);
 		this.products = new BillingProductsNs(ctx);
 		this.subscriptions = new BillingSubscriptionsNs(ctx);

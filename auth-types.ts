@@ -1593,6 +1593,7 @@ export interface components {
 			/** @default false */
 			email_verified: boolean;
 			id: number;
+			phone?: string | null;
 			privacy?: components["schemas"]["UserProfilePrivacy"];
 			slug?: string | null;
 			status?: components["schemas"]["UserStatus"];

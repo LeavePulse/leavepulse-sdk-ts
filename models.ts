@@ -98,6 +98,9 @@ export type CreateProjectServerRequest =
 	components["schemas"]["CreateProjectServerRequest"];
 export type CreateStatusOverrideRequest =
 	components["schemas"]["CreateStatusOverrideRequest"];
+export type Customer = components["schemas"]["Customer"];
+export type CustomerUpdateRequest =
+	components["schemas"]["CustomerUpdateRequest"];
 export type DashboardAccount = components["schemas"]["DashboardAccount"];
 export type DashboardDailyActivityPoint =
 	components["schemas"]["DashboardDailyActivityPoint"];
@@ -612,6 +615,7 @@ export type TicketData = components["schemas"]["TicketSummary"];
 export type UserData = components["schemas"]["PublicProfile"];
 export type BuildSummaryData = components["schemas"]["Build"];
 export type CommentSummary = components["schemas"]["Comment"];
+export type CustomerSummary = components["schemas"]["Customer"];
 export type OrderSummary = components["schemas"]["Order"];
 export type ProductSummary = components["schemas"]["Product"];
 export type ProjectSummary = components["schemas"]["Project"];

@@ -810,6 +810,24 @@ export interface paths {
 		patch?: never;
 		trace?: never;
 	};
+	"/v1/billing/customer": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		/** GetCustomer */
+		get: operations["billing.customer.get"];
+		/** UpsertCustomer */
+		put: operations["billing.customer.upsert"];
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
 	"/v1/billing/orders": {
 		parameters: {
 			query?: never;
@@ -5027,6 +5045,33 @@ export interface components {
 			note?: string | null;
 			/** Format: date-time */
 			starts_at: string;
+		};
+		/** Customer */
+		Customer: {
+			address_line: string;
+			ccy: number;
+			city: string;
+			country: string;
+			created_at: string;
+			customer_type: string;
+			first_name: string;
+			id: string;
+			kyc_type: string;
+			last_name: string;
+			postal_code: string;
+			product_scope: string;
+			updated_at: string;
+			user_id: string;
+		};
+		/** CustomerUpdateRequest */
+		CustomerUpdateRequest: {
+			address_line: string;
+			ccy?: number | null;
+			city: string;
+			country: string;
+			first_name: string;
+			last_name: string;
+			postal_code: string;
 		};
 		/** DashboardAccount */
 		DashboardAccount: {
@@ -9833,6 +9878,68 @@ export interface operations {
 				};
 				content: {
 					"application/json": components["schemas"]["CheckoutResult"];
+				};
+			};
+			/** @description Bad request syntax or unsupported method */
+			400: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": {
+						detail: string;
+						extra?:
+							| null
+							| {
+									[key: string]: unknown;
+							  }
+							| unknown[];
+						status_code: number;
+					};
+				};
+			};
+		};
+	};
+	"billing.customer.get": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description Request fulfilled, document follows */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["Customer"] | null;
+				};
+			};
+		};
+	};
+	"billing.customer.upsert": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				"application/json": components["schemas"]["CustomerUpdateRequest"];
+			};
+		};
+		responses: {
+			/** @description Request fulfilled, document follows */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["Customer"];
 				};
 			};
 			/** @description Bad request syntax or unsupported method */
