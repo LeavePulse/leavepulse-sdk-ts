@@ -1,5 +1,6 @@
 // Generated from the LeavePulse contract. Do not edit.
 import { Resource, extractId } from "../runtime/resource";
+import { TopicSubscription } from "../runtime/realtime";
 import { fetchCachedOrThrow } from "../runtime/etag-store";
 import type { components } from "../types";
 import type * as models from "../models";
@@ -185,5 +186,10 @@ export class Build extends Resource<Data> {
 			method: "POST",
 			path: `/v1/builds/${this.id}/share`,
 		});
+	}
+
+	/** Subscribe to `build.{build_id}` (private realtime). */
+	onBuild(): TopicSubscription {
+		return new TopicSubscription(this.ctx.realtime, `build.${this.id}`);
 	}
 }

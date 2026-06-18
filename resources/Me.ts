@@ -522,4 +522,9 @@ export class Me extends Resource<Data> {
 	onWhitelist(): TopicSubscription {
 		return new TopicSubscription(this.ctx.realtime, "user.whitelist");
 	}
+
+	/** Subscribe to `user.notifications` (private realtime). */
+	onNotifications(): TopicSubscription {
+		return new TopicSubscription(this.ctx.realtime, "user.notifications");
+	}
 }
