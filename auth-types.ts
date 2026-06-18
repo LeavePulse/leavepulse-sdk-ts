@@ -4347,7 +4347,9 @@ export interface operations {
 	};
 	AuthOauthProviderLinkStartOauthLinkStart: {
 		parameters: {
-			query?: never;
+			query?: {
+				audience?: string | null;
+			};
 			header?: never;
 			path: {
 				provider: string;
@@ -4412,7 +4414,9 @@ export interface operations {
 	};
 	"auth.oauth.start": {
 		parameters: {
-			query?: never;
+			query?: {
+				audience?: string | null;
+			};
 			header?: never;
 			path: {
 				provider: string;

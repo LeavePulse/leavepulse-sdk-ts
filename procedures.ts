@@ -684,11 +684,19 @@ export class AuthOauthNs {
 	}
 
 	/** auth.oauth.start */
-	async start(provider: string): Promise<models.OAuthStartResponse> {
+	async start(
+		provider: string,
+		params?: { audience?: string },
+	): Promise<models.OAuthStartResponse> {
 		return fetchCachedOrThrow<models.OAuthStartResponse>(
 			this.ctx.transport,
 			this.ctx.etagStore,
-			{ method: "GET", path: `/auth/oauth/${provider}/start`, channel: "auth" },
+			{
+				method: "GET",
+				path: `/auth/oauth/${provider}/start`,
+				query: { audience: params?.audience },
+				channel: "auth",
+			},
 		);
 	}
 }
