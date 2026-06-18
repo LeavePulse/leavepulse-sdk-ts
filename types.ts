@@ -5903,6 +5903,7 @@ export interface components {
 		};
 		/** PasswordResetRequest */
 		PasswordResetRequest: {
+			audience?: string | null;
 			email: string;
 		};
 		/** PasswordResetResult */
