@@ -1899,6 +1899,86 @@ export interface paths {
 		patch: operations["me.notifications.update"];
 		trace?: never;
 	};
+	"/v1/me/notifications/feed": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		/**
+		 * List notifications
+		 * @description Return the current user's notification feed, newest first. `unread_only` filters to unread; the response also carries the total unread count for the bell badge.
+		 */
+		get: operations["me.notifications.feed.list"];
+		put?: never;
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	"/v1/me/notifications/feed/read-all": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
+		/**
+		 * Mark all notifications read
+		 * @description Mark every unread notification read; returns how many.
+		 */
+		post: operations["me.notifications.feed.mark_all_read"];
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	"/v1/me/notifications/feed/unread-count": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		/**
+		 * Unread notification count
+		 * @description Return the number of unread notifications (bell badge).
+		 */
+		get: operations["me.notifications.feed.unread_count"];
+		put?: never;
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	"/v1/me/notifications/feed/{notification_id}/read": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
+		/**
+		 * Mark a notification read
+		 * @description Mark one notification read (idempotent).
+		 */
+		post: operations["me.notifications.feed.mark_read"];
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
 	"/v1/me/oauth/providers": {
 		parameters: {
 			query?: never;
@@ -5587,6 +5667,11 @@ export interface components {
 			patch_sha256: string;
 			result_sha256: string;
 		};
+		/** MarkAllReadResult */
+		MarkAllReadResult: {
+			/** @default 0 */
+			marked: number;
+		};
 		/** MeResponse */
 		MeResponse: {
 			email?: string | null;
@@ -5796,6 +5881,34 @@ export interface components {
 			page: number;
 			per_page: number;
 			total: number;
+		};
+		/** Notification */
+		Notification: {
+			body: string;
+			category: string;
+			created_at: string;
+			data?: {
+				[key: string]: unknown;
+			} | null;
+			icon?: string | null;
+			id: string;
+			link?: string | null;
+			read: boolean;
+			read_at?: string | null;
+			title: string;
+			topic_key: string;
+		};
+		/** NotificationList */
+		NotificationList: {
+			items?: components["schemas"]["Notification"][];
+			/** @default 1 */
+			page: number;
+			/** @default 20 */
+			per_page: number;
+			/** @default 0 */
+			total: number;
+			/** @default 0 */
+			unread_total: number;
 		};
 		/** NotificationPreferences */
 		NotificationPreferences: {
@@ -7203,6 +7316,11 @@ export interface components {
 			proof_server_id?: components["schemas"]["Snowflake"] | null;
 			uuid_type?: string | null;
 			verification_status: string;
+		};
+		/** UnreadCount */
+		UnreadCount: {
+			/** @default 0 */
+			count: number;
 		};
 		/** UpdateManifest */
 		UpdateManifest: {
@@ -12649,6 +12767,128 @@ export interface operations {
 				};
 				content: {
 					"application/json": components["schemas"]["NotificationPreferences"];
+				};
+			};
+			/** @description Bad request syntax or unsupported method */
+			400: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": {
+						detail: string;
+						extra?:
+							| null
+							| {
+									[key: string]: unknown;
+							  }
+							| unknown[];
+						status_code: number;
+					};
+				};
+			};
+		};
+	};
+	"me.notifications.feed.list": {
+		parameters: {
+			query?: {
+				page?: number;
+				limit?: number;
+				unread_only?: boolean;
+			};
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description Request fulfilled, document follows */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["NotificationList"];
+				};
+			};
+			/** @description Bad request syntax or unsupported method */
+			400: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": {
+						detail: string;
+						extra?:
+							| null
+							| {
+									[key: string]: unknown;
+							  }
+							| unknown[];
+						status_code: number;
+					};
+				};
+			};
+		};
+	};
+	"me.notifications.feed.mark_all_read": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description Document created, URL follows */
+			201: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["MarkAllReadResult"];
+				};
+			};
+		};
+	};
+	"me.notifications.feed.unread_count": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description Request fulfilled, document follows */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["UnreadCount"];
+				};
+			};
+		};
+	};
+	"me.notifications.feed.mark_read": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path: {
+				notification_id: string;
+			};
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description Document created, URL follows */
+			201: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["Notification"];
 				};
 			};
 			/** @description Bad request syntax or unsupported method */

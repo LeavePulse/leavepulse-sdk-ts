@@ -1105,7 +1105,7 @@ export interface components {
 			bio?: string | null;
 			created_at: string;
 			discord_subject?: string | null;
-			email?: string | null;
+			email: string | null;
 			id: string;
 			/** @default false */
 			is_shadow: boolean;
@@ -1305,7 +1305,7 @@ export interface components {
 		MinecraftAccountResolveResponse: {
 			account_type: string;
 			found: boolean;
-			minecraft_nick?: string | null;
+			minecraft_nick: string | null;
 			minecraft_uuid?: string | null;
 			/** @default nickname */
 			source: string;
@@ -1318,8 +1318,8 @@ export interface components {
 			identity_scope_id?: number | null;
 			identity_scope_type: string;
 			link_source: string;
-			minecraft_nick?: string | null;
-			minecraft_uuid?: string | null;
+			minecraft_nick: string | null;
+			minecraft_uuid: string | null;
 			proof_server_id?: number | null;
 			uuid_type?: string | null;
 			verification_status: string;
@@ -1546,7 +1546,7 @@ export interface components {
 		UserDetailed: {
 			avatar_url?: string | null;
 			created_at: string;
-			email?: string | null;
+			email: string | null;
 			id: string;
 			roles?: string[];
 			status: string;

@@ -219,6 +219,59 @@ export class Me extends Resource<Data> {
 		});
 	}
 
+	/** me.notifications.feed.list */
+	async notificationsFeedList(params?: {
+		page?: number;
+		limit?: number;
+		unreadOnly?: boolean;
+	}): Promise<models.Notification[]> {
+		const data = await fetchCachedOrThrow<unknown>(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{
+				method: "GET",
+				path: `/v1/me/notifications/feed`,
+				query: {
+					page: params?.page,
+					limit: params?.limit,
+					unread_only: params?.unreadOnly,
+				},
+			},
+		);
+		const items = Array.isArray(data)
+			? data
+			: ((data as Record<string, unknown[]>)["items"] ?? []);
+		return items as models.Notification[];
+	}
+
+	/** me.notifications.feed.mark_all_read */
+	async notificationsFeedMarkAllRead(): Promise<models.MarkAllReadResult> {
+		return this.ctx.transport.request<models.MarkAllReadResult>({
+			method: "POST",
+			path: `/v1/me/notifications/feed/read-all`,
+		});
+	}
+
+	/** me.notifications.feed.unread_count */
+	async notificationsFeedUnreadCount(): Promise<models.UnreadCount> {
+		return fetchCachedOrThrow<models.UnreadCount>(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{ method: "GET", path: `/v1/me/notifications/feed/unread-count` },
+		);
+	}
+
+	/** me.notifications.feed.mark_read */
+	async notificationsFeedMarkRead(
+		notificationId: string,
+	): Promise<models.Notification> {
+		const data = await this.ctx.transport.request({
+			method: "POST",
+			path: `/v1/me/notifications/feed/${notificationId}/read`,
+		});
+		return data as models.Notification;
+	}
+
 	/** me.oauth.list */
 	async oauthList(): Promise<models.OAuthProvidersResponse> {
 		return fetchCachedOrThrow<models.OAuthProvidersResponse>(
