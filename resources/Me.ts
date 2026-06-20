@@ -272,6 +272,16 @@ export class Me extends Resource<Data> {
 		);
 	}
 
+	/** me.notifications.feed.dismiss */
+	async notificationsFeedDismiss(
+		notificationId: string,
+	): Promise<models.DismissResult> {
+		return this.ctx.transport.request<models.DismissResult>({
+			method: "DELETE",
+			path: `/v1/me/notifications/feed/${notificationId}`,
+		});
+	}
+
 	/** me.notifications.feed.mark_read */
 	async notificationsFeedMarkRead(
 		notificationId: string,
@@ -279,6 +289,17 @@ export class Me extends Resource<Data> {
 		const data = await this.ctx.transport.request({
 			method: "POST",
 			path: `/v1/me/notifications/feed/${notificationId}/read`,
+		});
+		return data as models.Notification;
+	}
+
+	/** me.notifications.feed.mark_unread */
+	async notificationsFeedMarkUnread(
+		notificationId: string,
+	): Promise<models.Notification> {
+		const data = await this.ctx.transport.request({
+			method: "POST",
+			path: `/v1/me/notifications/feed/${notificationId}/unread`,
 		});
 		return data as models.Notification;
 	}

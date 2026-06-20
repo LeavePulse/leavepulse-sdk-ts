@@ -134,6 +134,7 @@ export type DiscoveryCandidateEditRequest =
 	components["schemas"]["DiscoveryCandidateEditRequest"];
 export type DiscoveryIgnoreResult =
 	components["schemas"]["DiscoveryIgnoreResult"];
+export type DismissResult = components["schemas"]["DismissResult"];
 export type DnsVerification = components["schemas"]["DnsVerification"];
 export type EmailChangeRequest = components["schemas"]["EmailChangeRequest"];
 export type EmailChangeResult = components["schemas"]["EmailChangeResult"];

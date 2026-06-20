@@ -1959,6 +1959,26 @@ export interface paths {
 		patch?: never;
 		trace?: never;
 	};
+	"/v1/me/notifications/feed/{notification_id}": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
+		post?: never;
+		/**
+		 * Dismiss a notification
+		 * @description Remove one notification from the feed (idempotent).
+		 */
+		delete: operations["me.notifications.feed.dismiss"];
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
 	"/v1/me/notifications/feed/{notification_id}/read": {
 		parameters: {
 			query?: never;
@@ -1973,6 +1993,26 @@ export interface paths {
 		 * @description Mark one notification read (idempotent).
 		 */
 		post: operations["me.notifications.feed.mark_read"];
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	"/v1/me/notifications/feed/{notification_id}/unread": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
+		/**
+		 * Mark a notification unread
+		 * @description Mark one notification unread again (idempotent).
+		 */
+		post: operations["me.notifications.feed.mark_unread"];
 		delete?: never;
 		options?: never;
 		head?: never;
@@ -5328,6 +5368,11 @@ export interface components {
 		 * @enum {string}
 		 */
 		DiscoverySort: "sources" | "discord_members" | "mc_online" | "unknown";
+		/** DismissResult */
+		DismissResult: {
+			/** @default false */
+			dismissed: boolean;
+		};
 		/** DnsVerification */
 		DnsVerification: {
 			checked_at?: string | null;
@@ -12871,7 +12916,87 @@ export interface operations {
 			};
 		};
 	};
+	"me.notifications.feed.dismiss": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path: {
+				notification_id: string;
+			};
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description Request fulfilled, document follows */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["DismissResult"];
+				};
+			};
+			/** @description Bad request syntax or unsupported method */
+			400: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": {
+						detail: string;
+						extra?:
+							| null
+							| {
+									[key: string]: unknown;
+							  }
+							| unknown[];
+						status_code: number;
+					};
+				};
+			};
+		};
+	};
 	"me.notifications.feed.mark_read": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path: {
+				notification_id: string;
+			};
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description Document created, URL follows */
+			201: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["Notification"];
+				};
+			};
+			/** @description Bad request syntax or unsupported method */
+			400: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": {
+						detail: string;
+						extra?:
+							| null
+							| {
+									[key: string]: unknown;
+							  }
+							| unknown[];
+						status_code: number;
+					};
+				};
+			};
+		};
+	};
+	"me.notifications.feed.mark_unread": {
 		parameters: {
 			query?: never;
 			header?: never;
