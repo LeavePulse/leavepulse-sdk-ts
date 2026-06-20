@@ -222,26 +222,37 @@ export class Me extends Resource<Data> {
 	/** me.notifications.feed.list */
 	async notificationsFeedList(params?: {
 		page?: number;
-		limit?: number;
+		perPage?: number;
 		unreadOnly?: boolean;
-	}): Promise<models.Notification[]> {
-		const data = await fetchCachedOrThrow<unknown>(
-			this.ctx.transport,
-			this.ctx.etagStore,
-			{
-				method: "GET",
-				path: `/v1/me/notifications/feed`,
-				query: {
-					page: params?.page,
-					limit: params?.limit,
-					unread_only: params?.unreadOnly,
+	}): Promise<Page<models.Notification>> {
+		const fetchPage = async (
+			page: number,
+			perPage: number,
+		): Promise<PageData<models.Notification>> => {
+			const data = await fetchCachedOrThrow<unknown>(
+				this.ctx.transport,
+				this.ctx.etagStore,
+				{
+					method: "GET",
+					path: `/v1/me/notifications/feed`,
+					query: {
+						page: page,
+						per_page: perPage,
+						unread_only: params?.unreadOnly,
+					},
 				},
-			},
+			);
+			return pageDataFrom(
+				data,
+				(raw) => raw as models.Notification[],
+				page,
+				perPage,
+			);
+		};
+		return new Page(
+			await fetchPage(params?.page ?? 1, params?.perPage ?? 20),
+			fetchPage,
 		);
-		const items = Array.isArray(data)
-			? data
-			: ((data as Record<string, unknown[]>)["items"] ?? []);
-		return items as models.Notification[];
 	}
 
 	/** me.notifications.feed.mark_all_read */

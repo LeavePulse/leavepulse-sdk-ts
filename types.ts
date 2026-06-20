@@ -1908,7 +1908,7 @@ export interface paths {
 		};
 		/**
 		 * List notifications
-		 * @description Return the current user's notification feed, newest first. `unread_only` filters to unread; the response also carries the total unread count for the bell badge.
+		 * @description Return the current user's notification feed, newest first, as a page. `unread_only` filters to unread; the envelope also carries `unread_total` for the bell badge.
 		 */
 		get: operations["me.notifications.feed.list"];
 		put?: never;
@@ -12793,7 +12793,7 @@ export interface operations {
 		parameters: {
 			query?: {
 				page?: number;
-				limit?: number;
+				per_page?: number;
 				unread_only?: boolean;
 			};
 			header?: never;
