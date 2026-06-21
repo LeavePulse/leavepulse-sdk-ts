@@ -239,6 +239,25 @@ export class Me extends Resource<Data> {
 		});
 	}
 
+	/** me.notifications.delivery.email.confirm */
+	async notificationsDeliveryEmailConfirm(
+		body: models.EmailConfirmRequest,
+	): Promise<models.EmailConfirmResult> {
+		return this.ctx.transport.request<models.EmailConfirmResult>({
+			method: "POST",
+			path: `/v1/me/notifications/delivery/email/confirm`,
+			body,
+		});
+	}
+
+	/** me.notifications.delivery.email.confirm_request */
+	async notificationsDeliveryEmailConfirmRequest(): Promise<models.EmailConfirmRequestResult> {
+		return this.ctx.transport.request<models.EmailConfirmRequestResult>({
+			method: "POST",
+			path: `/v1/me/notifications/delivery/email/confirm-request`,
+		});
+	}
+
 	/** me.notifications.delivery.send_test */
 	async notificationsDeliverySendTest(
 		body: models.SendTestRequest,

@@ -1923,6 +1923,46 @@ export interface paths {
 		patch: operations["me.notifications.delivery.update"];
 		trace?: never;
 	};
+	"/v1/me/notifications/delivery/email/confirm": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
+		/**
+		 * Confirm override email address
+		 * @description Confirm an override email address from the token in the confirmation link, marking it as the delivery target.
+		 */
+		post: operations["me.notifications.delivery.email.confirm"];
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	"/v1/me/notifications/delivery/email/confirm-request": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
+		/**
+		 * Send override-email confirmation link
+		 * @description Email a one-time confirmation link to the current override email address (double opt-in). Until confirmed, delivery falls back to the account email. No-op if there's no override or it's already confirmed.
+		 */
+		post: operations["me.notifications.delivery.email.confirm_request"];
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
 	"/v1/me/notifications/delivery/test": {
 		parameters: {
 			query?: never;
@@ -5101,6 +5141,8 @@ export interface components {
 			/** @default true */
 			available: boolean;
 			channel: string;
+			/** @default true */
+			confirmed: boolean;
 			/** @default false */
 			enabled: boolean;
 		};
@@ -5459,6 +5501,24 @@ export interface components {
 		/** EmailChangeResult */
 		EmailChangeResult: {
 			status: string;
+		};
+		/** EmailConfirmRequest */
+		EmailConfirmRequest: {
+			token: string;
+		};
+		/** EmailConfirmRequestResult */
+		EmailConfirmRequestResult: {
+			/** @default  */
+			detail: string;
+			/** @default false */
+			sent: boolean;
+		};
+		/** EmailConfirmResult */
+		EmailConfirmResult: {
+			/** @default false */
+			confirmed: boolean;
+			/** @default  */
+			detail: string;
 		};
 		/**
 		 * EnforcementMode
@@ -12967,6 +13027,68 @@ export interface operations {
 							| unknown[];
 						status_code: number;
 					};
+				};
+			};
+		};
+	};
+	"me.notifications.delivery.email.confirm": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				"application/json": components["schemas"]["EmailConfirmRequest"];
+			};
+		};
+		responses: {
+			/** @description Document created, URL follows */
+			201: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["EmailConfirmResult"];
+				};
+			};
+			/** @description Bad request syntax or unsupported method */
+			400: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": {
+						detail: string;
+						extra?:
+							| null
+							| {
+									[key: string]: unknown;
+							  }
+							| unknown[];
+						status_code: number;
+					};
+				};
+			};
+		};
+	};
+	"me.notifications.delivery.email.confirm_request": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description Document created, URL follows */
+			201: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["EmailConfirmRequestResult"];
 				};
 			};
 		};
