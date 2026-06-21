@@ -219,6 +219,37 @@ export class Me extends Resource<Data> {
 		});
 	}
 
+	/** me.notifications.delivery.get */
+	async notificationsDeliveryGet(): Promise<models.DeliveryPreferences> {
+		return fetchCachedOrThrow<models.DeliveryPreferences>(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{ method: "GET", path: `/v1/me/notifications/delivery` },
+		);
+	}
+
+	/** me.notifications.delivery.update */
+	async notificationsDeliveryUpdate(
+		body: models.DeliveryPreferencesUpdate,
+	): Promise<models.DeliveryPreferences> {
+		return this.ctx.transport.request<models.DeliveryPreferences>({
+			method: "PATCH",
+			path: `/v1/me/notifications/delivery`,
+			body,
+		});
+	}
+
+	/** me.notifications.delivery.send_test */
+	async notificationsDeliverySendTest(
+		body: models.SendTestRequest,
+	): Promise<models.SendTestResult> {
+		return this.ctx.transport.request<models.SendTestResult>({
+			method: "POST",
+			path: `/v1/me/notifications/delivery/test`,
+			body,
+		});
+	}
+
 	/** me.notifications.feed.list */
 	async notificationsFeedList(params?: {
 		page?: number;

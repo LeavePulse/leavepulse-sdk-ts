@@ -1899,6 +1899,50 @@ export interface paths {
 		patch: operations["me.notifications.update"];
 		trace?: never;
 	};
+	"/v1/me/notifications/delivery": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		/**
+		 * Get delivery preferences
+		 * @description Return the current user's per-channel delivery preferences (enabled + address per channel, with an `available` hint for channels that aren't live yet).
+		 */
+		get: operations["me.notifications.delivery.get"];
+		put?: never;
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		/**
+		 * Update delivery preferences
+		 * @description Replace the current user's delivery preferences. The full channel set is supplied (no partial merge); in-app stays on and unavailable channels can't be enabled.
+		 */
+		patch: operations["me.notifications.delivery.update"];
+		trace?: never;
+	};
+	"/v1/me/notifications/delivery/test": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
+		/**
+		 * Send a test notification
+		 * @description Send a test notification down one channel so the user can confirm delivery. For email the account address is used unless an override is set; unavailable channels return `sent=false`.
+		 */
+		post: operations["me.notifications.delivery.send_test"];
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
 	"/v1/me/notifications/feed": {
 		parameters: {
 			query?: never;
@@ -5050,6 +5094,16 @@ export interface components {
 			name?: string | null;
 			summary?: string | null;
 		};
+		/** ChannelPref */
+		ChannelPref: {
+			/** @default  */
+			address: string;
+			/** @default true */
+			available: boolean;
+			channel: string;
+			/** @default false */
+			enabled: boolean;
+		};
 		/** CheckoutRequest */
 		CheckoutRequest: {
 			cancel_url?: string | null;
@@ -5252,6 +5306,16 @@ export interface components {
 		DeleteStatusOverrideResponse: {
 			/** @default true */
 			ok: boolean;
+		};
+		/** DeliveryPreferences */
+		DeliveryPreferences: {
+			channels?: components["schemas"]["ChannelPref"][];
+			/** @default 1 */
+			version: number;
+		};
+		/** DeliveryPreferencesUpdate */
+		DeliveryPreferencesUpdate: {
+			channels?: components["schemas"]["ChannelPref"][];
 		};
 		/** DeviceApproveRequest */
 		DeviceApproveRequest: {
@@ -6604,6 +6668,17 @@ export interface components {
 			total: number;
 			/** @default 0 */
 			verified_bonus: number;
+		};
+		/** SendTestRequest */
+		SendTestRequest: {
+			channel: string;
+		};
+		/** SendTestResult */
+		SendTestResult: {
+			/** @default  */
+			detail: string;
+			/** @default false */
+			sent: boolean;
 		};
 		/** ServerBot */
 		ServerBot: {
@@ -12812,6 +12887,110 @@ export interface operations {
 				};
 				content: {
 					"application/json": components["schemas"]["NotificationPreferences"];
+				};
+			};
+			/** @description Bad request syntax or unsupported method */
+			400: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": {
+						detail: string;
+						extra?:
+							| null
+							| {
+									[key: string]: unknown;
+							  }
+							| unknown[];
+						status_code: number;
+					};
+				};
+			};
+		};
+	};
+	"me.notifications.delivery.get": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description Request fulfilled, document follows */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["DeliveryPreferences"];
+				};
+			};
+		};
+	};
+	"me.notifications.delivery.update": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				"application/json": components["schemas"]["DeliveryPreferencesUpdate"];
+			};
+		};
+		responses: {
+			/** @description Request fulfilled, document follows */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["DeliveryPreferences"];
+				};
+			};
+			/** @description Bad request syntax or unsupported method */
+			400: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": {
+						detail: string;
+						extra?:
+							| null
+							| {
+									[key: string]: unknown;
+							  }
+							| unknown[];
+						status_code: number;
+					};
+				};
+			};
+		};
+	};
+	"me.notifications.delivery.send_test": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				"application/json": components["schemas"]["SendTestRequest"];
+			};
+		};
+		responses: {
+			/** @description Document created, URL follows */
+			201: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["SendTestResult"];
 				};
 			};
 			/** @description Bad request syntax or unsupported method */

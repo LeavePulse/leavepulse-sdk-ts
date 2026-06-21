@@ -71,6 +71,7 @@ export type BuildManifest = components["schemas"]["BuildManifest"];
 export type BuildManifestMod = components["schemas"]["BuildManifestMod"];
 export type BuildSummary = components["schemas"]["BuildSummary"];
 export type BuildUpdateRequest = components["schemas"]["BuildUpdateRequest"];
+export type ChannelPref = components["schemas"]["ChannelPref"];
 export type CheckoutRequest = components["schemas"]["CheckoutRequest"];
 export type CheckoutResult = components["schemas"]["CheckoutResult"];
 export type Collaborator = components["schemas"]["Collaborator"];
@@ -111,6 +112,9 @@ export type DeleteBuildResult = components["schemas"]["DeleteBuildResult"];
 export type DeleteCommentResult = components["schemas"]["DeleteCommentResult"];
 export type DeleteStatusOverrideResponse =
 	components["schemas"]["DeleteStatusOverrideResponse"];
+export type DeliveryPreferences = components["schemas"]["DeliveryPreferences"];
+export type DeliveryPreferencesUpdate =
+	components["schemas"]["DeliveryPreferencesUpdate"];
 export type DeviceApproveRequest =
 	components["schemas"]["DeviceApproveRequest"];
 export type DeviceApproveResult = components["schemas"]["DeviceApproveResult"];
@@ -330,6 +334,8 @@ export type RoleCatalog = components["schemas"]["RoleCatalog"];
 export type RolloutMode = components["schemas"]["RolloutMode"];
 export type RolloutState = components["schemas"]["RolloutState"];
 export type ScoreBreakdown = components["schemas"]["ScoreBreakdown"];
+export type SendTestRequest = components["schemas"]["SendTestRequest"];
+export type SendTestResult = components["schemas"]["SendTestResult"];
 export type ServerBot = components["schemas"]["ServerBot"];
 export type ServerBotLinkedGuild =
 	components["schemas"]["ServerBotLinkedGuild"];
