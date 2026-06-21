@@ -837,17 +837,17 @@ export class AuthNs {
 	}
 }
 
-/** billing.checkout procedures. */
-export class BillingCheckoutNs {
+/** billing.coupons procedures. */
+export class BillingCouponsNs {
 	constructor(private readonly ctx: ClientContext) {}
 
-	/** billing.checkout.validate_coupon */
-	async validateCoupon(
+	/** billing.coupons.validate */
+	async validate(
 		body: models.ValidateCouponRequest,
 	): Promise<models.ValidateCouponResult> {
 		return this.ctx.transport.request<models.ValidateCouponResult>({
 			method: "POST",
-			path: `/v1/billing/checkout/validate-coupon`,
+			path: `/v1/billing/coupons/validate`,
 			body,
 		});
 	}
@@ -984,14 +984,14 @@ export class BillingSubscriptionsNs {
 
 /** billing.* procedures. */
 export class BillingNs {
-	readonly checkout: BillingCheckoutNs;
+	readonly coupons: BillingCouponsNs;
 	readonly currencies: BillingCurrenciesNs;
 	readonly customer: BillingCustomerNs;
 	readonly orders: BillingOrdersNs;
 	readonly products: BillingProductsNs;
 	readonly subscriptions: BillingSubscriptionsNs;
 	constructor(private readonly ctx: ClientContext) {
-		this.checkout = new BillingCheckoutNs(ctx);
+		this.coupons = new BillingCouponsNs(ctx);
 		this.currencies = new BillingCurrenciesNs(ctx);
 		this.customer = new BillingCustomerNs(ctx);
 		this.orders = new BillingOrdersNs(ctx);

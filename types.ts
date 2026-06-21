@@ -810,7 +810,7 @@ export interface paths {
 		patch?: never;
 		trace?: never;
 	};
-	"/v1/billing/checkout/validate-coupon": {
+	"/v1/billing/coupons/validate": {
 		parameters: {
 			query?: never;
 			header?: never;
@@ -820,7 +820,7 @@ export interface paths {
 		get?: never;
 		put?: never;
 		/** ValidateCoupon */
-		post: operations["billing.checkout.validate_coupon"];
+		post: operations["billing.coupons.validate"];
 		delete?: never;
 		options?: never;
 		head?: never;
@@ -10297,7 +10297,7 @@ export interface operations {
 			};
 		};
 	};
-	"billing.checkout.validate_coupon": {
+	"billing.coupons.validate": {
 		parameters: {
 			query?: never;
 			header?: never;
