@@ -15,6 +15,7 @@ import { Comment } from "./resources/Comment";
 import { Form } from "./resources/Form";
 import { Me } from "./resources/Me";
 import { Order } from "./resources/Order";
+import { PaymentMethod } from "./resources/PaymentMethod";
 import { Project } from "./resources/Project";
 import { Server } from "./resources/Server";
 import { Session } from "./resources/Session";
@@ -177,6 +178,14 @@ export class LeavePulse {
 		) as Order;
 	}
 
+	paymentmethod(id: string): PaymentMethod {
+		return this.ctx.cache.ensure(
+			"PaymentMethod",
+			id,
+			() => new PaymentMethod({ id } as never, this.ctx),
+		) as PaymentMethod;
+	}
+
 	project(id: Snowflake): Project {
 		return this.ctx.cache.ensure(
 			"Project",
@@ -241,6 +250,7 @@ export class LeavePulse {
 			Form: (d) => new Form(d as never, this.ctx),
 			Me: (d) => new Me(d as never, this.ctx),
 			Order: (d) => new Order(d as never, this.ctx),
+			PaymentMethod: (d) => new PaymentMethod(d as never, this.ctx),
 			Project: (d) => new Project(d as never, this.ctx),
 			Server: (d) => new Server(d as never, this.ctx),
 			Session: (d) => new Session(d as never, this.ctx),

@@ -8,6 +8,7 @@ import type { Binding } from "./resources/Binding";
 import type { Build } from "./resources/Build";
 import type { Form } from "./resources/Form";
 import type { Order } from "./resources/Order";
+import type { PaymentMethod } from "./resources/PaymentMethod";
 import type { Server } from "./resources/Server";
 import type { Subscription } from "./resources/Subscription";
 import type { Ticket } from "./resources/Ticket";
@@ -928,6 +929,24 @@ export class BillingOrdersNs {
 	}
 }
 
+/** billing.paymentMethods procedures. */
+export class BillingPaymentMethodsNs {
+	constructor(private readonly ctx: ClientContext) {}
+
+	/** billing.paymentMethods.list */
+	async list(): Promise<PaymentMethod[]> {
+		const data = (await fetchCachedOrThrow(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{ method: "GET", path: `/v1/billing/payment-methods` },
+		)) as unknown;
+		const items = Array.isArray(data)
+			? data
+			: ((data as Record<string, unknown[]>)["items"] ?? []);
+		return this.ctx.hydrateMany("PaymentMethod", items) as PaymentMethod[];
+	}
+}
+
 /** billing.products procedures. */
 export class BillingProductsNs {
 	constructor(private readonly ctx: ClientContext) {}
@@ -988,6 +1007,7 @@ export class BillingNs {
 	readonly currencies: BillingCurrenciesNs;
 	readonly customer: BillingCustomerNs;
 	readonly orders: BillingOrdersNs;
+	readonly paymentMethods: BillingPaymentMethodsNs;
 	readonly products: BillingProductsNs;
 	readonly subscriptions: BillingSubscriptionsNs;
 	constructor(private readonly ctx: ClientContext) {
@@ -995,6 +1015,7 @@ export class BillingNs {
 		this.currencies = new BillingCurrenciesNs(ctx);
 		this.customer = new BillingCustomerNs(ctx);
 		this.orders = new BillingOrdersNs(ctx);
+		this.paymentMethods = new BillingPaymentMethodsNs(ctx);
 		this.products = new BillingProductsNs(ctx);
 		this.subscriptions = new BillingSubscriptionsNs(ctx);
 	}

@@ -896,6 +896,91 @@ export interface paths {
 		patch?: never;
 		trace?: never;
 	};
+	"/v1/billing/orders/{order_id}/reconcile": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
+		/** ReconcileOrder */
+		post: operations["order.reconcile"];
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	"/v1/billing/orders/{order_id}/refund": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
+		/** RefundOrder */
+		post: operations["order.refund"];
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	"/v1/billing/payment-methods": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		/** ListPaymentMethods */
+		get: operations["billing.paymentMethods.list"];
+		put?: never;
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	"/v1/billing/payment-methods/{method_id}": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
+		post?: never;
+		/** DeletePaymentMethod */
+		delete: operations["paymentMethod.delete"];
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	"/v1/billing/payment-methods/{method_id}/default": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		/** SetDefaultPaymentMethod */
+		patch: operations["paymentMethod.setDefault"];
+		trace?: never;
+	};
 	"/v1/billing/products": {
 		parameters: {
 			query?: never;
@@ -6323,11 +6408,23 @@ export interface components {
 		/** Payment */
 		Payment: {
 			created_at: string;
+			fiscal_status?: string | null;
+			fiscal_url?: string | null;
 			id: string;
 			page_url?: string | null;
 			provider: string;
 			provider_payment_id?: string | null;
 			status: string;
+			updated_at: string;
+		};
+		/** PaymentMethod */
+		PaymentMethod: {
+			created_at: string;
+			id: string;
+			is_default: boolean;
+			masked_pan?: string | null;
+			payment_system?: string | null;
+			provider: string;
 			updated_at: string;
 		};
 		/** PlatformInfo */
@@ -6783,6 +6880,11 @@ export interface components {
 		RecentVotes: {
 			project_id: components["schemas"]["Snowflake"];
 			votes: components["schemas"]["VoteItem"][];
+		};
+		/** RefundRequest */
+		RefundRequest: {
+			amount_minor?: number | null;
+			reason?: string | null;
 		};
 		/** ReportUserRequest */
 		ReportUserRequest: {
@@ -10557,6 +10659,188 @@ export interface operations {
 				};
 				content: {
 					"application/json": components["schemas"]["Order"];
+				};
+			};
+			/** @description Bad request syntax or unsupported method */
+			400: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": {
+						detail: string;
+						extra?:
+							| null
+							| {
+									[key: string]: unknown;
+							  }
+							| unknown[];
+						status_code: number;
+					};
+				};
+			};
+		};
+	};
+	"order.reconcile": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path: {
+				order_id: string;
+			};
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description Document created, URL follows */
+			201: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["Order"];
+				};
+			};
+			/** @description Bad request syntax or unsupported method */
+			400: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": {
+						detail: string;
+						extra?:
+							| null
+							| {
+									[key: string]: unknown;
+							  }
+							| unknown[];
+						status_code: number;
+					};
+				};
+			};
+		};
+	};
+	"order.refund": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path: {
+				order_id: string;
+			};
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				"application/json": components["schemas"]["RefundRequest"];
+			};
+		};
+		responses: {
+			/** @description Document created, URL follows */
+			201: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["Order"];
+				};
+			};
+			/** @description Bad request syntax or unsupported method */
+			400: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": {
+						detail: string;
+						extra?:
+							| null
+							| {
+									[key: string]: unknown;
+							  }
+							| unknown[];
+						status_code: number;
+					};
+				};
+			};
+		};
+	};
+	"billing.paymentMethods.list": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description Request fulfilled, document follows */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["PaymentMethod"][];
+				};
+			};
+		};
+	};
+	"paymentMethod.delete": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path: {
+				method_id: string;
+			};
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description Request fulfilled, nothing follows */
+			204: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+			/** @description Bad request syntax or unsupported method */
+			400: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": {
+						detail: string;
+						extra?:
+							| null
+							| {
+									[key: string]: unknown;
+							  }
+							| unknown[];
+						status_code: number;
+					};
+				};
+			};
+		};
+	};
+	"paymentMethod.setDefault": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path: {
+				method_id: string;
+			};
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description Request fulfilled, document follows */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["PaymentMethod"];
 				};
 			};
 			/** @description Bad request syntax or unsupported method */

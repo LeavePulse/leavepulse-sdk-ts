@@ -37,4 +37,35 @@ export class Order extends Resource<Data> {
 	fetch(): Promise<this> {
 		return this.refresh();
 	}
+
+	/** Whether the current user may reconcile (RFC §4). */
+	get canReconcile(): boolean {
+		return this.hasCapability("reconcile", "order.reconcile");
+	}
+
+	/** Whether the current user may refund (RFC §4). */
+	get canRefund(): boolean {
+		return this.hasCapability("refund", "order.refund");
+	}
+
+	/** order.reconcile */
+	async reconcile(): Promise<this> {
+		const data = await this.ctx.transport.request({
+			method: "POST",
+			path: `/v1/billing/orders/${this.id}/reconcile`,
+		});
+		this.ctx.hydrate("Order", data);
+		return this;
+	}
+
+	/** order.refund */
+	async refund(body: models.RefundRequest): Promise<this> {
+		const data = await this.ctx.transport.request({
+			method: "POST",
+			path: `/v1/billing/orders/${this.id}/refund`,
+			body,
+		});
+		this.ctx.hydrate("Order", data);
+		return this;
+	}
 }
