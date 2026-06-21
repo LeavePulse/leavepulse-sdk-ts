@@ -2224,6 +2224,44 @@ export interface paths {
 		patch?: never;
 		trace?: never;
 	};
+	"/v1/me/pat-tokens": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		/** List personal access tokens */
+		get: operations["me.pat_tokens.list"];
+		put?: never;
+		/**
+		 * Create a personal access token
+		 * @description Mint a new token. The plaintext token is returned once in `token` and cannot be retrieved later.
+		 */
+		post: operations["me.pat_tokens.create"];
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	"/v1/me/pat-tokens/{token_id}": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
+		post?: never;
+		/** Revoke a personal access token */
+		delete: operations["me.pat_tokens.revoke"];
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
 	"/v1/me/profile": {
 		parameters: {
 			query?: never;
@@ -5282,6 +5320,22 @@ export interface components {
 		CreateLinkTokenRequest: {
 			project_id: components["schemas"]["Snowflake"];
 		};
+		/** CreatePatTokenRequest */
+		CreatePatTokenRequest: {
+			audience?: string | null;
+			/** @default 30 */
+			expires_in_days: number;
+			name: string;
+			note?: string | null;
+			scope?: string[];
+		};
+		/** CreatePatTokenResult */
+		CreatePatTokenResult: {
+			expires_in: number;
+			item: components["schemas"]["PatToken"];
+			token: string;
+			token_type: string;
+		};
 		/** CreateProjectServerRequest */
 		CreateProjectServerRequest: {
 			address: string;
@@ -6249,6 +6303,23 @@ export interface components {
 		PasswordStatus: {
 			has_password: boolean;
 		};
+		/** PatToken */
+		PatToken: {
+			audience: string;
+			created_at: string;
+			expires_at: string;
+			id: string;
+			name: string;
+			note?: string | null;
+			revoked_at?: string | null;
+			scope?: string[];
+			tenant?: string | null;
+			token_hint: string;
+		};
+		/** PatTokenList */
+		PatTokenList: {
+			items?: components["schemas"]["PatToken"][];
+		};
 		/** Payment */
 		Payment: {
 			created_at: string;
@@ -6726,6 +6797,10 @@ export interface components {
 		/** RevokeOtherSessionsResult */
 		RevokeOtherSessionsResult: {
 			revoked_count: number;
+		};
+		/** RevokePatTokenResult */
+		RevokePatTokenResult: {
+			item: components["schemas"]["PatToken"];
 		};
 		/** RoleCandidate */
 		RoleCandidate: {
@@ -13660,6 +13735,108 @@ export interface operations {
 				};
 				content: {
 					"application/json": components["schemas"]["PasswordMutationResult"];
+				};
+			};
+			/** @description Bad request syntax or unsupported method */
+			400: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": {
+						detail: string;
+						extra?:
+							| null
+							| {
+									[key: string]: unknown;
+							  }
+							| unknown[];
+						status_code: number;
+					};
+				};
+			};
+		};
+	};
+	"me.pat_tokens.list": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description Request fulfilled, document follows */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["PatTokenList"];
+				};
+			};
+		};
+	};
+	"me.pat_tokens.create": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				"application/json": components["schemas"]["CreatePatTokenRequest"];
+			};
+		};
+		responses: {
+			/** @description Document created, URL follows */
+			201: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["CreatePatTokenResult"];
+				};
+			};
+			/** @description Bad request syntax or unsupported method */
+			400: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": {
+						detail: string;
+						extra?:
+							| null
+							| {
+									[key: string]: unknown;
+							  }
+							| unknown[];
+						status_code: number;
+					};
+				};
+			};
+		};
+	};
+	"me.pat_tokens.revoke": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path: {
+				token_id: string;
+			};
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description Request fulfilled, document follows */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["RevokePatTokenResult"];
 				};
 			};
 			/** @description Bad request syntax or unsupported method */

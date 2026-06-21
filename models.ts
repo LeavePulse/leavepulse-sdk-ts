@@ -95,6 +95,10 @@ export type ConfigBlobUploadRequest =
 	components["schemas"]["ConfigBlobUploadRequest"];
 export type CreateLinkTokenRequest =
 	components["schemas"]["CreateLinkTokenRequest"];
+export type CreatePatTokenRequest =
+	components["schemas"]["CreatePatTokenRequest"];
+export type CreatePatTokenResult =
+	components["schemas"]["CreatePatTokenResult"];
 export type CreateProjectServerRequest =
 	components["schemas"]["CreateProjectServerRequest"];
 export type CreateStatusOverrideRequest =
@@ -271,6 +275,8 @@ export type PasswordResetRequest =
 export type PasswordResetResult = components["schemas"]["PasswordResetResult"];
 export type PasswordSetRequest = components["schemas"]["PasswordSetRequest"];
 export type PasswordStatus = components["schemas"]["PasswordStatus"];
+export type PatToken = components["schemas"]["PatToken"];
+export type PatTokenList = components["schemas"]["PatTokenList"];
 export type Payment = components["schemas"]["Payment"];
 export type PlatformPermsRow = components["schemas"]["PlatformPermsRow"];
 export type PlayerSearchPage = components["schemas"]["PlayerSearchPage"];
@@ -335,6 +341,8 @@ export type ReportUserRequest = components["schemas"]["ReportUserRequest"];
 export type ReportUserResult = components["schemas"]["ReportUserResult"];
 export type RevokeOtherSessionsResult =
 	components["schemas"]["RevokeOtherSessionsResult"];
+export type RevokePatTokenResult =
+	components["schemas"]["RevokePatTokenResult"];
 export type RoleCandidate = components["schemas"]["RoleCandidate"];
 export type RoleCatalog = components["schemas"]["RoleCatalog"];
 export type RolloutMode = components["schemas"]["RolloutMode"];
@@ -630,6 +638,7 @@ export type FormData = components["schemas"]["WhitelistFormDetail"];
 export type MeData = components["schemas"]["MeResponse"];
 export type NotificationData = components["schemas"]["Notification"];
 export type OrderData = components["schemas"]["Order"];
+export type PatTokenData = components["schemas"]["PatTokenList"];
 export type ProductData = components["schemas"]["Product"];
 export type ProjectData = components["schemas"]["ProjectDetail"];
 export type ServerData = components["schemas"]["ServerDetail"];
@@ -643,6 +652,7 @@ export type CurrencySummary = components["schemas"]["Currency"];
 export type CustomerSummary = components["schemas"]["Customer"];
 export type NotificationSummary = components["schemas"]["Notification"];
 export type OrderSummary = components["schemas"]["Order"];
+export type PatTokenSummary = components["schemas"]["PatToken"];
 export type ProductSummary = components["schemas"]["Product"];
 export type ProjectSummary = components["schemas"]["Project"];
 export type SubscriptionSummary = components["schemas"]["Subscription"];

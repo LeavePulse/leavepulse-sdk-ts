@@ -415,6 +415,38 @@ export class Me extends Resource<Data> {
 		});
 	}
 
+	/** me.pat_tokens.list */
+	async patTokensList(): Promise<models.PatToken[]> {
+		const data = await fetchCachedOrThrow<unknown>(
+			this.ctx.transport,
+			this.ctx.etagStore,
+			{ method: "GET", path: `/v1/me/pat-tokens` },
+		);
+		const items = Array.isArray(data)
+			? data
+			: ((data as Record<string, unknown[]>)["items"] ?? []);
+		return items as models.PatToken[];
+	}
+
+	/** me.pat_tokens.create */
+	async patTokensCreate(
+		body: models.CreatePatTokenRequest,
+	): Promise<models.CreatePatTokenResult> {
+		return this.ctx.transport.request<models.CreatePatTokenResult>({
+			method: "POST",
+			path: `/v1/me/pat-tokens`,
+			body,
+		});
+	}
+
+	/** me.pat_tokens.revoke */
+	async patTokensRevoke(tokenId: string): Promise<models.RevokePatTokenResult> {
+		return this.ctx.transport.request<models.RevokePatTokenResult>({
+			method: "DELETE",
+			path: `/v1/me/pat-tokens/${tokenId}`,
+		});
+	}
+
 	/** me.profile.update */
 	async profileUpdate(
 		body: models.ProfileUpdateRequest,
