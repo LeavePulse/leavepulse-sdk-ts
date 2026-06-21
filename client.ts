@@ -17,6 +17,7 @@ import { Me } from "./resources/Me";
 import { Order } from "./resources/Order";
 import { PaymentMethod } from "./resources/PaymentMethod";
 import { Project } from "./resources/Project";
+import { RefundRequest } from "./resources/RefundRequest";
 import { Server } from "./resources/Server";
 import { Session } from "./resources/Session";
 import { Subscription } from "./resources/Subscription";
@@ -194,6 +195,14 @@ export class LeavePulse {
 		) as Project;
 	}
 
+	refundrequest(id: string): RefundRequest {
+		return this.ctx.cache.ensure(
+			"RefundRequest",
+			id,
+			() => new RefundRequest({ id } as never, this.ctx),
+		) as RefundRequest;
+	}
+
 	server(id: Snowflake): Server {
 		return this.ctx.cache.ensure(
 			"Server",
@@ -252,6 +261,7 @@ export class LeavePulse {
 			Order: (d) => new Order(d as never, this.ctx),
 			PaymentMethod: (d) => new PaymentMethod(d as never, this.ctx),
 			Project: (d) => new Project(d as never, this.ctx),
+			RefundRequest: (d) => new RefundRequest(d as never, this.ctx),
 			Server: (d) => new Server(d as never, this.ctx),
 			Session: (d) => new Session(d as never, this.ctx),
 			Subscription: (d) => new Subscription(d as never, this.ctx),

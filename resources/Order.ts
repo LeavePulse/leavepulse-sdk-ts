@@ -58,14 +58,14 @@ export class Order extends Resource<Data> {
 		return this;
 	}
 
-	/** order.refund */
-	async refund(body: models.RefundRequest): Promise<this> {
-		const data = await this.ctx.transport.request({
+	/** order.refundRequest */
+	async refundRequest(
+		body: models.RefundRequestBody,
+	): Promise<models.RefundRequest> {
+		return this.ctx.transport.request<models.RefundRequest>({
 			method: "POST",
-			path: `/v1/billing/orders/${this.id}/refund`,
+			path: `/v1/billing/orders/${this.id}/refund-request`,
 			body,
 		});
-		this.ctx.hydrate("Order", data);
-		return this;
 	}
 }

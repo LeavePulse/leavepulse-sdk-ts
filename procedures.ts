@@ -9,6 +9,7 @@ import type { Build } from "./resources/Build";
 import type { Form } from "./resources/Form";
 import type { Order } from "./resources/Order";
 import type { PaymentMethod } from "./resources/PaymentMethod";
+import type { RefundRequest } from "./resources/RefundRequest";
 import type { Server } from "./resources/Server";
 import type { Subscription } from "./resources/Subscription";
 import type { Ticket } from "./resources/Ticket";
@@ -965,6 +966,43 @@ export class BillingProductsNs {
 	}
 }
 
+/** billing.refundRequests procedures. */
+export class BillingRefundRequestsNs {
+	constructor(private readonly ctx: ClientContext) {}
+
+	/** billing.refundRequests.list */
+	async list(params?: {
+		status?: string;
+		page?: number;
+		limit?: number;
+	}): Promise<Page<RefundRequest>> {
+		const fetchPage = async (
+			page: number,
+			perPage: number,
+		): Promise<PageData<RefundRequest>> => {
+			const data = await fetchCachedOrThrow<unknown>(
+				this.ctx.transport,
+				this.ctx.etagStore,
+				{
+					method: "GET",
+					path: `/v1/billing/refund-requests`,
+					query: { status: params?.status, page: page, limit: perPage },
+				},
+			);
+			return pageDataFrom(
+				data,
+				(raw) => this.ctx.hydrateMany("RefundRequest", raw) as RefundRequest[],
+				page,
+				perPage,
+			);
+		};
+		return new Page(
+			await fetchPage(params?.page ?? 1, params?.limit ?? 20),
+			fetchPage,
+		);
+	}
+}
+
 /** billing.subscriptions procedures. */
 export class BillingSubscriptionsNs {
 	constructor(private readonly ctx: ClientContext) {}
@@ -1009,6 +1047,7 @@ export class BillingNs {
 	readonly orders: BillingOrdersNs;
 	readonly paymentMethods: BillingPaymentMethodsNs;
 	readonly products: BillingProductsNs;
+	readonly refundRequests: BillingRefundRequestsNs;
 	readonly subscriptions: BillingSubscriptionsNs;
 	constructor(private readonly ctx: ClientContext) {
 		this.coupons = new BillingCouponsNs(ctx);
@@ -1017,6 +1056,7 @@ export class BillingNs {
 		this.orders = new BillingOrdersNs(ctx);
 		this.paymentMethods = new BillingPaymentMethodsNs(ctx);
 		this.products = new BillingProductsNs(ctx);
+		this.refundRequests = new BillingRefundRequestsNs(ctx);
 		this.subscriptions = new BillingSubscriptionsNs(ctx);
 	}
 

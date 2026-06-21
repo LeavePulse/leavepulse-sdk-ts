@@ -913,7 +913,7 @@ export interface paths {
 		patch?: never;
 		trace?: never;
 	};
-	"/v1/billing/orders/{order_id}/refund": {
+	"/v1/billing/orders/{order_id}/refund-request": {
 		parameters: {
 			query?: never;
 			header?: never;
@@ -922,8 +922,8 @@ export interface paths {
 		};
 		get?: never;
 		put?: never;
-		/** RefundOrder */
-		post: operations["order.refund"];
+		/** CreateRefundRequest */
+		post: operations["order.refundRequest"];
 		delete?: never;
 		options?: never;
 		head?: never;
@@ -1013,6 +1013,40 @@ export interface paths {
 		options?: never;
 		head?: never;
 		patch?: never;
+		trace?: never;
+	};
+	"/v1/billing/refund-requests": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		/** ListRefundRequests */
+		get: operations["billing.refundRequests.list"];
+		put?: never;
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	"/v1/billing/refund-requests/{request_id}/cancel": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		/** CancelRefundRequest */
+		patch: operations["refundRequest.cancel"];
 		trace?: never;
 	};
 	"/v1/billing/subscriptions": {
@@ -6926,8 +6960,29 @@ export interface components {
 		};
 		/** RefundRequest */
 		RefundRequest: {
+			amount_minor: number;
+			created_at: string;
+			decision_note: string;
+			id: string;
+			order_id: string;
+			reason: string;
+			reviewed_at: string;
+			reviewed_by: string;
+			status: string;
+			updated_at: string;
+			user_id: string;
+		};
+		/** RefundRequestBody */
+		RefundRequestBody: {
 			amount_minor?: number | null;
 			reason?: string | null;
+		};
+		/** RefundRequestList */
+		RefundRequestList: {
+			items: components["schemas"]["RefundRequest"][];
+			page: number;
+			per_page: number;
+			total: number;
 		};
 		/** ReportUserRequest */
 		ReportUserRequest: {
@@ -10764,7 +10819,7 @@ export interface operations {
 			};
 		};
 	};
-	"order.refund": {
+	"order.refundRequest": {
 		parameters: {
 			query?: never;
 			header?: never;
@@ -10775,7 +10830,7 @@ export interface operations {
 		};
 		requestBody: {
 			content: {
-				"application/json": components["schemas"]["RefundRequest"];
+				"application/json": components["schemas"]["RefundRequestBody"];
 			};
 		};
 		responses: {
@@ -10785,7 +10840,7 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
-					"application/json": components["schemas"]["Order"];
+					"application/json": components["schemas"]["RefundRequest"];
 				};
 			};
 			/** @description Bad request syntax or unsupported method */
@@ -10946,6 +11001,88 @@ export interface operations {
 				};
 				content: {
 					"application/json": components["schemas"]["Quote"];
+				};
+			};
+			/** @description Bad request syntax or unsupported method */
+			400: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": {
+						detail: string;
+						extra?:
+							| null
+							| {
+									[key: string]: unknown;
+							  }
+							| unknown[];
+						status_code: number;
+					};
+				};
+			};
+		};
+	};
+	"billing.refundRequests.list": {
+		parameters: {
+			query?: {
+				status?: string | null;
+				page?: number;
+				limit?: number;
+			};
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description Request fulfilled, document follows */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["RefundRequestList"];
+				};
+			};
+			/** @description Bad request syntax or unsupported method */
+			400: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": {
+						detail: string;
+						extra?:
+							| null
+							| {
+									[key: string]: unknown;
+							  }
+							| unknown[];
+						status_code: number;
+					};
+				};
+			};
+		};
+	};
+	"refundRequest.cancel": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path: {
+				request_id: string;
+			};
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description Request fulfilled, document follows */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["RefundRequest"];
 				};
 			};
 			/** @description Bad request syntax or unsupported method */

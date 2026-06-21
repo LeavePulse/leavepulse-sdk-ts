@@ -12,6 +12,7 @@ export { Me } from "./resources/Me";
 export { Order } from "./resources/Order";
 export { PaymentMethod } from "./resources/PaymentMethod";
 export { Project } from "./resources/Project";
+export { RefundRequest } from "./resources/RefundRequest";
 export { Server } from "./resources/Server";
 export { Session } from "./resources/Session";
 export { Subscription } from "./resources/Subscription";
