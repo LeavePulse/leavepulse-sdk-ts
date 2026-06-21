@@ -837,6 +837,22 @@ export class AuthNs {
 	}
 }
 
+/** billing.checkout procedures. */
+export class BillingCheckoutNs {
+	constructor(private readonly ctx: ClientContext) {}
+
+	/** billing.checkout.validate_coupon */
+	async validateCoupon(
+		body: models.ValidateCouponRequest,
+	): Promise<models.ValidateCouponResult> {
+		return this.ctx.transport.request<models.ValidateCouponResult>({
+			method: "POST",
+			path: `/v1/billing/checkout/validate-coupon`,
+			body,
+		});
+	}
+}
+
 /** billing.currencies procedures. */
 export class BillingCurrenciesNs {
 	constructor(private readonly ctx: ClientContext) {}
@@ -968,12 +984,14 @@ export class BillingSubscriptionsNs {
 
 /** billing.* procedures. */
 export class BillingNs {
+	readonly checkout: BillingCheckoutNs;
 	readonly currencies: BillingCurrenciesNs;
 	readonly customer: BillingCustomerNs;
 	readonly orders: BillingOrdersNs;
 	readonly products: BillingProductsNs;
 	readonly subscriptions: BillingSubscriptionsNs;
 	constructor(private readonly ctx: ClientContext) {
+		this.checkout = new BillingCheckoutNs(ctx);
 		this.currencies = new BillingCurrenciesNs(ctx);
 		this.customer = new BillingCustomerNs(ctx);
 		this.orders = new BillingOrdersNs(ctx);

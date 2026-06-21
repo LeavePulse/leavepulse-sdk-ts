@@ -483,6 +483,10 @@ export type UserProfile = components["schemas"]["UserProfile"];
 export type UserRecentActivity = components["schemas"]["UserRecentActivity"];
 export type UserRolesResponse = components["schemas"]["UserRolesResponse"];
 export type UserStatus = components["schemas"]["UserStatus"];
+export type ValidateCouponRequest =
+	components["schemas"]["ValidateCouponRequest"];
+export type ValidateCouponResult =
+	components["schemas"]["ValidateCouponResult"];
 export type VerificationCheckRequest =
 	components["schemas"]["VerificationCheckRequest"];
 export type VerificationServerSummary =

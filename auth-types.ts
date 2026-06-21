@@ -1508,6 +1508,8 @@ export interface components {
 		};
 		/** SessionInfo */
 		SessionInfo: {
+			city?: string | null;
+			country?: string | null;
 			/** @default false */
 			current: boolean;
 			expires_at?: string | null;

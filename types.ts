@@ -810,6 +810,23 @@ export interface paths {
 		patch?: never;
 		trace?: never;
 	};
+	"/v1/billing/checkout/validate-coupon": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
+		/** ValidateCoupon */
+		post: operations["billing.checkout.validate_coupon"];
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
 	"/v1/billing/currencies": {
 		parameters: {
 			query?: never;
@@ -5152,6 +5169,7 @@ export interface components {
 			context?: {
 				[key: string]: unknown;
 			} | null;
+			coupon_code?: string | null;
 			/** @default false */
 			create_subscription: boolean;
 			/** @default false */
@@ -5290,27 +5308,39 @@ export interface components {
 			address_line: string;
 			ccy: number;
 			city: string;
+			company_name?: string | null;
 			country: string;
 			created_at: string;
 			customer_type: string;
 			first_name: string;
 			id: string;
+			/** @default none */
+			kyc_status: string;
 			kyc_type: string;
 			last_name: string;
 			postal_code: string;
 			product_scope: string;
+			tax_country?: string | null;
+			tax_id?: string | null;
 			updated_at: string;
 			user_id: string;
+			vat_number?: string | null;
+			vat_valid?: boolean | null;
 		};
 		/** CustomerUpdateRequest */
 		CustomerUpdateRequest: {
 			address_line: string;
 			ccy?: number | null;
 			city: string;
+			company_name?: string | null;
 			country: string;
+			customer_type?: string | null;
 			first_name: string;
 			last_name: string;
 			postal_code: string;
+			tax_country?: string | null;
+			tax_id?: string | null;
+			vat_number?: string | null;
 		};
 		/** DashboardAccount */
 		DashboardAccount: {
@@ -6147,8 +6177,11 @@ export interface components {
 		Order: {
 			amount_minor: number;
 			ccy: number;
+			coupon_code?: string | null;
 			created_at: string;
 			description: string;
+			/** @default 0 */
+			discount_minor: number;
 			expires_at?: string | null;
 			external_ref: string;
 			extra?: {
@@ -6156,6 +6189,8 @@ export interface components {
 			} | null;
 			id: string;
 			idempotency_key?: string | null;
+			/** @default 0 */
+			net_minor: number;
 			paid_at?: string | null;
 			payments?: components["schemas"]["Payment"][];
 			product_id: string;
@@ -6163,6 +6198,13 @@ export interface components {
 			status: string;
 			status_reason?: string | null;
 			subscription_id?: string | null;
+			tax_country?: string | null;
+			/** @default none */
+			tax_kind: string;
+			/** @default 0 */
+			tax_minor: number;
+			/** @default 0 */
+			tax_rate_bp: number;
 			updated_at: string;
 			user_id: string;
 		};
@@ -7612,6 +7654,34 @@ export interface components {
 		 * @enum {string}
 		 */
 		UserStatus: "active" | "pending" | "disabled" | "banned" | "unknown";
+		/** ValidateCouponRequest */
+		ValidateCouponRequest: {
+			coupon_code: string;
+			product_code?: string | null;
+			product_id?: string | null;
+			/** @default 1 */
+			quantity: number;
+		};
+		/** ValidateCouponResult */
+		ValidateCouponResult: {
+			/** @default 0 */
+			amount_minor: number;
+			/** @default 0 */
+			base_minor: number;
+			/** @default 0 */
+			ccy: number;
+			/** @default  */
+			coupon_code: string;
+			/** @default 0 */
+			discount_minor: number;
+			/** @default 0 */
+			net_minor: number;
+			/** @default  */
+			reason: string;
+			/** @default 0 */
+			tax_minor: number;
+			valid: boolean;
+		};
 		/** VerificationCheckRequest */
 		VerificationCheckRequest: {
 			token: string;
@@ -10205,6 +10275,48 @@ export interface operations {
 				};
 				content: {
 					"application/json": components["schemas"]["CheckoutResult"];
+				};
+			};
+			/** @description Bad request syntax or unsupported method */
+			400: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": {
+						detail: string;
+						extra?:
+							| null
+							| {
+									[key: string]: unknown;
+							  }
+							| unknown[];
+						status_code: number;
+					};
+				};
+			};
+		};
+	};
+	"billing.checkout.validate_coupon": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				"application/json": components["schemas"]["ValidateCouponRequest"];
+			};
+		};
+		responses: {
+			/** @description Document created, URL follows */
+			201: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ValidateCouponResult"];
 				};
 			};
 			/** @description Bad request syntax or unsupported method */
