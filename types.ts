@@ -998,6 +998,23 @@ export interface paths {
 		patch?: never;
 		trace?: never;
 	};
+	"/v1/billing/quote": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
+		/** Quote */
+		post: operations["billing.quote"];
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
 	"/v1/billing/subscriptions": {
 		parameters: {
 			query?: never;
@@ -5298,10 +5315,13 @@ export interface components {
 			/** @default false */
 			enable_auto_pull: boolean;
 			idempotency_key?: string | null;
+			payment_method_id?: string | null;
 			product_code?: string | null;
 			product_id?: string | null;
 			/** @default 1 */
 			quantity: number;
+			/** @default false */
+			save_card: boolean;
 			success_url?: string | null;
 		};
 		/** CheckoutResult */
@@ -6868,6 +6888,29 @@ export interface components {
 			is_owner: boolean;
 			roles?: string[];
 			user_id: components["schemas"]["Snowflake"];
+		};
+		/** Quote */
+		Quote: {
+			amount_minor: number;
+			base_minor: number;
+			ccy: number;
+			country_code: string;
+			net_minor: number;
+			profile_ready: boolean;
+			provider_supported: boolean;
+			tax_kind: string;
+			tax_minor: number;
+			tax_rate_bp: number;
+		};
+		/** QuoteRequest */
+		QuoteRequest: {
+			context?: {
+				[key: string]: unknown;
+			} | null;
+			product_code?: string | null;
+			product_id?: string | null;
+			/** @default 1 */
+			quantity: number;
 		};
 		/** RecentActivityItem */
 		RecentActivityItem: {
@@ -10879,6 +10922,48 @@ export interface operations {
 				};
 				content: {
 					"application/json": components["schemas"]["Product"][];
+				};
+			};
+		};
+	};
+	"billing.quote": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				"application/json": components["schemas"]["QuoteRequest"];
+			};
+		};
+		responses: {
+			/** @description Document created, URL follows */
+			201: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["Quote"];
+				};
+			};
+			/** @description Bad request syntax or unsupported method */
+			400: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": {
+						detail: string;
+						extra?:
+							| null
+							| {
+									[key: string]: unknown;
+							  }
+							| unknown[];
+						status_code: number;
+					};
 				};
 			};
 		};

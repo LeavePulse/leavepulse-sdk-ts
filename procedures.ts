@@ -1028,6 +1028,15 @@ export class BillingNs {
 			body,
 		});
 	}
+
+	/** billing.quote */
+	async quote(body: models.QuoteRequest): Promise<models.Quote> {
+		return this.ctx.transport.request<models.Quote>({
+			method: "POST",
+			path: `/v1/billing/quote`,
+			body,
+		});
+	}
 }
 
 /** builds.* procedures. */
