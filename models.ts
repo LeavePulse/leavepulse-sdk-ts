@@ -143,6 +143,8 @@ export type DnsVerification = components["schemas"]["DnsVerification"];
 export type EmailChangeRequest = components["schemas"]["EmailChangeRequest"];
 export type EmailChangeResult = components["schemas"]["EmailChangeResult"];
 export type EmailConfirmRequest = components["schemas"]["EmailConfirmRequest"];
+export type EmailConfirmRequestPayload =
+	components["schemas"]["EmailConfirmRequestPayload"];
 export type EmailConfirmRequestResult =
 	components["schemas"]["EmailConfirmRequestResult"];
 export type EmailConfirmResult = components["schemas"]["EmailConfirmResult"];

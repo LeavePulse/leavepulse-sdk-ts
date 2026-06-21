@@ -5506,6 +5506,11 @@ export interface components {
 		EmailConfirmRequest: {
 			token: string;
 		};
+		/** EmailConfirmRequestPayload */
+		EmailConfirmRequestPayload: {
+			/** @default  */
+			audience: string;
+		};
 		/** EmailConfirmRequestResult */
 		EmailConfirmRequestResult: {
 			/** @default  */
@@ -13080,7 +13085,11 @@ export interface operations {
 			path?: never;
 			cookie?: never;
 		};
-		requestBody?: never;
+		requestBody: {
+			content: {
+				"application/json": components["schemas"]["EmailConfirmRequestPayload"];
+			};
+		};
 		responses: {
 			/** @description Document created, URL follows */
 			201: {
@@ -13089,6 +13098,24 @@ export interface operations {
 				};
 				content: {
 					"application/json": components["schemas"]["EmailConfirmRequestResult"];
+				};
+			};
+			/** @description Bad request syntax or unsupported method */
+			400: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": {
+						detail: string;
+						extra?:
+							| null
+							| {
+									[key: string]: unknown;
+							  }
+							| unknown[];
+						status_code: number;
+					};
 				};
 			};
 		};

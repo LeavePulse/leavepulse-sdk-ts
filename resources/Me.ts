@@ -251,10 +251,13 @@ export class Me extends Resource<Data> {
 	}
 
 	/** me.notifications.delivery.email.confirm_request */
-	async notificationsDeliveryEmailConfirmRequest(): Promise<models.EmailConfirmRequestResult> {
+	async notificationsDeliveryEmailConfirmRequest(
+		body: models.EmailConfirmRequestPayload,
+	): Promise<models.EmailConfirmRequestResult> {
 		return this.ctx.transport.request<models.EmailConfirmRequestResult>({
 			method: "POST",
 			path: `/v1/me/notifications/delivery/email/confirm-request`,
+			body,
 		});
 	}
 
