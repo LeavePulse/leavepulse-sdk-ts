@@ -93,3 +93,10 @@ export type {
 	WebSocketLike,
 	RealtimeTransportOptions,
 } from "./runtime/realtime";
+export { RealtimeClient } from "./runtime/realtime-client";
+export type {
+	RealtimeClientOptions,
+	RealtimeEnvelope,
+	RealtimeEventKind,
+	BinaryWebSocketLike,
+} from "./runtime/realtime-client";

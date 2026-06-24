@@ -24,7 +24,6 @@ import { Subscription } from "./resources/Subscription";
 import { Ticket } from "./resources/Ticket";
 import { User } from "./resources/User";
 import {
-	AdminNs,
 	AuthNs,
 	BillingNs,
 	BuildsNs,
@@ -54,7 +53,6 @@ export interface ClientContext {
 export class LeavePulse {
 	private readonly ctx: ClientContext;
 	private _me?: Me;
-	readonly admin: AdminNs;
 	readonly auth: AuthNs;
 	readonly billing: BillingNs;
 	readonly builds: BuildsNs;
@@ -100,7 +98,6 @@ export class LeavePulse {
 			hydrateMany: (type, raw) =>
 				Array.isArray(raw) ? raw.map((d) => this.hydrate(type, d)) : [],
 		};
-		this.admin = new AdminNs(this.ctx);
 		this.auth = new AuthNs(this.ctx);
 		this.billing = new BillingNs(this.ctx);
 		this.builds = new BuildsNs(this.ctx);

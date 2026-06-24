@@ -10,49 +10,6 @@ export type AccountExportIdentity =
 export type AccountExportSession =
 	components["schemas"]["AccountExportSession"];
 export type ActivityType = components["schemas"]["ActivityType"];
-export type AdminChangeProjectSlugRequest =
-	components["schemas"]["AdminChangeProjectSlugRequest"];
-export type AdminDeleteResponse = components["schemas"]["AdminDeleteResponse"];
-export type AdminForceCreateRequest =
-	components["schemas"]["AdminForceCreateRequest"];
-export type AdminMinecraftAccount =
-	components["schemas"]["AdminMinecraftAccount"];
-export type AdminMinecraftAccountDeleteResult =
-	components["schemas"]["AdminMinecraftAccountDeleteResult"];
-export type AdminMinecraftAccountWriteRequest =
-	components["schemas"]["AdminMinecraftAccountWriteRequest"];
-export type AdminProject = components["schemas"]["AdminProject"];
-export type AdminProjectDeleteResponse =
-	components["schemas"]["AdminProjectDeleteResponse"];
-export type AdminProjectListResponse =
-	components["schemas"]["AdminProjectListResponse"];
-export type AdminRenameProjectRequest =
-	components["schemas"]["AdminRenameProjectRequest"];
-export type AdminRole = components["schemas"]["AdminRole"];
-export type AdminRoleDeleteResponse =
-	components["schemas"]["AdminRoleDeleteResponse"];
-export type AdminRoleListResponse =
-	components["schemas"]["AdminRoleListResponse"];
-export type AdminRoleRequest = components["schemas"]["AdminRoleRequest"];
-export type AdminServerListResponse =
-	components["schemas"]["AdminServerListResponse"];
-export type AdminServerSummary = components["schemas"]["AdminServerSummary"];
-export type AdminServerUpdateRequest =
-	components["schemas"]["AdminServerUpdateRequest"];
-export type AdminSetProjectOnlineStrategyRequest =
-	components["schemas"]["AdminSetProjectOnlineStrategyRequest"];
-export type AdminSetProjectRolloutModeRequest =
-	components["schemas"]["AdminSetProjectRolloutModeRequest"];
-export type AdminTransferOwnershipRequest =
-	components["schemas"]["AdminTransferOwnershipRequest"];
-export type AdminUserDetail = components["schemas"]["AdminUserDetail"];
-export type AdminUserDiscordUpdateRequest =
-	components["schemas"]["AdminUserDiscordUpdateRequest"];
-export type AdminUserListResponse =
-	components["schemas"]["AdminUserListResponse"];
-export type AdminUserSummary = components["schemas"]["AdminUserSummary"];
-export type AdminUserUpdateRequest =
-	components["schemas"]["AdminUserUpdateRequest"];
 export type AvatarUrlRequest = components["schemas"]["AvatarUrlRequest"];
 export type BatchPublicProfilesRequest =
 	components["schemas"]["BatchPublicProfilesRequest"];
@@ -101,8 +58,6 @@ export type CreatePatTokenResult =
 	components["schemas"]["CreatePatTokenResult"];
 export type CreateProjectServerRequest =
 	components["schemas"]["CreateProjectServerRequest"];
-export type CreateStatusOverrideRequest =
-	components["schemas"]["CreateStatusOverrideRequest"];
 export type Currency = components["schemas"]["Currency"];
 export type Customer = components["schemas"]["Customer"];
 export type CustomerUpdateRequest =
@@ -114,8 +69,6 @@ export type DashboardServerItem = components["schemas"]["DashboardServerItem"];
 export type DeleteAck = components["schemas"]["DeleteAck"];
 export type DeleteBuildResult = components["schemas"]["DeleteBuildResult"];
 export type DeleteCommentResult = components["schemas"]["DeleteCommentResult"];
-export type DeleteStatusOverrideResponse =
-	components["schemas"]["DeleteStatusOverrideResponse"];
 export type DeliveryPreferences = components["schemas"]["DeliveryPreferences"];
 export type DeliveryPreferencesUpdate =
 	components["schemas"]["DeliveryPreferencesUpdate"];
@@ -136,12 +89,6 @@ export type DiscordRoleTarget = components["schemas"]["DiscordRoleTarget"];
 export type DiscordRoleTargets = components["schemas"]["DiscordRoleTargets"];
 export type DiscordVerifyRequest =
 	components["schemas"]["DiscordVerifyRequest"];
-export type DiscoveryApproveResult =
-	components["schemas"]["DiscoveryApproveResult"];
-export type DiscoveryCandidateEditRequest =
-	components["schemas"]["DiscoveryCandidateEditRequest"];
-export type DiscoveryIgnoreResult =
-	components["schemas"]["DiscoveryIgnoreResult"];
 export type DismissResult = components["schemas"]["DismissResult"];
 export type DnsVerification = components["schemas"]["DnsVerification"];
 export type EmailChangeRequest = components["schemas"]["EmailChangeRequest"];
@@ -160,7 +107,6 @@ export type FreshnessState = components["schemas"]["FreshnessState"];
 export type GameEdition = components["schemas"]["GameEdition"];
 export type GatewayToken = components["schemas"]["GatewayToken"];
 export type GatewayTokenRequest = components["schemas"]["GatewayTokenRequest"];
-export type GlobalServerStats = components["schemas"]["GlobalServerStats"];
 export type HistoryPoint = components["schemas"]["HistoryPoint"];
 export type HistoryResponse = components["schemas"]["HistoryResponse"];
 export type IconEntry = components["schemas"]["IconEntry"];
@@ -232,7 +178,6 @@ export type MinecraftResolveRequest =
 	components["schemas"]["MinecraftResolveRequest"];
 export type MinecraftUnlinkResult =
 	components["schemas"]["MinecraftUnlinkResult"];
-export type MinecraftUuidType = components["schemas"]["MinecraftUuidType"];
 export type MinecraftVerificationAccount =
 	components["schemas"]["MinecraftVerificationAccount"];
 export type MinecraftVerificationState =
@@ -280,8 +225,6 @@ export type PatTokenList = components["schemas"]["PatTokenList"];
 export type Payment = components["schemas"]["Payment"];
 export type PaymentMethod = components["schemas"]["PaymentMethod"];
 export type PlatformPermsRow = components["schemas"]["PlatformPermsRow"];
-export type PlayerSearchPage = components["schemas"]["PlayerSearchPage"];
-export type PlayerSearchResult = components["schemas"]["PlayerSearchResult"];
 export type PlayerStats = components["schemas"]["PlayerStats"];
 export type PluginVerification = components["schemas"]["PluginVerification"];
 export type PluginVerificationStartRequest =
@@ -422,10 +365,6 @@ export type ServerTranslationUpsertRequest =
 export type ServerTranslations = components["schemas"]["ServerTranslations"];
 export type ServerWhitelistPublicConfig =
 	components["schemas"]["ServerWhitelistPublicConfig"];
-export type ServiceHealth = components["schemas"]["ServiceHealth"];
-export type ServiceHealthEntry = components["schemas"]["ServiceHealthEntry"];
-export type ServicesHealthResponse =
-	components["schemas"]["ServicesHealthResponse"];
 export type SessionInfo = components["schemas"]["SessionInfo"];
 export type SessionList = components["schemas"]["SessionList"];
 export type SessionRevokeResult = components["schemas"]["SessionRevokeResult"];
@@ -438,7 +377,6 @@ export type SocialLinkVerifyRequest =
 export type SocialLinks = components["schemas"]["SocialLinks"];
 export type SocialLinksUpdateRequest =
 	components["schemas"]["SocialLinksUpdateRequest"];
-export type StatusOverrideItem = components["schemas"]["StatusOverrideItem"];
 export type Subscription = components["schemas"]["Subscription"];
 export type SubscriptionList = components["schemas"]["SubscriptionList"];
 export type TeamMemberCreateRequest =
@@ -495,8 +433,6 @@ export type UserEngagementTopProject =
 	components["schemas"]["UserEngagementTopProject"];
 export type UserProfile = components["schemas"]["UserProfile"];
 export type UserRecentActivity = components["schemas"]["UserRecentActivity"];
-export type UserRolesResponse = components["schemas"]["UserRolesResponse"];
-export type UserStatus = components["schemas"]["UserStatus"];
 export type ValidateCouponRequest =
 	components["schemas"]["ValidateCouponRequest"];
 export type ValidateCouponResult =
@@ -633,6 +569,7 @@ export type UserProfilePrivacy =
 	authComponents["schemas"]["UserProfilePrivacy"];
 export type UserPublic = authComponents["schemas"]["UserPublic"];
 export type UserRegister = authComponents["schemas"]["UserRegister"];
+export type UserStatus = authComponents["schemas"]["UserStatus"];
 export type UserTimeFormatPreference =
 	authComponents["schemas"]["UserTimeFormatPreference"];
 export type ApplicationData = components["schemas"]["WhitelistApplicationList"];
