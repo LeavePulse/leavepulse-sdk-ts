@@ -1414,7 +1414,7 @@ export interface components {
 		PersonalAccessTokenCreateRequest: {
 			audience?: string | null;
 			/** @default 365 */
-			expires_in_days: number;
+			expires_in_days?: number;
 			name: string;
 			note?: string | null;
 			scope?: string[];

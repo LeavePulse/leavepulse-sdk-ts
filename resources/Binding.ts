@@ -52,11 +52,10 @@ export class Binding extends Resource<Data> {
 
 	/** binding.delete */
 	async delete(): Promise<this> {
-		const data = await this.ctx.transport.request({
+		await this.ctx.transport.request({
 			method: "DELETE",
 			path: `/v1/whitelist/bindings/${this.id}`,
 		});
-		this.ctx.hydrate("Binding", data);
 		return this;
 	}
 

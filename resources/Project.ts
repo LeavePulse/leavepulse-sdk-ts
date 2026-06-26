@@ -403,11 +403,10 @@ export class Project extends Resource<Data> {
 
 	/** project.policies.delete */
 	async policiesDelete(policyId: Snowflake): Promise<this> {
-		const data = await this.ctx.transport.request({
+		await this.ctx.transport.request({
 			method: "DELETE",
 			path: `/v1/projects/${this.id}/whitelist/policies/${policyId}`,
 		});
-		this.ctx.hydrate("Project", data);
 		return this;
 	}
 

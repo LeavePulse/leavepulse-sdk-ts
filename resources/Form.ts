@@ -55,11 +55,10 @@ export class Form extends Resource<Data> {
 
 	/** form.delete */
 	async delete(): Promise<this> {
-		const data = await this.ctx.transport.request({
+		await this.ctx.transport.request({
 			method: "DELETE",
 			path: `/v1/whitelist/forms/${this.id}`,
 		});
-		this.ctx.hydrate("Form", data);
 		return this;
 	}
 

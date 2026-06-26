@@ -4965,7 +4965,7 @@ export interface components {
 		AdminForceCreateRequest: {
 			address: string;
 			/** @default false */
-			is_verified: boolean;
+			is_verified?: boolean;
 			name: string;
 			owner_id: components["schemas"]["Snowflake"];
 			parent_id?: components["schemas"]["Snowflake"] | null;
@@ -5258,7 +5258,7 @@ export interface components {
 			manifest?: components["schemas"]["BuildManifest"];
 			name: string;
 			/** @default  */
-			summary: string;
+			summary?: string;
 		};
 		/** BuildList */
 		BuildList: {
@@ -5345,17 +5345,17 @@ export interface components {
 			} | null;
 			coupon_code?: string | null;
 			/** @default false */
-			create_subscription: boolean;
+			create_subscription?: boolean;
 			/** @default false */
-			enable_auto_pull: boolean;
+			enable_auto_pull?: boolean;
 			idempotency_key?: string | null;
 			payment_method_id?: string | null;
 			product_code?: string | null;
 			product_id?: string | null;
 			/** @default 1 */
-			quantity: number;
+			quantity?: number;
 			/** @default false */
-			save_card: boolean;
+			save_card?: boolean;
 			success_url?: string | null;
 		};
 		/** CheckoutResult */
@@ -5372,7 +5372,7 @@ export interface components {
 		/** CollaboratorAddRequest */
 		CollaboratorAddRequest: {
 			/** @default false */
-			can_edit: boolean;
+			can_edit?: boolean;
 			user_id: string;
 		};
 		/** CollaboratorList */
@@ -5453,7 +5453,7 @@ export interface components {
 		/** ConfigBlobUploadRequest */
 		ConfigBlobUploadRequest: {
 			/** @default 0 */
-			size_bytes: number;
+			size_bytes?: number;
 		};
 		/** CreateLinkTokenRequest */
 		CreateLinkTokenRequest: {
@@ -5463,7 +5463,7 @@ export interface components {
 		CreatePatTokenRequest: {
 			audience?: string | null;
 			/** @default 30 */
-			expires_in_days: number;
+			expires_in_days?: number;
 			name: string;
 			note?: string | null;
 			scope?: string[];
@@ -5860,7 +5860,7 @@ export interface components {
 		IconSelectRequest: {
 			key: string;
 			/** @default true */
-			sync: boolean;
+			sync?: boolean;
 		};
 		/**
 		 * IconSource
@@ -5888,7 +5888,7 @@ export interface components {
 			before_message_id?: string | null;
 			channel_id: string;
 			/** @default 200 */
-			limit: number;
+			limit?: number;
 		};
 		/** ImportSharedBuildRequest */
 		ImportSharedBuildRequest: {
@@ -6944,7 +6944,7 @@ export interface components {
 			product_code?: string | null;
 			product_id?: string | null;
 			/** @default 1 */
-			quantity: number;
+			quantity?: number;
 		};
 		/** RecentActivityItem */
 		RecentActivityItem: {
@@ -7213,7 +7213,7 @@ export interface components {
 		ServerMotdUpdateRequest: {
 			motd: string;
 			/** @default true */
-			sync: boolean;
+			sync?: boolean;
 		};
 		/** ServerOwnership */
 		ServerOwnership: {
@@ -7937,7 +7937,7 @@ export interface components {
 			product_code?: string | null;
 			product_id?: string | null;
 			/** @default 1 */
-			quantity: number;
+			quantity?: number;
 		};
 		/** ValidateCouponResult */
 		ValidateCouponResult: {
@@ -8138,14 +8138,14 @@ export interface components {
 		WhitelistBindingWriteRequest: {
 			discord_membership_mode?: components["schemas"]["DiscordMembershipMode"];
 			/** @default true */
-			enabled: boolean;
+			enabled?: boolean;
 			enforcement_mode: components["schemas"]["EnforcementMode"];
 			form_id?: string | null;
 			granted_role_ids?: string[];
 			mode?: components["schemas"]["WhitelistBindingMode"];
 			notification_settings?: components["schemas"]["WhitelistNotificationSettings"];
 			/** @default true */
-			restrict_chat: boolean;
+			restrict_chat?: boolean;
 			scope_type: components["schemas"]["TeamScopeType"];
 			server_id: string;
 			target_server_ids?: string[];
@@ -8166,7 +8166,7 @@ export interface components {
 		/** WhitelistDecisionRequest */
 		WhitelistDecisionRequest: {
 			/** @default  */
-			reason: string;
+			reason?: string;
 		};
 		/** WhitelistDirectAddRequest */
 		WhitelistDirectAddRequest: {
@@ -8256,7 +8256,7 @@ export interface components {
 		/** WhitelistFormCreateRequest */
 		WhitelistFormCreateRequest: {
 			/** @default false */
-			auto_approve_enabled: boolean;
+			auto_approve_enabled?: boolean;
 			auto_approve_rules?: {
 				[key: string]: string | number | boolean | string[] | null;
 			} | null;
@@ -8268,9 +8268,9 @@ export interface components {
 			name: string;
 			project_id?: components["schemas"]["Snowflake"] | null;
 			/** @default false */
-			require_discord: boolean;
+			require_discord?: boolean;
 			/** @default true */
-			require_minecraft_nick: boolean;
+			require_minecraft_nick?: boolean;
 		};
 		/** WhitelistFormDetail */
 		WhitelistFormDetail: {
@@ -8395,34 +8395,34 @@ export interface components {
 		WhitelistImportRequest: {
 			binding_id: components["schemas"]["Snowflake"];
 			/** @default merge */
-			conflict_policy: string;
+			conflict_policy?: string;
 			/** @default false */
-			dry_run: boolean;
+			dry_run?: boolean;
 			expires_in_hours?: number | null;
 			form_id?: string | null;
 			/** @default auto */
-			import_account_mode: string;
+			import_account_mode?: string;
 			/** @default false */
-			include_history: boolean;
+			include_history?: boolean;
 			options?: components["schemas"]["WhitelistImportOptions"];
 			/** @default vanilla */
-			source: string;
+			source?: string;
 		};
 		/** WhitelistMinecraftPullRequest */
 		WhitelistMinecraftPullRequest: {
 			/** @default 200 */
-			batch_size: number;
+			batch_size?: number;
 			binding_id: components["schemas"]["Snowflake"];
 			/** @default merge */
-			conflict_policy: string;
+			conflict_policy?: string;
 			expires_in_hours?: number | null;
 			form_id?: string | null;
 			/** @default auto */
-			import_account_mode: string;
+			import_account_mode?: string;
 			/** @default false */
-			include_history: boolean;
+			include_history?: boolean;
 			/** @default minecraft */
-			source: string;
+			source?: string;
 		};
 		/** WhitelistNotificationChannelSettings */
 		WhitelistNotificationChannelSettings: {
@@ -8463,7 +8463,7 @@ export interface components {
 		/** WhitelistStatusRequest */
 		WhitelistStatusRequest: {
 			/** @default  */
-			reason: string;
+			reason?: string;
 			status: string;
 		};
 		/** WhitelistTargetServerRef */

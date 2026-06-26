@@ -879,11 +879,10 @@ export class Server extends Resource<Data> {
 
 	/** server.translations.delete */
 	async translationsDelete(field: string, locale: string): Promise<this> {
-		const data = await this.ctx.transport.request({
+		await this.ctx.transport.request({
 			method: "DELETE",
 			path: `/v1/servers/${this.id}/translations/${field}/${locale}`,
 		});
-		this.ctx.hydrate("Server", data);
 		return this;
 	}
 

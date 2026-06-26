@@ -12,8 +12,8 @@
 
 import { create, fromBinary, toBinary } from "@bufbuild/protobuf";
 import {
-	type ServerFrame,
 	ClientFrameSchema,
+	type ServerFrame,
 	ServerFrameSchema,
 } from "./realtime_pb/leavepulse/realtime/v1/ws_pb.js";
 
@@ -88,6 +88,12 @@ export class RealtimeClient {
 	private requestSeq = 0;
 	private readonly subscriptions = new Map<string, Subscription>();
 	private readonly pending = new Map<string, PendingRequest>();
+	// Resolved when the server's `welcome` frame lands — i.e. auth has been
+	// processed. Subscribes wait on this so a private topic is never requested
+	// before the gateway has bound the socket's identity (otherwise it replies
+	// "Authentication required for private topic" and we needlessly reconnect).
+	private welcomed: Promise<void> | null = null;
+	private resolveWelcome: (() => void) | null = null;
 
 	constructor(private readonly opts: RealtimeClientOptions) {}
 
@@ -150,6 +156,9 @@ export class RealtimeClient {
 		this.socket = null;
 		this.connecting = null;
 		this.authenticated = false;
+		this.resolveWelcome?.();
+		this.resolveWelcome = null;
+		this.welcomed = null;
 	}
 
 	// ── internals ────────────────────────────────────────────────────────────
@@ -190,6 +199,11 @@ export class RealtimeClient {
 		socket.binaryType = "arraybuffer";
 		this.socket = socket;
 
+		// Arm the welcome gate before sending auth, so the frame can't race us.
+		this.welcomed = new Promise<void>((resolve) => {
+			this.resolveWelcome = resolve;
+		});
+
 		await new Promise<void>((resolve, reject) => {
 			socket.addEventListener("open", () => resolve());
 			socket.addEventListener("error", () =>
@@ -207,6 +221,11 @@ export class RealtimeClient {
 				}),
 			);
 		}
+		// Wait for the gateway's `welcome` (auth applied) before (re)subscribing,
+		// so private topics aren't requested on an un-bound socket. The gate is
+		// resolved in onMessage; if the socket drops first, onClose rejects the
+		// retry path, so a hung await can't wedge us.
+		await this.welcomed;
 		// Re-subscribe everything (covers reconnect).
 		for (const topic of this.subscriptions.keys()) this.sendSubscribe(topic);
 		this.reconnectAttempts = 0;
@@ -216,6 +235,10 @@ export class RealtimeClient {
 		this.socket = null;
 		this.connecting = null;
 		this.authenticated = false;
+		// Unblock a connect() still awaiting `welcome` so its promise can settle
+		// (it'll re-arm on the next attempt); reconnect drives the retry.
+		this.resolveWelcome?.();
+		this.resolveWelcome = null;
 		if (this.closedByUser) return;
 		this.scheduleReconnect();
 	}
@@ -247,6 +270,9 @@ export class RealtimeClient {
 				return;
 			case "welcome":
 				this.authenticated = frame.body.value.authenticated;
+				// Release any subscribes waiting on the auth handshake.
+				this.resolveWelcome?.();
+				this.resolveWelcome = null;
 				return;
 			case "event": {
 				const ev = frame.body.value;
